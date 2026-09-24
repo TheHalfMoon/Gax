@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from gaxbench.schema import Action, BenchmarkItem, Gold, Prediction, Provenance
+from gaxbench.schema import Action, BenchmarkItem, Evidence, Gold, Prediction, Provenance
 
 
 def item() -> BenchmarkItem:
@@ -46,3 +46,32 @@ def test_item_is_immutable() -> None:
     value = item()
     with pytest.raises(ValidationError):
         value.id = "changed"  # type: ignore[misc]
+
+
+def test_item_rejects_nonfinite_state() -> None:
+    with pytest.raises(ValidationError, match="strict JSON"):
+        item().model_copy(update={"state": {"value": float("nan")}}).model_validate(
+            {
+                **item().model_dump(mode="python"),
+                "state": {"value": float("nan")},
+            }
+        )
+
+
+def test_action_metadata_rejects_nonfinite_json() -> None:
+    with pytest.raises(ValidationError):
+        Action(id="a", description="A", metadata={"value": float("inf")})
+
+
+def test_evidence_structured_rejects_nonfinite_json() -> None:
+    with pytest.raises(ValidationError):
+        Evidence(id="e", structured={"value": float("nan")})
+
+
+def test_prediction_metadata_rejects_nonfinite_json() -> None:
+    with pytest.raises(ValidationError):
+        Prediction(
+            item_id="x",
+            probabilities={"a": 0.5, "b": 0.5},
+            metadata={"value": float("nan")},
+        )
