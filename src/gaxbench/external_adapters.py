@@ -92,7 +92,7 @@ class TypeSafeHTTPAdapter:
                 raise ValueError(f"item {item.id!r} has no actions")
 
     def predict(self, item: BenchmarkItem) -> Prediction:
-        payload = {
+        payload: dict[str, Any] = {
             "state": render_model_state(item),
             "questions": {
                 _ACTION_QUESTION_ID: {
