@@ -21,6 +21,23 @@ The project is designed around four first-class properties:
 3. **Native abstention** — a high top-1 action score is not itself permission to act.
 4. **FHIR-aware evaluation** — interoperability and EHR action selection are evaluated as core capabilities rather than demos.
 
+## Research program
+
+The foundation is specified before implementation:
+
+- [Research master plan](docs/research/MASTER_PLAN.md)
+- [Architecture search](docs/architecture/ARCHITECTURE.md)
+- [GAXBench specification](docs/research/GAXBENCH.md)
+- [Literature and competitor map](docs/research/LITERATURE_MAP.md)
+- [Data governance](docs/research/DATA_GOVERNANCE.md)
+- [Reproducibility and claim discipline](docs/research/REPRODUCIBILITY.md)
+- [Paper and publication plan](docs/research/PAPER_PLAN.md)
+- [Gate-based roadmap](docs/ROADMAP.md)
+- [Current frontier](specs/CURRENT.md)
+- [Program tasks](specs/tasks.md)
+
+The first SpecGrain is [SG-000001](.specgrain/specs/SG-000001.json): research foundation and publication contract.
+
 ## Planned research artifacts
 
 - **GAX models** — compact open-weight health decision models.
@@ -47,12 +64,24 @@ Public claims must be bound to reproducible evidence:
 
 No benchmark result should be added to the project summary until its evidence packet is reproducible.
 
+## Publication
+
+The intended publication path is:
+
+1. a reproducible **arXiv preprint**;
+2. submission to an appropriate peer-reviewed health-ML, ML, or NLP venue based on the final demonstrated contribution and active call;
+3. a journal extension only if there is substantial new validation or analysis.
+
+The manuscript workspace is under [paper/](paper/README.md). It remains intentionally free of fabricated placeholder results during the foundation phase.
+
+## Compute constraint
+
+Founder-paid cloud compute is out of scope. Smoke tests and tutorials should run on local/free resources where feasible; larger research runs may use donated, sponsored, or institutional compute and must record their provenance.
+
 ## Status
 
-**Research foundation phase.** Architecture, benchmark design, data governance, baselines, hypotheses, and experiment gates are being specified before implementation.
-
-See the research plan and project governance documents as they land in this repository.
+**P00 — Research foundation.** No model implementation or performance claim is authorized until the foundation grain is reviewed and merged.
 
 ## License
 
-The intended project code license is Apache-2.0. Dataset, model-weight, and third-party artifact licenses will be tracked independently and must be compatible with their actual sources before redistribution.
+Project code is Apache-2.0. Dataset, model-weight, and third-party artifact licenses are tracked independently and must be compatible with their actual sources before redistribution.
