@@ -42,14 +42,16 @@
     "P02 task ledger closes infrastructure deliverables and moves real-model executions to P08",
     "P03 is unblocked without introducing a benchmark number or clinical claim",
     "Exact-head CI passes Ruff, mypy strict, pytest, and compileall on Python 3.11/3.12 across Linux and Windows",
-    "Post-merge CI passes before canonical P02 closeout is marked PROVEN"
+    "Post-merge CI passes before canonical P02 closeout is marked PROVEN",
+    "Repository test fails if a required external baseline returns to unknown/planned identity or unresolved license state"
   ],
   "change_surface": [
     ".specgrain/specs/SG-000005.json",
     "registry/baselines.json",
     "docs/research/P02_BASELINE_HARNESS.md",
     "specs/CURRENT.md",
-    "specs/tasks.md"
+    "specs/tasks.md",
+    "tests/test_baseline_registry.py"
   ],
   "children": [],
   "context": {
