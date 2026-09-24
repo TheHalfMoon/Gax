@@ -64,6 +64,19 @@
         "Final peer-reviewed venue remains unresolved until the final contribution and active calls are verified."
       ],
       "version": 1
+    },
+    "closeout": {
+      "foundation_pr": 2,
+      "foundation_merge_sha": "88965a1fd5065084978159d7b60862da3ea89195",
+      "foundation_head_sha": "79b3d76c1a2bbd6ed0f383c3814f09f0852050f4",
+      "verification": [
+        "SG-000001 JSON parsed successfully",
+        "canonical Apache-2.0 license text verified",
+        "manuscript contains no placeholder numerical result claims",
+        "README contains no performance or clinical-safety claim",
+        "ECAL remains explicitly unproven",
+        "no model weights, datasets, or PHI were introduced"
+      ]
     }
   },
   "method": "research",
@@ -92,6 +105,6 @@
     "No dataset redistribution",
     "No final venue commitment"
   ],
-  "state": "GRAIN",
+  "state": "PROVEN",
   "title": "GAX-P00 - Research foundation and publication contract"
 }
