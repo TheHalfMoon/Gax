@@ -1,6 +1,6 @@
 # P02 Matched Baseline Harness
 
-Status: **implementation grain SG-000003**
+Status: **P02 closeout candidate / SG-000005**
 
 P02 makes baseline comparison mechanics explicit before GAX v0 exists. The harness is not a leaderboard and the synthetic smoke fixtures are not clinical evaluation.
 
@@ -111,12 +111,14 @@ No alternate metric implementation is allowed inside an adapter.
 
 Current states include:
 
-- `qualified-offline` — only GAX-owned deterministic infrastructure controls;
-- `external-pending` — source is known, exact revision/license/runtime qualification not frozen;
-- `planned` — baseline class is required but final upstream model is not selected;
+- `qualified-offline` — GAX-owned deterministic infrastructure controls;
+- `adapter-qualified` — source/license/protocol adapter is frozen and tested, but no real-model benchmark result is implied;
+- `external-pending` — a real model identity is frozen but matched benchmark execution remains pending;
 - `blocked` — inclusion depends on an unresolved access or terms constraint.
 
-CLM, Laya, decider, restricted-logit controls, clinical encoders, structured-output LLMs, and Jev must not receive benchmark numbers until separately qualified.
+At P02 closeout, every required baseline class has an explicit source or model identity, immutable revision, access status, license, and qualification state. Jev remains explicitly blocked rather than silently omitted.
+
+Real-model execution is intentionally deferred to **P08 Full Paper Evaluation** after the benchmark, baseline revisions, model revisions, calibration procedure, and hardware protocol are frozen. This prevents test-set peeking and avoids making zero-founder-cost external compute a prerequisite for implementing GAX v0.
 
 ## CLI
 
@@ -178,4 +180,4 @@ P02 may close only after:
 - post-merge CI passes;
 - canonical closeout advances the frontier to P03.
 
-External-model qualification can proceed in later governed grains without inventing results in P02.
+External-model qualification proceeds in later governed P08 grains without inventing results in P02. P02 establishes the comparison contract; P08 executes the frozen comparison.
