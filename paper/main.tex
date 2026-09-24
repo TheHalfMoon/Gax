@@ -1,0 +1,178 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{microtype}
+
+\title{GAX: Evidence-Calibrated System-One Models for Clinical Decision Making}
+\author{Author list to be finalized before submission}
+\date{}
+
+\begin{document}
+\maketitle
+
+% IMPORTANT:
+% Do not insert synthetic or placeholder numerical results.
+% Every number in a results sentence/table must trace to a frozen evidence packet.
+
+\begin{abstract}
+GAX studies non-generative, typed clinical decision models that separate action
+beliefs from information sufficiency and abstention. This working manuscript is
+intentionally result-free until the frozen evaluation protocol is complete.
+The final abstract will report only artifact-backed findings.
+\end{abstract}
+
+\section{Introduction}
+
+Medical AI systems are commonly optimized to generate text, while many
+operational and clinical-support workflows ultimately require bounded decisions:
+select an allowed action, estimate risk, verify evidence support, or defer when
+information is insufficient. GAX investigates whether a dedicated
+System-One-style decision model can improve the accuracy--calibration--selectivity
+trade-off for these tasks while retaining efficient inference.
+
+The core design principle is that the highest-probability action is not itself
+permission to act. GAX therefore represents action probabilities and information
+sufficiency separately and evaluates selective prediction explicitly.
+
+\paragraph{Contributions.}
+Contribution language remains gated by the experiments in
+\texttt{docs/research/PAPER\_PLAN.md}. Any contribution that fails its ablation
+or held-out evaluation gate must be removed or reframed as a negative result.
+
+\section{Related Work}
+
+\subsection{System-One and Typed Decision Models}
+Discuss Jev, Contrastive Language Models, Laya, decider, and restricted-logit
+one-pass baselines. Distinguish public evidence from unpublished implementation
+details.
+
+\subsection{Clinical Encoders}
+Discuss Clinical ModernBERT and BioClinical ModernBERT as efficient long-context
+clinical encoders.
+
+\subsection{Medical Agents and FHIR}
+Discuss MedAgentBench and FHIR-AgentBench, focusing on interoperable EHR
+retrieval and action selection.
+
+\subsection{Evidence-Aware Medical Verification}
+Discuss Med-PRM and related verifier/process-reward approaches.
+
+\subsection{Uncertainty, Calibration, and Abstention}
+Discuss proper scoring rules, neural calibration, selective prediction, and
+MedQAbstain.
+
+\section{Problem Formulation}
+
+Let $s$ denote a clinical state, $\mathcal{A}=\{a_1,\ldots,a_K\}$ a finite set of
+caller-permitted actions, and $E$ optional evidence. A GAX model estimates
+
+\begin{equation}
+p(a_i \mid s,E), \qquad i=1,\ldots,K,
+\end{equation}
+
+and an information-sufficiency quantity
+
+\begin{equation}
+p(\mathrm{sufficient}\mid s,E).
+\end{equation}
+
+A separate decision policy maps these quantities to either an allowed action or
+abstention. Calibration parameters and action thresholds are fit without access
+to held-out test labels.
+
+\section{GAX}
+
+\subsection{Architecture Search}
+Report the winning architecture only after matched experiments across the
+single-encoder, contrastive state/action, and packed one-pass candidates.
+
+\subsection{Evidence-Calibrated Action Learning}
+ECAL is a working objective under test:
+\begin{equation}
+\mathcal{L} =
+w_a\mathcal{L}_{\mathrm{action}} +
+w_e\mathcal{L}_{\mathrm{evidence}} +
+w_p\mathcal{L}_{\mathrm{proper}} +
+w_s\mathcal{L}_{\mathrm{selective}} +
+w_c\mathcal{L}_{\mathrm{counterfactual}} +
+w_r\mathcal{L}_{\mathrm{retention}}.
+\end{equation}
+This formulation is not a claimed contribution unless ablations support it.
+
+\subsection{Selective Decision Policy}
+Define confidence-only, learned-sufficiency, and calibrated selective baselines
+at matched coverage.
+
+\section{GAXBench}
+
+Describe the benchmark suites for closed actions, abstention, evidence
+interventions, counterfactual sensitivity, FHIR workflows, distribution shift,
+and systems performance. Include data provenance and leakage controls.
+
+\section{Experimental Setup}
+
+\subsection{Models and Baselines}
+Freeze versions before final test evaluation.
+
+\subsection{Datasets and Splits}
+Describe entity-disjoint splitting, transformation lineage, contamination checks,
+and licensing constraints.
+
+\subsection{Metrics}
+Primary metrics include task accuracy where appropriate, negative log
+likelihood, Brier score, calibration error with disclosed binning, area under the
+risk--coverage curve, risk at fixed coverage, abstention metrics, evidence
+discrimination, and systems metrics.
+
+\subsection{Statistical Analysis}
+Use paired comparisons, confidence intervals, multiple training seeds where
+needed, and explicit failure/exclusion accounting.
+
+\section{Results}
+
+\textbf{TBD after frozen evidence-backed evaluation.}
+
+\section{Ablations}
+
+\textbf{TBD after frozen evidence-backed evaluation.}
+
+\section{FHIR Agent Evaluation}
+
+\textbf{TBD after frozen evidence-backed evaluation.}
+
+\section{Calibration and Selective Risk}
+
+\textbf{TBD after frozen evidence-backed evaluation.}
+
+\section{Failure Analysis}
+
+Report confident errors, over-abstention, evidence-following failures,
+counterfactual insensitivity, irrelevant-edit instability, and FHIR
+representation/retrieval errors without exposing restricted clinical data.
+
+\section{Limitations, Ethics, and Intended Use}
+
+GAX is research software and is not a medical device. The initial work does not
+establish autonomous diagnosis, treatment, prescribing, emergency triage, or
+clinical deployment safety. Constrained outputs prevent out-of-schema actions
+but do not prevent clinically incorrect in-schema decisions.
+
+\section{Reproducibility Statement}
+
+Bind the paper to a repository tag, immutable model/data revisions, split
+manifest hashes, commands, seeds, environment locks, hardware, raw metrics, and
+figure/table generation code.
+
+\section{Conclusion}
+
+\textbf{TBD after the central hypotheses are resolved.}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

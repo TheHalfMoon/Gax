@@ -1,0 +1,97 @@
+{
+  "acceptance": [
+    "Research master plan defines falsifiable research questions, hypotheses, baselines, publication gates, safety scope, and paper-ready criteria",
+    "Architecture document preserves multiple candidate model families and does not predeclare ECAL or any architecture as successful before ablation evidence",
+    "GAXBench specification covers action quality, calibration, abstention, evidence intervention, counterfactual sensitivity, FHIR, distribution shift, and systems efficiency",
+    "Data governance prevents PHI publication, records licensing/provenance, freezes entity-disjoint splits before transformations, and forbids test-derived training or calibration",
+    "Reproducibility policy binds every public numeric claim to immutable revisions, commands, seeds, hardware, raw metrics, and failure counts",
+    "Literature map covers Jev, CLM, Laya, decider, open one-pass baselines, BioClinical ModernBERT, MedAgentBench, FHIR-AgentBench, Med-PRM, and MedQAbstain",
+    "Publication plan defines arXiv plus peer-review path without promising unverified venue deadlines or acceptance",
+    "Apache-2.0 code license is present while model/data licenses remain independently governed",
+    "No implementation or benchmark SOTA claim is introduced in the foundation grain",
+    "Foundation PR is reviewable as a bounded planning-only change"
+  ],
+  "change_surface": [
+    ".specgrain/specs/SG-000001.json",
+    "README.md",
+    "LICENSE",
+    "docs/research",
+    "docs/architecture",
+    "specs/CURRENT.md",
+    "specs/tasks.md",
+    "paper"
+  ],
+  "children": [],
+  "context": {
+    "budget_tokens": 18000,
+    "estimated_tokens": 14000
+  },
+  "dependencies": [],
+  "evidence": {
+    "required": [
+      "live-empty-repository-reverified",
+      "jev-literature-review",
+      "open-system-one-competitor-review",
+      "clinical-encoder-literature-review",
+      "medical-abstention-review",
+      "fhir-agent-benchmark-review",
+      "medical-verifier-review",
+      "license-policy-defined",
+      "foundation-pr-pass"
+    ]
+  },
+  "id": "SG-000001",
+  "labels": [
+    "research",
+    "foundation"
+  ],
+  "metadata": {
+    "readiness": {
+      "minimality": {
+        "choice": "new-docs",
+        "rationale": "The repository was empty. The minimal safe first grain is a research contract and evidence/benchmark governance before any implementation or training."
+      },
+      "safety": {
+        "requirements": [
+          "Do not present GAX as a medical device or autonomous clinical decision maker.",
+          "Do not publish PHI or restricted source text.",
+          "Do not add performance or safety claims without artifact-backed matched evaluation."
+        ],
+        "status": "requirements-defined"
+      },
+      "unresolved_decisions": [
+        "Winning model architecture remains intentionally unresolved until P02/P03 matched experiments.",
+        "Final peer-reviewed venue remains unresolved until the final contribution and active calls are verified."
+      ],
+      "version": 1
+    }
+  },
+  "method": "research",
+  "outcome": "Freeze the evidence-first research foundation for GAX: literature position, falsifiable hypotheses, architecture search, benchmark contract, data governance, reproducibility discipline, roadmap, and publication gates before implementation.",
+  "parent_id": null,
+  "rationale": "GAX is a greenfield health-AI research repository. Starting with code before defining leakage, calibration, abstention, evidence, FHIR, and publication gates would risk producing an impressive demo without a defensible paper. SG-000001 therefore authorizes planning artifacts only.",
+  "risk": {
+    "level": "medium",
+    "recovery": "Revert the foundation branch and return to the single README initialization commit. No model weights, datasets, or production behavior are changed by this grain."
+  },
+  "schema_version": 1,
+  "scope_in": [
+    "Research thesis and falsifiable hypotheses",
+    "Architecture search space and ECAL as an explicitly unproven working objective",
+    "GAXBench evaluation design and statistical protocol",
+    "Data licensing, provenance, leakage, PHI, and counterfactual governance",
+    "Reproducibility and public-claim evidence policy",
+    "ArXiv and peer-review publication plan",
+    "Program roadmap from benchmark kernel through external validation"
+  ],
+  "scope_out": [
+    "No model implementation",
+    "No training runs",
+    "No benchmark result claims",
+    "No clinical-use claim",
+    "No dataset redistribution",
+    "No final venue commitment"
+  ],
+  "state": "GRAIN",
+  "title": "GAX-P00 - Research foundation and publication contract"
+}
