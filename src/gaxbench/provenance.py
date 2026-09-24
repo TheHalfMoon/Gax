@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 import hashlib
 import json
 from pathlib import Path
@@ -25,7 +26,7 @@ def canonical_json_sha256(value: Any) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
-def build_file_manifest(paths: list[str | Path], *, root: str | Path) -> dict[str, str]:
+def build_file_manifest(paths: Sequence[str | Path], *, root: str | Path) -> dict[str, str]:
     root_path = Path(root).resolve()
     entries: list[tuple[str, Path]] = []
     for raw in paths:
