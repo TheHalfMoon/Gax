@@ -1,0 +1,36 @@
+{
+  "schema_version": "0.1",
+  "entries": [
+    {
+      "id": "synthetic-smoke",
+      "name": "GAXBench synthetic smoke fixture",
+      "source_url": null,
+      "upstream_revision": "gax-p01-v0.1",
+      "license": "CC0-1.0",
+      "redistribution": "permitted",
+      "access_requirements": null,
+      "contains_clinical_text": true,
+      "contains_phi": false,
+      "patient_or_entity_key": "source_id",
+      "intended_uses": [
+        "unit tests",
+        "CLI smoke evaluation",
+        "metric regression tests"
+      ],
+      "forbidden_uses": [
+        "clinical validation claims",
+        "medical threshold claims",
+        "patient care"
+      ],
+      "split_strategy": "Hand-authored synthetic test-only fixture; not a train/test benchmark split",
+      "transforms": [],
+      "derived_artifacts": [
+        "tests/fixtures/items.jsonl",
+        "tests/fixtures/predictions.jsonl"
+      ],
+      "review_status": "approved",
+      "reviewer": "TheHalfMoon/Gax maintainers",
+      "review_date": "2026-09-24"
+    }
+  ]
+}
