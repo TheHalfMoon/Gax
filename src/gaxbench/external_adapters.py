@@ -156,14 +156,17 @@ class TypeSafeHTTPAdapter:
                 )
             headers["Authorization"] = f"Bearer {api_key}"
 
-        request = request.Request(
+        http_request = request.Request(
             self._config.base_url.rstrip("/") + "/v1/systemone",
             data=body,
             headers=headers,
             method="POST",
         )
         try:
-            with request.urlopen(request, timeout=self._config.timeout_seconds) as response:
+            with request.urlopen(
+                http_request,
+                timeout=self._config.timeout_seconds,
+            ) as response:
                 raw = response.read(self._config.max_response_bytes + 1)
         except error.HTTPError as exc:
             detail = exc.read(_MAX_ERROR_BODY_BYTES).decode("utf-8", errors="replace")
