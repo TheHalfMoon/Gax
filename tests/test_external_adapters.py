@@ -3,10 +3,11 @@ from __future__ import annotations
 import json
 import sys
 import threading
+from collections.abc import Iterator
 from contextlib import contextmanager
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from typing import Any, Iterator
+from typing import Any
 
 import pytest
 
