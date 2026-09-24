@@ -34,7 +34,10 @@ def dump_jsonl(path: str | Path, rows: list[BaseModel]) -> None:
     with path.open("w", encoding="utf-8", newline="\n") as handle:
         for row in rows:
             payload = json.dumps(
-                row.model_dump(mode="json"), sort_keys=True, separators=(",", ":")
+                row.model_dump(mode="json"),
+                sort_keys=True,
+                separators=(",", ":"),
+                allow_nan=False,
             )
             handle.write(payload)
             handle.write("\n")
