@@ -61,7 +61,7 @@ class TypeSafeHTTPAdapter:
         model_id: str | None = None,
         model_revision: str | None = None,
         tokenizer_revision: str | None = None,
-        deterministic: bool = True,
+        deterministic: bool = False,
     ) -> None:
         if not name:
             raise ValueError("name must not be empty")
