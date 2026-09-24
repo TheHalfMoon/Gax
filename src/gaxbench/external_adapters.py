@@ -3,12 +3,10 @@ from __future__ import annotations
 import json
 import os
 import subprocess
-import urllib.error
-import urllib.parse
-import urllib.request
 from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any
+from urllib import error, parse, request
 
 from gaxbench.baselines import AdapterIdentity
 from gaxbench.schema import BenchmarkItem, Prediction
@@ -28,7 +26,7 @@ class TypeSafeHTTPConfig:
     api_key_env: str | None = None
 
     def __post_init__(self) -> None:
-        parsed = urllib.parse.urlparse(self.base_url)
+        parsed = parse.urlparse(self.base_url)
         if parsed.scheme not in {"http", "https"} or not parsed.netloc:
             raise ValueError("base_url must be an absolute http(s) URL")
         if parsed.username is not None or parsed.password is not None:
@@ -158,19 +156,19 @@ class TypeSafeHTTPAdapter:
                 )
             headers["Authorization"] = f"Bearer {api_key}"
 
-        request = urllib.request.Request(
+        request = request.Request(
             self._config.base_url.rstrip("/") + "/v1/systemone",
             data=body,
             headers=headers,
             method="POST",
         )
         try:
-            with urllib.request.urlopen(request, timeout=self._config.timeout_seconds) as response:
+            with request.urlopen(request, timeout=self._config.timeout_seconds) as response:
                 raw = response.read(self._config.max_response_bytes + 1)
-        except urllib.error.HTTPError as exc:
+        except error.HTTPError as exc:
             detail = exc.read(_MAX_ERROR_BODY_BYTES).decode("utf-8", errors="replace")
             raise RuntimeError(f"System-One HTTP {exc.code}: {detail}") from exc
-        except urllib.error.URLError as exc:
+        except error.URLError as exc:
             raise RuntimeError(f"System-One transport error: {exc.reason}") from exc
 
         if len(raw) > self._config.max_response_bytes:
