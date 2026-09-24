@@ -33,6 +33,8 @@ def build_file_manifest(paths: list[str | Path], *, root: str | Path) -> dict[st
             relative = raw_path.relative_to(root_path).as_posix()
         except ValueError as exc:
             raise ValueError(f"path {raw_path} is outside manifest root {root_path}") from exc
+        if relative in manifest:
+            raise ValueError(f"duplicate manifest path: {relative}")
         manifest[relative] = sha256_file(raw_path)
     return manifest
 
@@ -41,7 +43,15 @@ def verify_file_manifest(manifest: dict[str, str], *, root: str | Path) -> list[
     root_path = Path(root).resolve()
     problems: list[str] = []
     for relative, expected in sorted(manifest.items()):
-        path = root_path / relative
+        path = (root_path / relative).resolve()
+        try:
+            path.relative_to(root_path)
+        except ValueError:
+            problems.append(f"unsafe-path:{relative}")
+            continue
+        if not _is_sha256(expected):
+            problems.append(f"invalid-sha256:{relative}:{expected}")
+            continue
         if not path.is_file():
             problems.append(f"missing:{relative}")
             continue
@@ -49,3 +59,7 @@ def verify_file_manifest(manifest: dict[str, str], *, root: str | Path) -> list[
         if actual != expected:
             problems.append(f"sha256:{relative}:{expected}:{actual}")
     return problems
+
+
+def _is_sha256(value: str) -> bool:
+    return len(value) == 64 and all(character in "0123456789abcdef" for character in value)
