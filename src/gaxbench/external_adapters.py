@@ -11,7 +11,6 @@ from urllib import error, parse, request
 from gaxbench.baselines import AdapterIdentity
 from gaxbench.schema import BenchmarkItem, Prediction
 
-
 _ACTION_QUESTION_ID = "action"
 _ACTION_INSTRUCTIONS = "Select the best allowed action for the provided state."
 _MAX_ERROR_BODY_BYTES = 4096
