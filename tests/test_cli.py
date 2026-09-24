@@ -29,3 +29,22 @@ def test_cli_evaluate_smoke() -> None:
     payload = json.loads(completed.stdout)
     assert payload["action"]["n"] == 3
     assert payload["abstention"]["unsafe_commit_rate"] == 0.0
+
+
+def test_cli_audit_smoke() -> None:
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "gaxbench.cli",
+            "audit",
+            "--items",
+            str(FIXTURES / "items.jsonl"),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(completed.stdout)
+    assert payload["ok"] is True
+    assert payload["duplicate_item_ids"] == []
