@@ -12,9 +12,9 @@
 - [x] Publication plan
 - [x] Roadmap
 - [x] SpecGrain SG-000001
-- [ ] Foundation PR reviewed
-- [ ] Foundation PR merged
-- [ ] Canonical P00 closeout
+- [x] Foundation PR reviewed
+- [x] Foundation PR merged
+- [x] Canonical P00 closeout
 
 ## P01 — Benchmark kernel
 
