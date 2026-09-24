@@ -1,0 +1,111 @@
+{
+  "acceptance": [
+    "BenchmarkItem and Prediction schemas reject extra fields, malformed distributions, duplicate action/evidence IDs, unknown gold actions, and non-JSON state values",
+    "Prediction validation requires exact action-key equality with the benchmark item and probability mass summing to one within 1e-6",
+    "Evaluator refuses duplicate, missing, extra, or unlabeled records instead of silently changing denominators",
+    "Action metrics implement accuracy, NLL, summed multiclass Brier, fixed-bin ECE, actual coverage, committed risk, discrete AURC, and risk at 50/80/90 percent coverage",
+    "Risk-coverage ordering is deterministic and uses information sufficiency only when every prediction supplies it; otherwise the run uniformly falls back to max action probability",
+    "Abstention metrics define positive as should-abstain and report precision, recall, F1, unsafe-commit rate, over-abstain rate, and sufficiency calibration when available",
+    "JSONL I/O is deterministic and reports source line numbers for invalid records",
+    "SHA-256 provenance helpers build deterministic relative-path manifests and detect file mutation",
+    "Versioned JSON Schema snapshots match the live Pydantic schemas under tests",
+    "Synthetic smoke fixtures contain no real patient data or PHI",
+    "Local qualification records 13/13 pytest PASS plus compileall PASS with no Python source line over 100 characters",
+    "Exact-head GitHub CI runs Ruff, mypy strict, pytest, and compileall on Python 3.11/3.12 across Linux and Windows",
+    "P01 introduces no model training, clinical dataset ingestion, or performance claim"
+  ],
+  "change_surface": [
+    ".specgrain/specs/SG-000002.json",
+    "pyproject.toml",
+    "src/gaxbench",
+    "schemas",
+    "tests",
+    ".github/workflows/gaxbench.yml",
+    "docs/research/P01_BENCHMARK_KERNEL.md",
+    "README.md",
+    "specs/CURRENT.md",
+    "specs/tasks.md"
+  ],
+  "children": [],
+  "context": {
+    "budget_tokens": 18000,
+    "estimated_tokens": 14000
+  },
+  "dependencies": [
+    "SG-000001"
+  ],
+  "evidence": {
+    "required": [
+      "local-pytest-13-pass",
+      "local-compileall-pass",
+      "local-line-length-screen-pass",
+      "schema-snapshot-pass",
+      "linux-python311-ci-pass",
+      "linux-python312-ci-pass",
+      "windows-python311-ci-pass",
+      "windows-python312-ci-pass",
+      "ruff-pass",
+      "mypy-strict-pass",
+      "pytest-pass",
+      "compileall-pass",
+      "implementation-pr-pass",
+      "post-merge-ci-pass",
+      "canonical-closeout-pass"
+    ]
+  },
+  "id": "SG-000002",
+  "labels": [
+    "benchmark",
+    "research-infrastructure",
+    "p01"
+  ],
+  "metadata": {
+    "readiness": {
+      "minimality": {
+        "choice": "new-code",
+        "rationale": "P00 is PROVEN and P01 authorizes only the benchmark kernel. The minimal useful implementation is a strict schema, metric definitions, provenance primitives, deterministic fixtures, CLI, and cross-platform tests before any model or clinical data adapter exists."
+      },
+      "safety": {
+        "requirements": [
+          "P01 fixtures must remain synthetic and contain no PHI.",
+          "Evaluation must fail on denominator-changing mismatches rather than silently drop records.",
+          "No clinical or performance claim may be inferred from the synthetic smoke fixture."
+        ],
+        "status": "implementation-qualified-locally"
+      },
+      "unresolved_decisions": [
+        "Evidence AUROC/AUPRC and bootstrap confidence intervals remain for later grains.",
+        "No model adapter is selected in P01."
+      ],
+      "version": 1
+    }
+  },
+  "method": "research",
+  "outcome": "Create a strict, deterministic, provenance-aware GAXBench evaluation kernel that makes action probability, calibration, selective-risk, and abstention measurements reproducible before GAX model training begins.",
+  "parent_id": null,
+  "rationale": "The paper's core claims depend on calibration and selective risk. Implementing models before fixing evaluator semantics risks metric drift, silent denominator changes, and test leakage. P01 therefore builds and qualifies the evaluation kernel first.",
+  "risk": {
+    "level": "medium",
+    "recovery": "Revert P01 files and return to the P00 canonical research foundation at 5870709a6f43ed4812014a449fb6b31e11727ab7. No model weights or clinical datasets are affected."
+  },
+  "schema_version": 1,
+  "scope_in": [
+    "Strict benchmark and prediction schemas",
+    "Deterministic JSONL I/O and CLI",
+    "Action probability and calibration metrics",
+    "Risk-coverage and abstention metrics",
+    "Provenance hashing and file manifests",
+    "Synthetic smoke fixtures and unit tests",
+    "Linux/Windows CI qualification"
+  ],
+  "scope_out": [
+    "No model implementation or training",
+    "No clinical dataset ingestion",
+    "No FHIR adapter",
+    "No external model baseline adapter",
+    "No benchmark performance claim",
+    "No PHI"
+  ],
+  "state": "GRAIN",
+  "title": "GAX-P01 - Benchmark kernel and selective-risk metric contract"
+}
