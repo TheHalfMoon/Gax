@@ -36,12 +36,9 @@
 - [x] Laya source/license/protocol adapter qualification
 - [x] decider source/license/protocol adapter qualification
 - [x] restricted-logit source/license freeze and canonical transport path
-- [ ] Clinical encoder baseline real-model qualification
-- [ ] CLM real-model qualification
-- [ ] Laya real-model qualification
-- [ ] decider real-model qualification
-- [ ] restricted-logit real-model qualification
-- [ ] open structured-output LLM baseline real-model qualification
+- [x] Clinical encoder identity/revision/license freeze
+- [x] Structured-output LLM identity/revision/license freeze
+- [ ] Canonical P02 phase closeout
 
 ## P03 — GAX v0
 
@@ -88,6 +85,12 @@
 - [ ] Freeze benchmark
 - [ ] Freeze baseline revisions
 - [ ] Freeze model revisions
+- [ ] Clinical encoder real-model qualification
+- [ ] CLM real-model qualification
+- [ ] Laya real-model qualification
+- [ ] decider real-model qualification
+- [ ] restricted-logit real-model qualification
+- [ ] structured-output LLM real-model qualification
 - [ ] Main tables
 - [ ] Ablations
 - [ ] Shift analysis

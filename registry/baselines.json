@@ -87,27 +87,27 @@
     },
     {
       "id": "clinical-encoder",
-      "name": "Clinical Encoder Baseline",
+      "name": "BioClinical ModernBERT Base Clinical Encoder Control",
       "baseline_class": "clinical-encoder-classifier",
-      "source_url": null,
-      "source_revision": null,
-      "license": "model-license-review-required",
-      "access_status": "unknown",
-      "qualification_status": "planned",
-      "reason": null,
-      "intended_role": "Matched discriminative clinical encoder baseline selected after license/revision freeze"
+      "source_url": "https://huggingface.co/thomas-sounack/BioClinical-ModernBERT-base",
+      "source_revision": "5e17e2f25260b6993e0fb60485f94678ff29779a",
+      "license": "MIT",
+      "access_status": "available",
+      "qualification_status": "external-pending",
+      "reason": "Model identity, immutable Hugging Face revision, and license are frozen for the matched clinical encoder control. Task-specific training and final benchmark execution belong to the frozen P08 evaluation protocol.",
+      "intended_role": "149.7M biomedical/clinical encoder control for measuring the value of GAX decision architecture beyond domain-specific encoder pretraining"
     },
     {
       "id": "structured-output-llm",
-      "name": "Open Structured-Output LLM",
+      "name": "Qwen3.5-4B Structured-Output LLM Control",
       "baseline_class": "generative-structured-output",
-      "source_url": null,
-      "source_revision": null,
-      "license": "model-license-review-required",
-      "access_status": "unknown",
-      "qualification_status": "planned",
-      "reason": null,
-      "intended_role": "Strong open generative baseline with parse/failure accounting under the same benchmark contract"
+      "source_url": "https://huggingface.co/Qwen/Qwen3.5-4B",
+      "source_revision": "a7b0d22b993d71000cf2eadfb37222a67cee521e",
+      "license": "Apache-2.0",
+      "access_status": "available",
+      "qualification_status": "external-pending",
+      "reason": "Model identity, immutable Hugging Face revision, and license are frozen. Structured-action prompting, parse/failure accounting, and final inference belong to the frozen P08 evaluation protocol.",
+      "intended_role": "Strong open generative control evaluated against the exact GAXBench action schema with generation and parsing failures retained"
     },
     {
       "id": "jev",

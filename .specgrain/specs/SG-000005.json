@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "id": "SG-000005",
+  "title": "GAX-P02 - Phase closeout and final baseline identity freeze",
+  "state": "GRAIN",
+  "method": "research-governance",
+  "parent_id": null,
+  "dependencies": [
+    "SG-000004"
+  ],
+  "labels": [
+    "baseline",
+    "p02",
+    "phase-closeout",
+    "reproducibility"
+  ],
+  "outcome": "Close P02 after freezing every required baseline identity/access/license status, restore the original phase boundary, and move real external-model execution into the frozen P08 paper-evaluation track.",
+  "rationale": "P02 was defined to make comparison mechanics reproducible before GAX v0 training, not to require all expensive external-model inference before GAX exists. Issue #6 and the P02 harness contract require explicit revision/access/license status and qualified adapter paths. Those requirements are now satisfiable without fabricating benchmark numbers. Keeping real external inference as a P02 blocker would create a compute dependency that contradicts the roadmap and the zero-founder-cost constraint.",
+  "scope_in": [
+    "Freeze BioClinical ModernBERT-base as the clinical encoder control with immutable Hugging Face revision and MIT license",
+    "Freeze Qwen3.5-4B as the structured-output LLM control with immutable Hugging Face revision and Apache-2.0 license",
+    "Verify every required P02 baseline class has explicit identity, revision/access, license, and qualification status",
+    "Move real model execution and final benchmark numbers to P08 after benchmark/model/calibration freeze",
+    "Close P02 infrastructure phase and advance the canonical frontier to P03 GAX v0"
+  ],
+  "scope_out": [
+    "No external model inference result",
+    "No task-specific clinical encoder training",
+    "No Qwen generation result",
+    "No GAX training",
+    "No clinical dataset ingestion",
+    "No PHI",
+    "No paid founder cloud compute",
+    "No performance or safety claim"
+  ],
+  "acceptance": [
+    "clinical-encoder registry entry freezes thomas-sounack/BioClinical-ModernBERT-base at 5e17e2f25260b6993e0fb60485f94678ff29779a with MIT license",
+    "structured-output-llm registry entry freezes Qwen/Qwen3.5-4B at a7b0d22b993d71000cf2eadfb37222a67cee521e with Apache-2.0 license",
+    "CLM, Laya, decider, restricted-logit, clinical-encoder, and structured-output-llm all have explicit revision/access/license/qualification records",
+    "Jev remains explicitly blocked rather than silently omitted",
+    "P02 documentation distinguishes infrastructure qualification from P08 real-model benchmark execution",
+    "P02 task ledger closes infrastructure deliverables and moves real-model executions to P08",
+    "P03 is unblocked without introducing a benchmark number or clinical claim",
+    "Exact-head CI passes Ruff, mypy strict, pytest, and compileall on Python 3.11/3.12 across Linux and Windows",
+    "Post-merge CI passes before canonical P02 closeout is marked PROVEN",
+    "Repository test fails if a required external baseline returns to unknown/planned identity or unresolved license state"
+  ],
+  "change_surface": [
+    ".specgrain/specs/SG-000005.json",
+    "registry/baselines.json",
+    "docs/research/P02_BASELINE_HARNESS.md",
+    "specs/CURRENT.md",
+    "specs/tasks.md",
+    "tests/test_baseline_registry.py"
+  ],
+  "children": [],
+  "context": {
+    "budget_tokens": 14000,
+    "estimated_tokens": 9000
+  },
+  "evidence": {
+    "required": [
+      "clinical-encoder-model-freeze",
+      "structured-output-model-freeze",
+      "baseline-registry-completeness",
+      "p02-contract-consistency",
+      "linux-python311-ci-pass",
+      "linux-python312-ci-pass",
+      "windows-python311-ci-pass",
+      "windows-python312-ci-pass",
+      "implementation-pr-pass",
+      "post-merge-ci-pass",
+      "canonical-p02-closeout-pass"
+    ]
+  },
+  "risk": {
+    "level": "low",
+    "recovery": "Revert SG-000005 governance changes and return to canonical SG-000004 closeout at b6b30af27c3d6e9d603c5b4407b7ba1e61ab6d24. No model weights or benchmark predictions are changed."
+  },
+  "metadata": {
+    "readiness": {
+      "minimality": {
+        "choice": "governance-and-model-identity-freeze",
+        "rationale": "The remaining P02 gap is model identity/provenance for two planned baseline classes plus a contradictory phase boundary. No runtime implementation is required to satisfy the original P02 exit contract."
+      },
+      "safety": {
+        "requirements": [
+          "Do not convert model identity freeze into a performance claim.",
+          "Do not execute final test benchmarks before P08 freeze.",
+          "Keep all failed/parsing external inference visible when P08 runs occur."
+        ],
+        "status": "pending-exact-head-ci"
+      },
+      "unresolved_decisions": [
+        "Task-specific clinical encoder training hyperparameters remain a P08 preregistration item.",
+        "Structured-output decoding grammar and generation budget remain a P08 preregistration item.",
+        "Jev inclusion remains blocked on reproducible access and terms."
+      ],
+      "version": 1
+    }
+  }
+}
