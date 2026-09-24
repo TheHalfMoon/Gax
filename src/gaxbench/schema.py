@@ -19,6 +19,12 @@ class Action(StrictModel):
     description: str = Field(min_length=1)
     metadata: dict[str, JsonValue] = Field(default_factory=dict)
 
+    @field_validator("metadata")
+    @classmethod
+    def validate_metadata(cls, value: dict[str, JsonValue]) -> dict[str, JsonValue]:
+        _validate_strict_json(value, "action.metadata")
+        return value
+
 
 class Evidence(StrictModel):
     id: str = Field(min_length=1)
@@ -26,6 +32,13 @@ class Evidence(StrictModel):
     text: str | None = None
     structured: JsonValue | None = None
     source_ref: str | None = None
+
+    @field_validator("structured")
+    @classmethod
+    def validate_structured(cls, value: JsonValue | None) -> JsonValue | None:
+        if value is not None:
+            _validate_strict_json(value, "evidence.structured")
+        return value
 
     @model_validator(mode="after")
     def require_content(self) -> Evidence:
@@ -89,11 +102,7 @@ class BenchmarkItem(StrictModel):
                         "gold action_probabilities keys must exactly match the item action ids"
                     )
 
-        # Reject Python values that are not safe in strict JSON research artifacts.
-        try:
-            json.dumps(self.state, allow_nan=False, sort_keys=True)
-        except (TypeError, ValueError) as exc:
-            raise ValueError("state must be strict JSON without NaN/Infinity") from exc
+        _validate_strict_json(self.state, "state")
         return self
 
 
@@ -109,6 +118,12 @@ class Prediction(StrictModel):
     @classmethod
     def validate_probabilities(cls, value: dict[str, float]) -> dict[str, float]:
         _validate_probability_distribution(value, "prediction.probabilities")
+        return value
+
+    @field_validator("metadata")
+    @classmethod
+    def validate_metadata(cls, value: dict[str, JsonValue]) -> dict[str, JsonValue]:
+        _validate_strict_json(value, "prediction.metadata")
         return value
 
     @field_validator("evidence_support", "information_sufficiency")
@@ -141,6 +156,13 @@ def validate_prediction_against_item(item: BenchmarkItem, prediction: Prediction
         missing = sorted(action_ids - set(prediction.probabilities))
         extra = sorted(set(prediction.probabilities) - action_ids)
         raise ValueError(f"prediction action keys mismatch: missing={missing}, extra={extra}")
+
+
+def _validate_strict_json(value: object, name: str) -> None:
+    try:
+        json.dumps(value, allow_nan=False, sort_keys=True)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"{name} must be strict JSON without NaN/Infinity") from exc
 
 
 def _validate_probability_distribution(value: dict[str, float], name: str) -> None:
