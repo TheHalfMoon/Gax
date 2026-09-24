@@ -29,13 +29,19 @@
 
 ## P02 — Baseline harness
 
-- [ ] Clinical encoder baseline
-- [ ] CLM adapter/qualification
-- [ ] Laya adapter/qualification
-- [ ] decider adapter/qualification
-- [ ] restricted-logit baseline
-- [ ] open structured-output LLM baseline
 - [x] evidence-packet runner
+- [x] Shared TypeSafe HTTP external transport
+- [x] Shell-free JSON command external transport
+- [x] CLM source/license/protocol adapter qualification
+- [x] Laya source/license/protocol adapter qualification
+- [x] decider source/license/protocol adapter qualification
+- [x] restricted-logit source/license freeze and canonical transport path
+- [ ] Clinical encoder baseline real-model qualification
+- [ ] CLM real-model qualification
+- [ ] Laya real-model qualification
+- [ ] decider real-model qualification
+- [ ] restricted-logit real-model qualification
+- [ ] open structured-output LLM baseline real-model qualification
 
 ## P03 — GAX v0
 
