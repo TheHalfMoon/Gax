@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "SG-000004",
   "title": "GAX-P02 - External transport adapters and upstream revision freeze",
-  "state": "GRAIN",
+  "state": "PROVEN",
   "method": "research-infrastructure",
   "parent_id": null,
   "dependencies": [
@@ -106,7 +106,7 @@
           "Never equate transport qualification with real-model benchmark qualification.",
           "Any probability transport correction must be bounded, deterministic, and explicitly recorded."
         ],
-        "status": "implementation-pending-exact-head-ci"
+        "status": "qualified-and-merged"
       },
       "unresolved_decisions": [
         "Immutable Hugging Face model/tokenizer revisions are frozen only at each real-model qualification run.",
@@ -114,6 +114,25 @@
         "Jev remains blocked unless reproducible evaluation access and terms permit matched measurement."
       ],
       "version": 1
+    },
+    "closeout": {
+      "implementation_pr": 10,
+      "implementation_head_sha": "955ff768a78a274aa5b1e609f6c49f58d8c26165",
+      "exact_head_ci_run": 36034345889,
+      "exact_head_ci_conclusion": "success",
+      "exact_head_pytest": "50 passed on Ubuntu 3.11/3.12 and Windows 3.11/3.12",
+      "merge_sha": "a2bc312a96d8df6413678038436a49a8c09e622a",
+      "post_merge_ci_run": 36034544718,
+      "post_merge_ci_conclusion": "success",
+      "verification": [
+        "TypeSafe HTTP transport passed cross-platform offline qualification",
+        "JSON command transport passed cross-platform offline qualification",
+        "gold and evidence.relation labels are excluded from model-visible rendering",
+        "probability transport rounding is bounded and recorded",
+        "CLM, Laya, decider, and open-alternative-jev public source revisions and Apache-2.0 source licenses are frozen",
+        "adapter-qualified remains explicitly distinct from real-model-qualified",
+        "no external model benchmark result, GAX training artifact, PHI, or clinical-performance claim was introduced"
+      ]
     }
   }
 }
