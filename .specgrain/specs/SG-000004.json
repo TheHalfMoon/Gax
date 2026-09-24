@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "id": "SG-000004",
+  "title": "GAX-P02 - External transport adapters and upstream revision freeze",
+  "state": "GRAIN",
+  "method": "research-infrastructure",
+  "parent_id": null,
+  "dependencies": [
+    "SG-000003"
+  ],
+  "labels": [
+    "baseline",
+    "external-adapter",
+    "p02",
+    "reproducibility"
+  ],
+  "outcome": "Add fail-closed external baseline transports that preserve the GAXBench metric, provenance, and no-label-leakage contracts while freezing public upstream source revisions and licenses.",
+  "rationale": "The paper needs external baselines, but importing every heavy model runtime into GAX would make comparison mechanics platform-specific and difficult to reproduce. A shared TypeSafe HTTP transport plus a shell-free JSON command boundary lets open baselines run in their native environments while GAX retains identical item rendering, failure accounting, metrics, and evidence packets.",
+  "scope_in": [
+    "TypeSafe-compatible POST /v1/systemone transport for CLM, Laya, and decider class baselines",
+    "Shell-free JSON command transport for external baselines without the shared HTTP protocol",
+    "Model-visible rendering that excludes gold labels and evidence relation annotations",
+    "Fail-closed action-key and probability validation",
+    "Declared transport-only normalization for four-decimal probability serialization",
+    "Environment-variable secret reference without secret values in CLI evidence",
+    "Exact public source revision and Apache-2.0 license freeze for CLM, Laya, decider, and open-alternative-jev",
+    "Offline deterministic transport tests and CLI evidence-packet integration"
+  ],
+  "scope_out": [
+    "No real external model benchmark result",
+    "No claim that adapter-qualified means model-qualified",
+    "No GAX model implementation or training",
+    "No clinical dataset ingestion",
+    "No PHI",
+    "No paid founder cloud compute",
+    "No Jev black-box access claim",
+    "No headline performance or safety claim"
+  ],
+  "acceptance": [
+    "External model rendering never exposes gold fields or evidence.relation annotations",
+    "TypeSafe HTTP requests use one Choice question with exactly the caller-provided action IDs and descriptions",
+    "HTTP adapter requires exact action-key equality and rejects malformed or materially unnormalized distributions",
+    "Only rounding error explainable by four-decimal per-action serialization may be renormalized, and the correction is recorded in prediction metadata",
+    "HTTP API credentials are read by environment-variable name so secret values do not enter evidence-packet command lines",
+    "JSON command adapter executes argv without a shell, enforces timeout and output bounds, and surfaces non-zero exits",
+    "CLM source is frozen at 7956937c58ed5839c06ddc4dc6b6b61c3a3e4094 with Apache-2.0 source license",
+    "Laya source is frozen at 3c68ca2ccf6a83640ab80c20379503fe72c772fd with Apache-2.0 source license",
+    "decider source is frozen at 5f91c011f05fa4b685f0845281a0805a56eb0169 with Apache-2.0 source license",
+    "open-alternative-jev source is frozen at 4a85df1831b537343c9e133b5150fa3a3b1ce98e with Apache-2.0 source license",
+    "Registry distinguishes adapter-qualified from real-model qualification and retains explicit pending reasons",
+    "Exact-head CI runs Ruff, mypy strict, pytest, and compileall on Python 3.11/3.12 across Linux and Windows",
+    "SG-000004 introduces no external benchmark result, GAX training, PHI, or clinical-performance claim"
+  ],
+  "change_surface": [
+    ".specgrain/specs/SG-000004.json",
+    "src/gaxbench/external_adapters.py",
+    "src/gaxbench/cli.py",
+    "src/gaxbench/baseline_registry.py",
+    "src/gaxbench/__init__.py",
+    "registry/baselines.json",
+    "schemas/gaxbench-baseline-registry-v0.1.json",
+    "tests/test_external_adapters.py",
+    "tests/test_cli_baseline.py",
+    "tests/test_baseline_registry.py",
+    "docs/research/P02_EXTERNAL_ADAPTERS.md",
+    "specs/CURRENT.md"
+  ],
+  "children": [],
+  "context": {
+    "budget_tokens": 18000,
+    "estimated_tokens": 14000
+  },
+  "evidence": {
+    "required": [
+      "label-leakage-regression-pass",
+      "typesafe-http-transport-pass",
+      "json-command-transport-pass",
+      "baseline-registry-source-freeze-pass",
+      "linux-python311-ci-pass",
+      "linux-python312-ci-pass",
+      "windows-python311-ci-pass",
+      "windows-python312-ci-pass",
+      "ruff-pass",
+      "mypy-strict-pass",
+      "pytest-pass",
+      "compileall-pass",
+      "implementation-pr-pass",
+      "post-merge-ci-pass",
+      "canonical-closeout-pass"
+    ]
+  },
+  "risk": {
+    "level": "medium",
+    "recovery": "Revert SG-000004 and return to canonical P02 core harness at d04460636515c72b4e095f25683ce59df8174ef4. No model weights, clinical datasets, or GAX training artifacts are affected."
+  },
+  "metadata": {
+    "readiness": {
+      "minimality": {
+        "choice": "shared-external-transports",
+        "rationale": "Three required baselines expose the same TypeSafe System-One HTTP protocol. One rigorously tested transport is smaller and fairer than three bespoke clients; a shell-free command boundary covers non-HTTP runtimes without importing heavy model dependencies."
+      },
+      "safety": {
+        "requirements": [
+          "Never expose gold labels, sufficiency labels, or evidence relation annotations to an external model.",
+          "Never place API-key values in CLI arguments or evidence packets.",
+          "Never equate transport qualification with real-model benchmark qualification.",
+          "Any probability transport correction must be bounded, deterministic, and explicitly recorded."
+        ],
+        "status": "implementation-pending-exact-head-ci"
+      },
+      "unresolved_decisions": [
+        "Immutable Hugging Face model/tokenizer revisions are frozen only at each real-model qualification run.",
+        "The final clinical encoder and structured-output LLM model choices remain unresolved.",
+        "Jev remains blocked unless reproducible evaluation access and terms permit matched measurement."
+      ],
+      "version": 1
+    }
+  }
+}
