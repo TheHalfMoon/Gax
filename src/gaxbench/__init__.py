@@ -5,6 +5,12 @@ from gaxbench.baselines import (
     PredictionFileAdapter,
     UniformBaselineAdapter,
 )
+from gaxbench.external_adapters import (
+    JSONCommandAdapter,
+    TypeSafeHTTPAdapter,
+    TypeSafeHTTPConfig,
+    render_model_state,
+)
 from gaxbench.metrics import (
     AbstentionMetrics,
     ActionMetrics,
@@ -18,6 +24,9 @@ from gaxbench.runner import BaselineRunResult, InferenceFailure, InferenceTiming
 from gaxbench.schema import Action, BenchmarkItem, Evidence, Gold, Prediction, Provenance
 
 __all__ = [
+    "JSONCommandAdapter",
+    "TypeSafeHTTPAdapter",
+    "TypeSafeHTTPConfig",
     "AbstentionMetrics",
     "Action",
     "ActionMetrics",
@@ -38,6 +47,7 @@ __all__ = [
     "evaluate_abstention",
     "evaluate_action_predictions",
     "expected_calibration_error",
+    "render_model_state",
     "risk_coverage_curve",
     "run_baseline",
 ]

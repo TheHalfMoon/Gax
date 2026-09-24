@@ -23,6 +23,17 @@ def test_repository_baseline_registry_is_valid() -> None:
     assert jev.qualification_status == "blocked"
     assert jev.reason
 
+    qualified = {
+        entry.id: entry
+        for entry in registry.entries
+        if entry.qualification_status == "adapter-qualified"
+    }
+    assert {"clm", "laya", "decider"} <= set(qualified)
+    for entry in qualified.values():
+        assert entry.source_revision
+        assert entry.license == "Apache-2.0"
+        assert entry.reason
+
 
 def test_conditional_registry_entry_requires_reason() -> None:
     with pytest.raises(ValidationError, match="require a reason"):

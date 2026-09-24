@@ -14,6 +14,11 @@ from gaxbench.baselines import (
     UniformBaselineAdapter,
 )
 from gaxbench.evidence_packet import write_evidence_packet
+from gaxbench.external_adapters import (
+    JSONCommandAdapter,
+    TypeSafeHTTPAdapter,
+    TypeSafeHTTPConfig,
+)
 from gaxbench.io import load_items, load_predictions
 from gaxbench.metrics import evaluate_abstention, evaluate_action_predictions
 from gaxbench.runner import run_baseline
@@ -39,7 +44,13 @@ def build_parser() -> argparse.ArgumentParser:
     baseline.add_argument(
         "--adapter",
         required=True,
-        choices=["uniform", "lexicographic", "prediction-file"],
+        choices=[
+            "uniform",
+            "lexicographic",
+            "prediction-file",
+            "typesafe-http",
+            "json-command",
+        ],
     )
     baseline.add_argument("--prediction-file")
     baseline.add_argument("--adapter-name", default="external-predictions")
@@ -48,6 +59,11 @@ def build_parser() -> argparse.ArgumentParser:
     baseline.add_argument("--model-revision")
     baseline.add_argument("--tokenizer-revision")
     baseline.add_argument("--source-revision")
+    baseline.add_argument("--base-url")
+    baseline.add_argument("--api-key-env")
+    baseline.add_argument("--timeout-seconds", type=float, default=300.0)
+    baseline.add_argument("--command-json")
+    baseline.add_argument("--deterministic", action="store_true")
     baseline.add_argument("--output-dir", required=True)
     baseline.add_argument("--repo-revision", required=True)
     baseline.add_argument("--dirty-tree", action="store_true")
@@ -142,9 +158,60 @@ def _build_baseline_adapter(
             tokenizer_revision=args.tokenizer_revision,
             source_revision=args.source_revision,
         )
+    elif args.adapter == "typesafe-http":
+        if args.base_url is None:
+            parser.error("--base-url is required for --adapter typesafe-http")
+        if args.source_revision is None:
+            parser.error("--source-revision is required for --adapter typesafe-http")
+        adapter = TypeSafeHTTPAdapter(
+            name=args.adapter_name,
+            adapter_version=args.adapter_version,
+            source_revision=args.source_revision,
+            config=TypeSafeHTTPConfig(
+                base_url=args.base_url,
+                timeout_seconds=args.timeout_seconds,
+                api_key_env=args.api_key_env,
+            ),
+            model_id=args.model_id,
+            model_revision=args.model_revision,
+            tokenizer_revision=args.tokenizer_revision,
+            deterministic=args.deterministic,
+        )
+    elif args.adapter == "json-command":
+        if args.command_json is None:
+            parser.error("--command-json is required for --adapter json-command")
+        if args.source_revision is None:
+            parser.error("--source-revision is required for --adapter json-command")
+        command = _parse_command_json(parser, args.command_json)
+        adapter = JSONCommandAdapter(
+            command,
+            name=args.adapter_name,
+            adapter_version=args.adapter_version,
+            source_revision=args.source_revision,
+            model_id=args.model_id,
+            model_revision=args.model_revision,
+            tokenizer_revision=args.tokenizer_revision,
+            deterministic=args.deterministic,
+            timeout_seconds=args.timeout_seconds,
+        )
     else:
         raise AssertionError(f"unhandled adapter: {args.adapter}")
     return adapter
+
+
+def _parse_command_json(
+    parser: argparse.ArgumentParser,
+    raw: str,
+) -> list[str]:
+    try:
+        value = json.loads(raw)
+    except json.JSONDecodeError:
+        parser.error("--command-json must be a JSON array of argv strings")
+    if not isinstance(value, list) or not value or not all(
+        isinstance(part, str) and part for part in value
+    ):
+        parser.error("--command-json must be a non-empty JSON array of non-empty strings")
+    return [str(part) for part in value]
 
 
 if __name__ == "__main__":

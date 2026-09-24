@@ -41,6 +41,7 @@
         "qualification_status": {
           "enum": [
             "qualified-offline",
+            "adapter-qualified",
             "planned",
             "external-pending",
             "blocked"

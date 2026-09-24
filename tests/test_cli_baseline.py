@@ -55,3 +55,45 @@ def test_cli_baseline_registry_smoke() -> None:
     payload = json.loads(completed.stdout)
     ids = {entry["id"] for entry in payload["entries"]}
     assert {"clm", "laya", "decider", "jev"} <= ids
+
+
+
+def test_cli_json_command_adapter_writes_packet(tmp_path: Path) -> None:
+    output = tmp_path / "external-packet"
+    script = (
+        "import json,sys; "
+        "r=json.loads(sys.stdin.read()); "
+        "a=r['actions']; p=1.0/len(a); "
+        "print(json.dumps({'item_id':r['item_id'],"
+        "'probabilities':{x['id']:p for x in a}}))"
+    )
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "gaxbench.cli",
+            "baseline-run",
+            "--items",
+            str(FIXTURES / "items.jsonl"),
+            "--adapter",
+            "json-command",
+            "--command-json",
+            json.dumps([sys.executable, "-c", script]),
+            "--adapter-name",
+            "synthetic-external",
+            "--source-revision",
+            "source-sha",
+            "--deterministic",
+            "--output-dir",
+            str(output),
+            "--repo-revision",
+            "test-sha",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    manifest = json.loads(completed.stdout)
+    assert manifest["adapter"]["name"] == "synthetic-external"
+    assert manifest["adapter"]["source_revision"] == "source-sha"
+    assert manifest["counts"] == {"requested": 3, "completed": 3, "failed": 0}
