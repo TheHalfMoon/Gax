@@ -173,16 +173,19 @@ gaxbench evaluate \
 
 The CLI writes deterministic JSON metrics to stdout.
 
+Exact cross-split leakage auditing is also exposed directly:
+
+```bash
+gaxbench audit --items tests/fixtures/items.jsonl
+```
+
+The audit reports duplicate item IDs and exact cross-split collisions in source IDs, canonical input fingerprints, and counterfactual groups. It intentionally does not claim semantic near-duplicate detection.
+
 ## Qualification
 
-Local pre-upload qualification:
+Historical local smoke checks were used while authoring, but they are not merge evidence because the branch continued to evolve afterward.
 
-- 13/13 pytest tests passed;
-- `compileall` passed;
-- no Python source line exceeded 100 characters;
-- Ruff and mypy were not available in the local runtime and therefore were not claimed.
-
-Exact-head GitHub CI must independently run:
+**Exact-head GitHub CI is authoritative** and must run:
 
 - Ruff;
 - mypy strict;
