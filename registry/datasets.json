@@ -9,7 +9,7 @@
       "license": "CC0-1.0",
       "redistribution": "permitted",
       "access_requirements": null,
-      "contains_clinical_text": true,
+      "contains_clinical_text": false,
       "contains_phi": false,
       "patient_or_entity_key": "source_id",
       "intended_uses": [
