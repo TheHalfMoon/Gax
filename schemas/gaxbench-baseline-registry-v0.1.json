@@ -1,0 +1,125 @@
+{
+  "$defs": {
+    "BaselineRegistryEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "access_status": {
+          "enum": [
+            "available",
+            "conditional",
+            "unavailable",
+            "unknown"
+          ],
+          "title": "Access Status",
+          "type": "string"
+        },
+        "baseline_class": {
+          "minLength": 1,
+          "title": "Baseline Class",
+          "type": "string"
+        },
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "intended_role": {
+          "minLength": 1,
+          "title": "Intended Role",
+          "type": "string"
+        },
+        "license": {
+          "minLength": 1,
+          "title": "License",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "qualification_status": {
+          "enum": [
+            "qualified-offline",
+            "planned",
+            "external-pending",
+            "blocked"
+          ],
+          "title": "Qualification Status",
+          "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "source_revision": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Revision"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Url"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "baseline_class",
+        "license",
+        "access_status",
+        "qualification_status",
+        "intended_role"
+      ],
+      "title": "BaselineRegistryEntry",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "entries": {
+      "items": {
+        "$ref": "#/$defs/BaselineRegistryEntry"
+      },
+      "title": "Entries",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "0.1",
+      "default": "0.1",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "entries"
+  ],
+  "title": "BaselineRegistry",
+  "type": "object"
+}

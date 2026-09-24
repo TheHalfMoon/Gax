@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "id": "SG-000003",
+  "title": "GAX-P02 - Matched baseline harness and evidence-packet contract",
+  "state": "GRAIN",
+  "method": "research-infrastructure",
+  "parent_id": null,
+  "dependencies": [
+    "SG-000002"
+  ],
+  "labels": [
+    "baseline",
+    "research-infrastructure",
+    "p02"
+  ],
+  "outcome": "Create a model-agnostic baseline harness that runs typed-decision adapters under one failure, metric, timing, and provenance contract before GAX model training begins.",
+  "rationale": "The paper requires fair matched comparisons. Without a shared adapter and evidence-packet layer, each baseline can silently differ in candidate actions, denominators, calibration, truncation, timing, or failure handling. P02 freezes those comparison semantics before GAX v0.",
+  "scope_in": [
+    "Typed adapter protocol and immutable adapter identity",
+    "Deterministic offline control baselines",
+    "Prediction-file adapter for externally produced typed outputs",
+    "Per-item success/failure accounting with no silent drops",
+    "Evidence-packet manifests binding revisions, commands, datasets, hardware metadata, predictions, metrics, failures, and timings",
+    "Deterministic CLI runner",
+    "External baseline registry with explicit availability and qualification state",
+    "Linux/Windows CI for the offline harness"
+  ],
+  "scope_out": [
+    "No GAX model implementation or training",
+    "No real clinical dataset ingestion",
+    "No clinical or benchmark superiority claim",
+    "No paid founder cloud compute",
+    "No PHI",
+    "No fabricated external baseline results",
+    "No automatic substitution of unavailable baseline implementations"
+  ],
+  "acceptance": [
+    "Adapter protocol exposes immutable identity, deterministic-mode declaration, exact item-to-prediction mapping, and typed probabilities",
+    "Runner records every requested item as success or failure and never evaluates an incomplete prediction set as though complete",
+    "Uniform and lexicographic deterministic controls produce reproducible typed predictions without model downloads",
+    "Prediction-file adapter verifies item IDs, action keys, probability distributions, and immutable file digest",
+    "Evidence packet records repository revision, adapter identity, benchmark file digests, command/config, seed, calibration revision, runtime metadata, counts, raw predictions where allowed, failures, timings, and P01 metrics",
+    "Packet metrics are generated only when every requested labeled item completed successfully",
+    "Timing data distinguishes adapter execution from evaluation/serialization and does not claim cross-hardware superiority",
+    "External baseline registry records CLM, Laya, decider, restricted-logit, structured-output LLM, clinical encoder, and Jev access/qualification states without invented results",
+    "CLI can run the deterministic offline suite end to end and write a reproducible evidence packet",
+    "Unit tests cover malformed predictions, duplicate/missing outputs, adapter failures, prediction-file mutation, deterministic controls, packet hashing, and CLI execution",
+    "Exact-head CI runs Ruff, mypy strict, pytest, and compileall on Python 3.11/3.12 across Linux and Windows",
+    "P02 introduces no GAX training, clinical dataset, PHI, or performance claim"
+  ],
+  "change_surface": [
+    ".specgrain/specs/SG-000003.json",
+    "src/gaxbench/baselines.py",
+    "src/gaxbench/runner.py",
+    "src/gaxbench/evidence_packet.py",
+    "src/gaxbench/cli.py",
+    "src/gaxbench/__init__.py",
+    "registry/baselines.json",
+    "schemas/gaxbench-baseline-registry-v0.1.json",
+    "tests",
+    "docs/research/P02_BASELINE_HARNESS.md",
+    "specs/CURRENT.md",
+    "specs/tasks.md"
+  ],
+  "children": [],
+  "context": {
+    "budget_tokens": 20000,
+    "estimated_tokens": 16000
+  },
+  "evidence": {
+    "required": [
+      "deterministic-offline-suite-pass",
+      "packet-reproducibility-pass",
+      "external-baseline-registry-pass",
+      "linux-python311-ci-pass",
+      "linux-python312-ci-pass",
+      "windows-python311-ci-pass",
+      "windows-python312-ci-pass",
+      "ruff-pass",
+      "mypy-strict-pass",
+      "pytest-pass",
+      "compileall-pass",
+      "implementation-pr-pass",
+      "post-merge-ci-pass",
+      "canonical-closeout-pass"
+    ]
+  },
+  "risk": {
+    "level": "medium",
+    "recovery": "Revert P02 files and return to canonical P01 at d9b27c8d302bd5af498b7a1b1ccdbac04f0e28c7. No GAX weights, model training, or clinical datasets are affected."
+  },
+  "metadata": {
+    "readiness": {
+      "minimality": {
+        "choice": "adapter-and-packet-kernel",
+        "rationale": "The minimum defensible P02 is a deterministic adapter protocol, failure-safe runner, evidence-packet writer, baseline registry, and offline controls before any network/model-specific baseline is trusted."
+      },
+      "safety": {
+        "requirements": [
+          "No clinical dataset or PHI enters P02.",
+          "Failed inference must remain visible and must block complete-run metrics.",
+          "External baseline availability must be stated explicitly instead of inferring or fabricating results.",
+          "Timing claims require matched hardware and protocol."
+        ],
+        "status": "implementation-authorized-after-p01-canonical"
+      },
+      "unresolved_decisions": [
+        "Exact external model revisions are frozen only when each upstream baseline is qualified.",
+        "Jev remains optional if reproducible evaluation access or terms do not permit matched measurement.",
+        "The final structured-output LLM baseline is selected at experiment freeze."
+      ],
+      "version": 1
+    }
+  }
+}
