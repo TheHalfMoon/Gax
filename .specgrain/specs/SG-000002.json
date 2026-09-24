@@ -10,9 +10,9 @@
     "SHA-256 provenance helpers build deterministic relative-path manifests and detect file mutation",
     "Versioned JSON Schema snapshots match the live Pydantic schemas under tests",
     "Synthetic smoke fixtures contain no real patient data or PHI",
-    "Local qualification records 13/13 pytest PASS plus compileall PASS with no Python source line over 100 characters",
     "Exact-head GitHub CI runs Ruff, mypy strict, pytest, and compileall on Python 3.11/3.12 across Linux and Windows",
-    "P01 introduces no model training, clinical dataset ingestion, or performance claim"
+    "P01 introduces no model training, clinical dataset ingestion, or performance claim",
+    "Exact-head qualification is authoritative; stale local test counts must not be used as merge or paper evidence"
   ],
   "change_surface": [
     ".specgrain/specs/SG-000002.json",
@@ -36,9 +36,6 @@
   ],
   "evidence": {
     "required": [
-      "local-pytest-13-pass",
-      "local-compileall-pass",
-      "local-line-length-screen-pass",
       "schema-snapshot-pass",
       "linux-python311-ci-pass",
       "linux-python312-ci-pass",
@@ -71,7 +68,7 @@
           "Evaluation must fail on denominator-changing mismatches rather than silently drop records.",
           "No clinical or performance claim may be inferred from the synthetic smoke fixture."
         ],
-        "status": "implementation-qualified-locally"
+        "status": "implementation-pending-exact-head-ci"
       },
       "unresolved_decisions": [
         "Evidence AUROC/AUPRC and bootstrap confidence intervals remain for later grains.",
