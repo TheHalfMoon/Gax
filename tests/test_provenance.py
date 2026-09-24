@@ -24,3 +24,26 @@ def test_manifest_detects_mutation(tmp_path: Path) -> None:
     problems = verify_file_manifest(manifest, root=tmp_path)
     assert len(problems) == 1
     assert problems[0].startswith("sha256:a.txt:")
+
+
+def test_manifest_rejects_duplicate_input_paths(tmp_path: Path) -> None:
+    target = tmp_path / "a.txt"
+    target.write_text("alpha\n", encoding="utf-8")
+    try:
+        build_file_manifest([target, target], root=tmp_path)
+    except ValueError as exc:
+        assert "duplicate manifest path" in str(exc)
+    else:
+        raise AssertionError("duplicate manifest input must fail")
+
+
+def test_manifest_verification_rejects_path_escape(tmp_path: Path) -> None:
+    problems = verify_file_manifest({"../outside.txt": "0" * 64}, root=tmp_path)
+    assert problems == ["unsafe-path:../outside.txt"]
+
+
+def test_manifest_verification_rejects_invalid_digest(tmp_path: Path) -> None:
+    target = tmp_path / "a.txt"
+    target.write_text("alpha\n", encoding="utf-8")
+    problems = verify_file_manifest({"a.txt": "not-a-sha"}, root=tmp_path)
+    assert problems == ["invalid-sha256:a.txt:not-a-sha"]
