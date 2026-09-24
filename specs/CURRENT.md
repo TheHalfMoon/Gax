@@ -22,6 +22,8 @@ Active frontier:
 
 **P02 — External Baseline Adapters and Qualification**
 
+Active implementation grain: **SG-000004 — External transport adapters and upstream revision freeze**.
+
 The core adapter/runner/evidence-packet machinery is canonical. The remaining P02 work is to implement and qualify the required external baseline classes without changing benchmark semantics:
 
 - clinical encoder;
