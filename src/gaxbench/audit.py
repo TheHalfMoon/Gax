@@ -64,10 +64,15 @@ def audit_split_integrity(items: Sequence[BenchmarkItem]) -> AuditReport:
 
 def _input_fingerprint(item: BenchmarkItem) -> str:
     payload = {
-        "task_family": item.task_family,
         "state": item.state,
-        "actions": [action.model_dump(mode="json") for action in item.actions],
-        "evidence": [evidence.model_dump(mode="json") for evidence in item.evidence],
+        "actions": [
+            action.model_dump(mode="json")
+            for action in sorted(item.actions, key=lambda candidate: candidate.id)
+        ],
+        "evidence": [
+            evidence.model_dump(mode="json")
+            for evidence in sorted(item.evidence, key=lambda candidate: candidate.id)
+        ],
     }
     return canonical_json_sha256(payload)
 
