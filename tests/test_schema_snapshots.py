@@ -19,3 +19,12 @@ def test_prediction_json_schema_snapshot_matches_model() -> None:
         (ROOT / "schemas" / "gaxbench-prediction-v0.1.json").read_text(encoding="utf-8")
     )
     assert expected == Prediction.model_json_schema()
+
+
+def test_dataset_registry_json_schema_snapshot_matches_model() -> None:
+    from gaxbench.registry import DatasetRegistry
+
+    expected = json.loads(
+        (ROOT / "schemas" / "gaxbench-dataset-registry-v0.1.json").read_text(encoding="utf-8")
+    )
+    assert expected == DatasetRegistry.model_json_schema()
