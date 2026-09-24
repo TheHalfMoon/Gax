@@ -1,0 +1,186 @@
+{
+  "$defs": {
+    "DatasetRegistryEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "access_requirements": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Access Requirements"
+        },
+        "contains_clinical_text": {
+          "title": "Contains Clinical Text",
+          "type": "boolean"
+        },
+        "contains_phi": {
+          "title": "Contains Phi",
+          "type": "boolean"
+        },
+        "derived_artifacts": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Derived Artifacts",
+          "type": "array"
+        },
+        "forbidden_uses": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Forbidden Uses",
+          "type": "array"
+        },
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "intended_uses": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Intended Uses",
+          "type": "array"
+        },
+        "license": {
+          "minLength": 1,
+          "title": "License",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "patient_or_entity_key": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Patient Or Entity Key"
+        },
+        "redistribution": {
+          "enum": [
+            "permitted",
+            "restricted",
+            "prohibited",
+            "unknown"
+          ],
+          "title": "Redistribution",
+          "type": "string"
+        },
+        "review_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Review Date"
+        },
+        "review_status": {
+          "default": "pending",
+          "enum": [
+            "pending",
+            "approved",
+            "rejected"
+          ],
+          "title": "Review Status",
+          "type": "string"
+        },
+        "reviewer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reviewer"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Url"
+        },
+        "split_strategy": {
+          "minLength": 1,
+          "title": "Split Strategy",
+          "type": "string"
+        },
+        "transforms": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Transforms",
+          "type": "array"
+        },
+        "upstream_revision": {
+          "minLength": 1,
+          "title": "Upstream Revision",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "upstream_revision",
+        "license",
+        "redistribution",
+        "contains_clinical_text",
+        "contains_phi",
+        "split_strategy"
+      ],
+      "title": "DatasetRegistryEntry",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "entries": {
+      "items": {
+        "$ref": "#/$defs/DatasetRegistryEntry"
+      },
+      "title": "Entries",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "0.1",
+      "default": "0.1",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "entries"
+  ],
+  "title": "DatasetRegistry",
+  "type": "object"
+}
