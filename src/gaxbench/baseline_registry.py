@@ -9,6 +9,7 @@ from pydantic import BaseModel, ConfigDict, Field, HttpUrl, model_validator
 AccessStatus = Literal["available", "conditional", "unavailable", "unknown"]
 QualificationStatus = Literal[
     "qualified-offline",
+    "adapter-qualified",
     "planned",
     "external-pending",
     "blocked",
