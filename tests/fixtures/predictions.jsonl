@@ -1,0 +1,3 @@
+{"abstain":false,"evidence_support":null,"information_sufficiency":0.95,"item_id":"case-1","metadata":{},"probabilities":{"routine":0.05,"urgent":0.95}}
+{"abstain":false,"evidence_support":null,"information_sufficiency":0.90,"item_id":"case-2","metadata":{},"probabilities":{"routine":0.90,"urgent":0.10}}
+{"abstain":true,"evidence_support":null,"information_sufficiency":0.10,"item_id":"case-3","metadata":{},"probabilities":{"routine":0.60,"urgent":0.40}}
