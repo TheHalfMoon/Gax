@@ -49,13 +49,10 @@ def test_item_is_immutable() -> None:
 
 
 def test_item_rejects_nonfinite_state() -> None:
+    payload = item().model_dump(mode="python")
+    payload["state"] = {"value": float("nan")}
     with pytest.raises(ValidationError, match="strict JSON"):
-        item().model_copy(update={"state": {"value": float("nan")}}).model_validate(
-            {
-                **item().model_dump(mode="python"),
-                "state": {"value": float("nan")},
-            }
-        )
+        BenchmarkItem.model_validate(payload)
 
 
 def test_action_metadata_rejects_nonfinite_json() -> None:
