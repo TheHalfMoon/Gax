@@ -80,7 +80,7 @@ Founder-paid cloud compute is out of scope. Smoke tests and tutorials should run
 
 ## Status
 
-**P00 — Research foundation.** No model implementation or performance claim is authorized until the foundation grain is reviewed and merged.
+**P01 — Benchmark kernel in active implementation.** P00 is canonical. Model training and performance claims remain out of scope until the benchmark/baseline foundations advance through their governed gates.
 
 ## License
 
