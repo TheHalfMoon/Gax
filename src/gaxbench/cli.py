@@ -211,7 +211,7 @@ def _parse_command_json(
         isinstance(part, str) and part for part in value
     ):
         parser.error("--command-json must be a non-empty JSON array of non-empty strings")
-    return value
+    return [str(part) for part in value]
 
 
 if __name__ == "__main__":
