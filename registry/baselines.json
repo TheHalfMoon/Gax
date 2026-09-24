@@ -42,11 +42,11 @@
       "name": "Contrastive Language Models",
       "baseline_class": "contrastive-state-action",
       "source_url": "https://github.com/Contrastive-LM/CLM",
-      "source_revision": null,
-      "license": "upstream-license-review-required",
+      "source_revision": "7956937c58ed5839c06ddc4dc6b6b61c3a3e4094",
+      "license": "Apache-2.0",
       "access_status": "available",
-      "qualification_status": "external-pending",
-      "reason": null,
+      "qualification_status": "adapter-qualified",
+      "reason": "TypeSafe /v1/systemone transport is qualified offline in GAX; real CLM model execution remains pending a zero-founder-cost Linux NVIDIA runtime.",
       "intended_role": "General contrastive state-action baseline; exact revision and license frozen at qualification"
     },
     {
@@ -54,11 +54,11 @@
       "name": "Laya",
       "baseline_class": "encoder-typed-decision",
       "source_url": "https://github.com/NandhaKishorM/laya",
-      "source_revision": null,
-      "license": "upstream-license-review-required",
+      "source_revision": "3c68ca2ccf6a83640ab80c20379503fe72c772fd",
+      "license": "Apache-2.0",
       "access_status": "available",
-      "qualification_status": "external-pending",
-      "reason": null,
+      "qualification_status": "adapter-qualified",
+      "reason": "TypeSafe /v1/systemone transport is qualified offline in GAX; real Laya checkpoint execution remains pending an immutable model revision and zero-founder-cost run.",
       "intended_role": "Open compact typed-decision baseline; exact revision frozen at qualification"
     },
     {
@@ -66,11 +66,11 @@
       "name": "decider",
       "baseline_class": "one-pass-typed-decision",
       "source_url": "https://github.com/Mapika/decider",
-      "source_revision": null,
-      "license": "upstream-license-review-required",
+      "source_revision": "5f91c011f05fa4b685f0845281a0805a56eb0169",
+      "license": "Apache-2.0",
       "access_status": "available",
-      "qualification_status": "external-pending",
-      "reason": null,
+      "qualification_status": "adapter-qualified",
+      "reason": "TypeSafe /v1/systemone transport is qualified offline in GAX; real decider checkpoint execution remains pending an immutable model revision and zero-founder-cost run.",
       "intended_role": "Open one-pass answer-slot baseline; exact revision frozen at qualification"
     },
     {
@@ -78,11 +78,11 @@
       "name": "Open Restricted-Logit Control",
       "baseline_class": "restricted-next-token",
       "source_url": "https://github.com/ikermoel/open-alternative-jev",
-      "source_revision": null,
-      "license": "upstream-license-review-required",
+      "source_revision": "4a85df1831b537343c9e133b5150fa3a3b1ce98e",
+      "license": "Apache-2.0",
       "access_status": "available",
       "qualification_status": "external-pending",
-      "reason": null,
+      "reason": "Upstream source and license are frozen. The project does not expose a TypeSafe HTTP server; use the JSON-command or prediction-file transport after freezing an exact model revision.",
       "intended_role": "No-task-training typed distribution control using restricted next-token probabilities"
     },
     {
