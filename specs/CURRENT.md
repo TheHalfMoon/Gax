@@ -2,14 +2,16 @@
 
 Program: **GAX**
 
-Canonical main at foundation start: `99d7ac81972aeabc39f0fe5104e422fb46a2a57d`
+P00 foundation merge: `88965a1fd5065084978159d7b60862da3ea89195` (PR #2)
 
-Active grain: **SG-000001 — GAX-P00 Research foundation and publication contract**
+Completed grain: **SG-000001 — GAX-P00 Research foundation and publication contract**
 
-State: **GRAIN / planning branch open**
+State: **PROVEN / P00 CLOSED_CANONICAL after this closeout merge**
 
-Next only after SG-000001 is reviewed and merged:
+Active frontier:
 
-**P01 Benchmark kernel**
+**P01 — Benchmark Kernel**
 
-No model implementation or performance claim is authorized before the P00 foundation exits.
+P01 may implement benchmark schemas, metrics, provenance, synthetic fixtures, split/duplicate audits, and cross-platform tests. GAX model training remains out of scope until the baseline/benchmark foundation advances through its own governed grains.
+
+Research claims remain subject to `docs/research/REPRODUCIBILITY.md`.
