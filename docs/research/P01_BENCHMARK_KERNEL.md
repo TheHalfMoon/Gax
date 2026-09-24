@@ -181,6 +181,8 @@ gaxbench audit --items tests/fixtures/items.jsonl
 
 The audit reports duplicate item IDs and exact cross-split collisions in source IDs, canonical input fingerprints, and counterfactual groups. It intentionally does not claim semantic near-duplicate detection.
 
+The exact-input fingerprint hashes the model-visible state, actions, and evidence. Action and evidence collections are canonicalized by ID so permutation alone cannot hide a collision. Gold labels, provenance metadata, and the bookkeeping `task_family` label are excluded from the fingerprint; source identity is audited separately.
+
 ## Qualification
 
 Historical local smoke checks were used while authoring, but they are not merge evidence because the branch continued to evolve afterward.
