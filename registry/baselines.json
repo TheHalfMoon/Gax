@@ -1,0 +1,125 @@
+{
+  "schema_version": "0.1",
+  "entries": [
+    {
+      "id": "gax-uniform",
+      "name": "GAXBench Uniform Control",
+      "baseline_class": "deterministic-control",
+      "source_url": null,
+      "source_revision": "gax-p02",
+      "license": "Apache-2.0",
+      "access_status": "available",
+      "qualification_status": "qualified-offline",
+      "reason": null,
+      "intended_role": "Chance-like probability control over the exact candidate action set"
+    },
+    {
+      "id": "gax-lexicographic",
+      "name": "GAXBench Lexicographic Control",
+      "baseline_class": "deterministic-control",
+      "source_url": null,
+      "source_revision": "gax-p02",
+      "license": "Apache-2.0",
+      "access_status": "available",
+      "qualification_status": "qualified-offline",
+      "reason": null,
+      "intended_role": "Deterministic structural control for runner and failure-accounting tests"
+    },
+    {
+      "id": "prediction-file",
+      "name": "Typed Prediction File Adapter",
+      "baseline_class": "external-output-adapter",
+      "source_url": null,
+      "source_revision": "gax-p02",
+      "license": "Apache-2.0",
+      "access_status": "available",
+      "qualification_status": "qualified-offline",
+      "reason": null,
+      "intended_role": "Import immutable externally generated typed predictions without changing GAXBench metrics"
+    },
+    {
+      "id": "clm",
+      "name": "Contrastive Language Models",
+      "baseline_class": "contrastive-state-action",
+      "source_url": "https://github.com/Contrastive-LM/CLM",
+      "source_revision": null,
+      "license": "upstream-license-review-required",
+      "access_status": "available",
+      "qualification_status": "external-pending",
+      "reason": null,
+      "intended_role": "General contrastive state-action baseline; exact revision and license frozen at qualification"
+    },
+    {
+      "id": "laya",
+      "name": "Laya",
+      "baseline_class": "encoder-typed-decision",
+      "source_url": "https://github.com/NandhaKishorM/laya",
+      "source_revision": null,
+      "license": "upstream-license-review-required",
+      "access_status": "available",
+      "qualification_status": "external-pending",
+      "reason": null,
+      "intended_role": "Open compact typed-decision baseline; exact revision frozen at qualification"
+    },
+    {
+      "id": "decider",
+      "name": "decider",
+      "baseline_class": "one-pass-typed-decision",
+      "source_url": "https://github.com/Mapika/decider",
+      "source_revision": null,
+      "license": "upstream-license-review-required",
+      "access_status": "available",
+      "qualification_status": "external-pending",
+      "reason": null,
+      "intended_role": "Open one-pass answer-slot baseline; exact revision frozen at qualification"
+    },
+    {
+      "id": "restricted-logit",
+      "name": "Open Restricted-Logit Control",
+      "baseline_class": "restricted-next-token",
+      "source_url": "https://github.com/ikermoel/open-alternative-jev",
+      "source_revision": null,
+      "license": "upstream-license-review-required",
+      "access_status": "available",
+      "qualification_status": "external-pending",
+      "reason": null,
+      "intended_role": "No-task-training typed distribution control using restricted next-token probabilities"
+    },
+    {
+      "id": "clinical-encoder",
+      "name": "Clinical Encoder Baseline",
+      "baseline_class": "clinical-encoder-classifier",
+      "source_url": null,
+      "source_revision": null,
+      "license": "model-license-review-required",
+      "access_status": "unknown",
+      "qualification_status": "planned",
+      "reason": null,
+      "intended_role": "Matched discriminative clinical encoder baseline selected after license/revision freeze"
+    },
+    {
+      "id": "structured-output-llm",
+      "name": "Open Structured-Output LLM",
+      "baseline_class": "generative-structured-output",
+      "source_url": null,
+      "source_revision": null,
+      "license": "model-license-review-required",
+      "access_status": "unknown",
+      "qualification_status": "planned",
+      "reason": null,
+      "intended_role": "Strong open generative baseline with parse/failure accounting under the same benchmark contract"
+    },
+    {
+      "id": "jev",
+      "name": "TypeSafe Jev",
+      "baseline_class": "system-one-black-box",
+      "source_url": "https://typesafe.ai",
+      "source_revision": null,
+      "license": "terms-review-required",
+      "access_status": "conditional",
+      "qualification_status": "blocked",
+      "reason": "Include only if reproducible evaluation access and terms permit matched measurement.",
+      "intended_role": "Optional System-One comparison; absence must be reported explicitly if access remains blocked"
+    }
+  ]
+}
