@@ -68,13 +68,30 @@
           "Evaluation must fail on denominator-changing mismatches rather than silently drop records.",
           "No clinical or performance claim may be inferred from the synthetic smoke fixture."
         ],
-        "status": "implementation-pending-exact-head-ci"
+        "status": "qualified-and-merged"
       },
       "unresolved_decisions": [
         "Evidence AUROC/AUPRC and bootstrap confidence intervals remain for later grains.",
         "No model adapter is selected in P01."
       ],
       "version": 1
+    },
+    "closeout": {
+      "implementation_pr": 5,
+      "implementation_head_sha": "fac59d9e2f8e805ec609f744c7bfdc2542de1045",
+      "implementation_ci_run": 36028555988,
+      "implementation_ci_conclusion": "success",
+      "implementation_merge_sha": "fe1fff352d19e769a5f727cb08cfaa524c8b3058",
+      "post_merge_ci_run": 36028945295,
+      "post_merge_ci_conclusion": "success",
+      "qualification": [
+        "Linux Python 3.11 Ruff, mypy strict, pytest, and compileall passed",
+        "Linux Python 3.12 Ruff, mypy strict, pytest, and compileall passed",
+        "Windows Python 3.11 Ruff, mypy strict, pytest, and compileall passed",
+        "Windows Python 3.12 Ruff, mypy strict, pytest, and compileall passed",
+        "Synthetic fixtures contain no PHI and no clinical threshold semantics",
+        "No model training, clinical dataset ingestion, or benchmark performance claim was introduced"
+      ]
     }
   },
   "method": "research",
@@ -103,6 +120,6 @@
     "No benchmark performance claim",
     "No PHI"
   ],
-  "state": "GRAIN",
+  "state": "PROVEN",
   "title": "GAX-P01 - Benchmark kernel and selective-risk metric contract"
 }

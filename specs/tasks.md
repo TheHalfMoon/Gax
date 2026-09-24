@@ -18,14 +18,14 @@
 
 ## P01 — Benchmark kernel
 
-- [ ] Benchmark schema
-- [ ] Metrics implementation
-- [ ] Calibration metrics
-- [ ] Selective-risk metrics
-- [ ] Provenance registry
-- [ ] Synthetic fixtures
-- [ ] Duplicate/split audit
-- [ ] Cross-platform tests
+- [x] Benchmark schema
+- [x] Metrics implementation
+- [x] Calibration metrics
+- [x] Selective-risk metrics
+- [x] Provenance registry
+- [x] Synthetic fixtures
+- [x] Duplicate/split audit
+- [x] Cross-platform tests
 
 ## P02 — Baseline harness
 
