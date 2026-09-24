@@ -1,0 +1,280 @@
+{
+  "$defs": {
+    "Action": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "metadata": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Metadata",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "description"
+      ],
+      "title": "Action",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "relation": {
+          "default": "unknown",
+          "enum": [
+            "support",
+            "contradict",
+            "irrelevant",
+            "unknown"
+          ],
+          "title": "Relation",
+          "type": "string"
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Ref"
+        },
+        "structured": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/JsonValue"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "Gold": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Action"
+        },
+        "action_probabilities": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "number"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Action Probabilities"
+        },
+        "sufficient": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sufficient"
+        }
+      },
+      "title": "Gold",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "access_requirements": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Access Requirements"
+        },
+        "dataset": {
+          "minLength": 1,
+          "title": "Dataset",
+          "type": "string"
+        },
+        "license": {
+          "minLength": 1,
+          "title": "License",
+          "type": "string"
+        },
+        "revision": {
+          "minLength": 1,
+          "title": "Revision",
+          "type": "string"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Url"
+        },
+        "transform_revision": {
+          "minLength": 1,
+          "title": "Transform Revision",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dataset",
+        "revision",
+        "license",
+        "transform_revision"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "actions": {
+      "items": {
+        "$ref": "#/$defs/Action"
+      },
+      "minItems": 1,
+      "title": "Actions",
+      "type": "array"
+    },
+    "counterfactual_group": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Counterfactual Group"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/Evidence"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "gold": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Gold"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "id": {
+      "minLength": 1,
+      "title": "Id",
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "source_id": {
+      "minLength": 1,
+      "title": "Source Id",
+      "type": "string"
+    },
+    "split": {
+      "enum": [
+        "train",
+        "validation",
+        "calibration",
+        "test"
+      ],
+      "title": "Split",
+      "type": "string"
+    },
+    "state": {
+      "$ref": "#/$defs/JsonValue"
+    },
+    "task_family": {
+      "minLength": 1,
+      "title": "Task Family",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "source_id",
+    "split",
+    "task_family",
+    "state",
+    "actions",
+    "provenance"
+  ],
+  "title": "BenchmarkItem",
+  "type": "object"
+}
