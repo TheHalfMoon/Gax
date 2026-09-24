@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "SG-000003",
   "title": "GAX-P02 - Matched baseline harness and evidence-packet contract",
-  "state": "GRAIN",
+  "state": "PROVEN",
   "method": "research-infrastructure",
   "parent_id": null,
   "dependencies": [
@@ -102,7 +102,7 @@
           "External baseline availability must be stated explicitly instead of inferring or fabricating results.",
           "Timing claims require matched hardware and protocol."
         ],
-        "status": "implementation-authorized-after-p01-canonical"
+        "status": "core-harness-qualified-and-merged"
       },
       "unresolved_decisions": [
         "Exact external model revisions are frozen only when each upstream baseline is qualified.",
@@ -110,6 +110,24 @@
         "The final structured-output LLM baseline is selected at experiment freeze."
       ],
       "version": 1
+    },
+    "closeout": {
+      "implementation_pr": 8,
+      "implementation_head_sha": "5e90f5ebad930d3467fb550c8f707c689e594cab",
+      "implementation_ci_run": 36030392516,
+      "implementation_ci_conclusion": "success",
+      "implementation_merge_sha": "31ca7827d230fa2cc9c276b0f0a38e9118b3f4eb",
+      "post_merge_ci_run": 36030695502,
+      "post_merge_ci_conclusion": "success",
+      "qualification": [
+        "Linux Python 3.11 Ruff, mypy strict, pytest, and compileall passed",
+        "Linux Python 3.12 Ruff, mypy strict, pytest, and compileall passed",
+        "Windows Python 3.11 Ruff, mypy strict, pytest, and compileall passed",
+        "Windows Python 3.12 Ruff, mypy strict, pytest, and compileall passed",
+        "Offline controls, failure accounting, registry validation, CLI execution, and evidence packets are covered by tests",
+        "No GAX model training, clinical dataset ingestion, PHI, or external-model performance claim was introduced"
+      ],
+      "note": "This proves the P02 core harness grain only. P02 remains active until external baseline adapter tasks are qualified."
     }
   }
 }

@@ -2,28 +2,37 @@
 
 Program: **GAX**
 
-P00 foundation merge: `88965a1fd5065084978159d7b60862da3ea89195` (PR #2)
-
 Completed grains:
 
 - **SG-000001 — GAX-P00 Research foundation and publication contract** — PROVEN
 - **SG-000002 — GAX-P01 Benchmark kernel and selective-risk metric contract** — PROVEN
+- **SG-000003 — GAX-P02 Core matched baseline harness and evidence-packet contract** — PROVEN
 
-P01 implementation:
+P02 core harness evidence:
 
-- PR #5 exact head: `fac59d9e2f8e805ec609f744c7bfdc2542de1045`
-- exact-head CI: run `36028555988` — SUCCESS
-- merge: `fe1fff352d19e769a5f727cb08cfaa524c8b3058`
-- post-merge CI: run `36028945295` — SUCCESS
+- implementation PR: #8
+- exact head: `5e90f5ebad930d3467fb550c8f707c689e594cab`
+- exact-head CI: run `36030392516` — SUCCESS
+- merge: `31ca7827d230fa2cc9c276b0f0a38e9118b3f4eb`
+- post-merge CI: run `36030695502` — SUCCESS
 
-State: **P01 CLOSED_CANONICAL after this closeout merge**
+State: **P02 ACTIVE**
 
 Active frontier:
 
-**P02 — Matched Baseline Harness**
+**P02 — External Baseline Adapters and Qualification**
 
-P02 may implement the governed adapter protocol, deterministic baseline runner, evidence-packet writer, failure taxonomy, timing protocol, and reproducible baseline adapters defined in Issue #6.
+The core adapter/runner/evidence-packet machinery is canonical. The remaining P02 work is to implement and qualify the required external baseline classes without changing benchmark semantics:
 
-GAX model training remains out of scope until the baseline harness is itself qualified and canonically closed.
+- clinical encoder;
+- CLM;
+- Laya;
+- decider;
+- restricted-logit/open one-pass control;
+- open structured-output LLM.
+
+Jev remains optional and must stay explicitly blocked unless reproducible access and terms permit matched measurement.
+
+GAX v0 model training remains out of scope until the full P02 task set is canonically closed.
 
 Research claims remain subject to `docs/research/REPRODUCIBILITY.md`.

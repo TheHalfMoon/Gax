@@ -35,7 +35,7 @@
 - [ ] decider adapter/qualification
 - [ ] restricted-logit baseline
 - [ ] open structured-output LLM baseline
-- [ ] evidence-packet runner
+- [x] evidence-packet runner
 
 ## P03 — GAX v0
 
