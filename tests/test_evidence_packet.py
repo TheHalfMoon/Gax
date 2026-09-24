@@ -33,7 +33,8 @@ def test_evidence_packet_binds_inputs_metrics_and_files(tmp_path: Path) -> None:
     )
 
     assert manifest["repo_revision"] == "abc123"
-    assert manifest["benchmark"]["sha256"] == sha256_file(items_path)  # type: ignore[index]
+    benchmark = cast(dict[str, str], manifest["benchmark"])
+    assert benchmark["sha256"] == sha256_file(items_path)
     assert manifest["counts"] == {"requested": 3, "completed": 3, "failed": 0}
     files = cast(dict[str, str], manifest["files"])
     assert verify_file_manifest(files, root=tmp_path) == []
