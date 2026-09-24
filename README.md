@@ -80,7 +80,7 @@ Founder-paid cloud compute is out of scope. Smoke tests and tutorials should run
 
 ## Status
 
-**P01 — Benchmark kernel in active implementation.** P00 is canonical. Model training and performance claims remain out of scope until the benchmark/baseline foundations advance through their governed gates.
+**P02 — Matched baseline harness.** P00 and P01 are canonical. GAX model training and performance claims remain out of scope until the baseline harness is qualified and canonically closed.
 
 ## License
 
