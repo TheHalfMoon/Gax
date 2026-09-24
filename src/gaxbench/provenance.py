@@ -27,12 +27,17 @@ def canonical_json_sha256(value: Any) -> str:
 
 def build_file_manifest(paths: list[str | Path], *, root: str | Path) -> dict[str, str]:
     root_path = Path(root).resolve()
-    manifest: dict[str, str] = {}
-    for raw_path in sorted((Path(path).resolve() for path in paths), key=lambda p: p.as_posix()):
+    entries: list[tuple[str, Path]] = []
+    for raw in paths:
+        raw_path = Path(raw).resolve()
         try:
             relative = raw_path.relative_to(root_path).as_posix()
         except ValueError as exc:
             raise ValueError(f"path {raw_path} is outside manifest root {root_path}") from exc
+        entries.append((relative, raw_path))
+
+    manifest: dict[str, str] = {}
+    for relative, raw_path in sorted(entries, key=lambda entry: entry[0]):
         if relative in manifest:
             raise ValueError(f"duplicate manifest path: {relative}")
         manifest[relative] = sha256_file(raw_path)
