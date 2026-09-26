@@ -24,8 +24,8 @@
   "experiment_revision": "synthetic-p08-freeze",
   "p07_closeout": {
     "conclusion": "success",
-    "merge_sha": "2222222222222222222222222222222222222222",
-    "post_main_run_id": 123
+    "merge_sha": "250ffdf6d3c91c030c79fc2835daabe605efef40",
+    "post_main_run_id": 36258521894
   },
   "protocol": {
     "evidence_protocol_revision": "synthetic-evidence-v1",
