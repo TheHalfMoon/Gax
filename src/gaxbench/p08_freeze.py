@@ -9,6 +9,9 @@ from pydantic import Field, field_validator, model_validator
 from gaxbench.provenance import canonical_json_sha256
 from gaxbench.schema import StrictModel
 
+P07_CLOSEOUT_MERGE_SHA = "250ffdf6d3c91c030c79fc2835daabe605efef40"
+P07_CLOSEOUT_POST_MAIN_RUN_ID = 36258521894
+
 Redistribution = Literal["permitted", "restricted", "prohibited", "unknown"]
 SystemRole = Literal["gax", "baseline", "control"]
 QualificationStatus = Literal["qualified", "blocked"]
@@ -33,6 +36,14 @@ class P07CloseoutGate(StrictModel):
     def validate_merge_sha(cls, value: str) -> str:
         _require_git_sha(value, "p07_closeout.merge_sha")
         return value
+
+    @model_validator(mode="after")
+    def validate_canonical_closeout(self) -> P07CloseoutGate:
+        if self.merge_sha != P07_CLOSEOUT_MERGE_SHA:
+            raise ValueError("p07_closeout.merge_sha must equal canonical P07 closeout merge")
+        if self.post_main_run_id != P07_CLOSEOUT_POST_MAIN_RUN_ID:
+            raise ValueError("p07_closeout.post_main_run_id must equal canonical P07 CI run")
+        return self
 
 
 class BenchmarkFreeze(StrictModel):
