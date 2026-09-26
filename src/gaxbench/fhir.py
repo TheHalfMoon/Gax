@@ -151,7 +151,7 @@ def fhir_case_to_benchmark_item(
     *,
     representation: FHIRRepresentation = "canonical-structured",
 ) -> BenchmarkItem:
-    rendered = [
+    rendered: list[JsonValue] = [
         render_fhir_resource(resource, representation=representation)
         for resource in case.resources
     ]
