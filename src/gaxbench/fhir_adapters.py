@@ -78,7 +78,7 @@ def load_external_fhir_export(
 
 
 def external_task_to_case(task: ExternalFHIRTask) -> FHIRDecisionCase:
-    repository, code_license = _source_identity(task.benchmark)
+    repository = _repository_for_benchmark(task.benchmark)
     provenance = Provenance(
         dataset=task.benchmark,
         revision=task.dataset_revision,
@@ -107,7 +107,7 @@ def _expected_revision(benchmark: BenchmarkName) -> str:
     return FHIR_AGENTBENCH_REVISION
 
 
-def _source_identity(benchmark: BenchmarkName) -> tuple[str, str]:
+def _repository_for_benchmark(benchmark: BenchmarkName) -> str:
     if benchmark == "MedAgentBench":
-        return MEDAGENTBENCH_REPOSITORY, MEDAGENTBENCH_CODE_LICENSE
-    return FHIR_AGENTBENCH_REPOSITORY, FHIR_AGENTBENCH_REPOSITORY_LICENSE
+        return MEDAGENTBENCH_REPOSITORY
+    return FHIR_AGENTBENCH_REPOSITORY
