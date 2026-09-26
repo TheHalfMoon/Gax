@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "SG-000008",
   "title": "GAX-P05 - Native information sufficiency and selective abstention",
-  "state": "GRAIN",
+  "state": "PROVEN",
   "method": "research-implementation",
   "parent_id": null,
   "dependencies": [
@@ -16,7 +16,7 @@
     "calibration"
   ],
   "outcome": "Separate action preference from permission to act by implementing deterministic confidence controls, a dedicated learned information-sufficiency signal, calibration-split coverage policies, matched-coverage selective evaluation, explicit unsafe-commit/over-abstention accounting, and a reproducible keep/reject/defer ledger.",
-  "rationale": "P04 qualified the ECAL mechanism framework but does not solve overcommitment. P05 therefore treats abstention as a policy over model-visible information rather than another action option. The learned sufficiency mechanism is deliberately low complexity and must beat strong confidence-only controls on licensed leakage-audited development evidence before it can become a positive paper contribution.",
+  "rationale": "P04 qualified the ECAL mechanism framework but does not solve overcommitment. P05 treats abstention as a policy over model-visible information rather than another action option. The learned sufficiency mechanism is qualified as an implementation, while any paper-level benefit remains deferred until licensed leakage-audited development evidence satisfies the preregistered matched-coverage gate.",
   "scope_in": [
     "Max-action-probability selector control",
     "Normalized entropy-confidence selector control",
@@ -108,7 +108,7 @@
   },
   "risk": {
     "level": "medium",
-    "recovery": "Revert the P05 implementation branch and return to canonical P04 main 623602fecb803943cb877e3051eeb97d086e892c. No real clinical datasets, released weights, or production clinical behavior are affected by this grain."
+    "recovery": "Revert the P05 canonical closeout and return to implementation merge ced14e8e8f599f8022a273c762fda56452c335c6. The closeout changes governance and research status only; the independently qualified implementation remains intact."
   },
   "metadata": {
     "readiness": {
@@ -124,15 +124,36 @@
           "Always report both unsafe commits and over-abstention.",
           "Never promote synthetic selective results into a paper superiority claim."
         ],
-        "status": "implementation-pending-exact-head-qualification"
+        "status": "requirements-satisfied-for-p05"
       },
       "unresolved_decisions": [
         "Learned sufficiency paper status remains defer-real-data until licensed development evidence exists.",
         "No formal conformal guarantee is claimed in P05.",
-        "Evidence retrieval/clarification behavior remains P06/P07 work.",
+        "Evidence retrieval and counterfactual evidence behavior advance to P06.",
+        "FHIR retrieval and action workflows remain P07 work.",
         "Final clinical backbone remains unresolved until P08 qualification."
       ],
-      "version": 1
+      "version": 2
+    },
+    "closeout": {
+      "implementation_pr": 22,
+      "implementation_head_sha": "309e7c108f4dab87f80d2ab24849d9c3032102db",
+      "implementation_exact_head_ci_run": 36251925614,
+      "implementation_merge_sha": "ced14e8e8f599f8022a273c762fda56452c335c6",
+      "implementation_post_merge_ci_run": 36252259764,
+      "all_ci_conclusions": "success",
+      "paper_decision": "defer-real-data",
+      "verification": [
+        "Exact-head CI passed Ruff, mypy strict, pytest, and compileall on Linux/Windows and Python 3.11/3.12",
+        "Windows Python 3.11 exact-head job recorded 84 passing tests and no mypy issues in 17 source files",
+        "Post-main CI passed on Linux/Windows and Python 3.11/3.12",
+        "Action confidence, information sufficiency, and permission to act remain distinct quantities",
+        "Learned sufficiency inference remains invariant to hidden gold, provenance, split, task-family, and evidence-relation annotations when visible content is unchanged",
+        "Calibration-set threshold selection remains separate from validation evaluation and final-test selector evaluation is rejected in P05",
+        "Unsafe commits and over-abstention are both reported under matched-coverage evaluation",
+        "Synthetic P05 fixtures remain implementation evidence only; learned sufficiency paper benefit remains defer-real-data",
+        "No real clinical data, PHI, clinical performance or safety claim, formal conformal guarantee, or founder-paid compute was introduced"
+      ]
     }
   }
 }

@@ -80,11 +80,11 @@ Founder-paid cloud compute is out of scope. Smoke tests and tutorials should run
 
 ## Status
 
-**P05 — Native information sufficiency and selective abstention.** P00-P04 are canonical. P04 established a qualified, component-wise ECAL experiment framework, but every ECAL paper decision remains `defer-real-data` until licensed leakage-audited development evidence supports a keep/reject decision.
+**P06 — Evidence interventions and counterfactual robustness.** P00-P05 are canonical. P05 established a qualified native information-sufficiency and matched-coverage selective-abstention framework. The learned sufficiency mechanism is implementation-proven, but its paper-level benefit remains `defer-real-data` until licensed, leakage-audited development evidence satisfies the preregistered keep/reject gate.
 
-The active P05 research separates **action confidence** from **information sufficiency** and compares max-probability, entropy, and action-margin controls against a dedicated learned sufficiency signal and a calibration/selective-risk control at matched coverage. Abstention means *do not commit to a clinical action from the current information*; it does not imply that refusal itself is clinically safe, nor does it replace later evidence retrieval or FHIR workflows.
+The active P06 research tests whether GAX responds to **material state/evidence changes** while remaining stable to irrelevant edits. A positive grounding claim requires controlled evidence interventions: receiving evidence or emitting citation-shaped output is not enough. Paired counterfactual families must stay within source splits, final-test tuning remains prohibited, and synthetic fixtures can prove mechanics only.
 
-No clinical performance, safety, or deployment claim is authorized yet.
+No clinical performance, safety, causal, deployment, or paper-superiority claim is authorized from synthetic P06 evidence.
 
 ## License
 

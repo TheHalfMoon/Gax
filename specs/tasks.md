@@ -65,22 +65,38 @@
 
 ## P05 — Abstention
 
-- [ ] Confidence baseline
-- [ ] Entropy baseline
-- [ ] Top-1/top-2 margin baseline
-- [ ] Learned information sufficiency
-- [ ] Calibration/selective-risk control
-- [ ] Matched-coverage evaluation
-- [ ] Unsafe-commit and over-abstention analysis
-- [ ] Keep/reject/defer ledger
+- [x] Confidence baseline
+- [x] Entropy baseline
+- [x] Top-1/top-2 margin baseline
+- [x] Learned information sufficiency
+- [x] Calibration/selective-risk control
+- [x] Matched-coverage evaluation
+- [x] Unsafe-commit and over-abstention analysis
+- [x] Keep/reject/defer ledger
+- [x] Final-test protection
+- [x] Exact-head Linux/Windows Python 3.11/3.12 qualification
+- [x] Guarded implementation merge and post-main CI
+- [x] Canonical P05 phase closeout
 
 ## P06 — Evidence and counterfactuals
 
-- [ ] Evidence intervention builder
+- [ ] Versioned intervention/pair schema
+- [ ] Source/intervention lineage contract
 - [ ] Counterfactual taxonomy
-- [ ] Validity checks
-- [ ] Material sensitivity evaluation
-- [ ] Irrelevant-edit stability evaluation
+- [ ] Material-change builder
+- [ ] Irrelevant-edit control builder
+- [ ] Evidence support/removal/swap/contradiction builder
+- [ ] Same-split pair-family enforcement
+- [ ] Pair-conditioned robust-accuracy and counterfactual-failure metrics
+- [ ] Directional probability-shift metrics
+- [ ] Irrelevant-edit stability metrics
+- [ ] Evidence-dependence and unsupported-confident-action metrics
+- [ ] Requested/completed/failed denominator preservation
+- [ ] Abstract CC0 synthetic fixtures
+- [ ] Keep/reject/defer decision ledger
+- [ ] CLI/reproduction manifest
+- [ ] Exact-head cross-platform qualification
+- [ ] Guarded merge, post-main CI, and canonical P06 closeout
 
 ## P07 — FHIR
 
