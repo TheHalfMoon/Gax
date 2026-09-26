@@ -86,6 +86,16 @@ def validate_fhir_resource(resource: Mapping[str, JsonValue]) -> None:
     if not isinstance(resource_type, str) or not resource_type.strip():
         raise ValueError("FHIR resource requires a non-empty resourceType")
     _validate_strict_json(resource)
+
+    contained = resource.get("contained")
+    if contained is not None:
+        if not isinstance(contained, list):
+            raise ValueError("FHIR contained must be a list when present")
+        for nested in contained:
+            if not isinstance(nested, dict):
+                raise ValueError("FHIR contained members must be resource objects")
+            validate_fhir_resource(nested)
+
     if resource_type == "Bundle":
         entries = resource.get("entry")
         if entries is not None:
@@ -107,10 +117,10 @@ def canonicalize_fhir_resource(
     include_narrative: bool = False,
 ) -> dict[str, JsonValue]:
     validate_fhir_resource(resource)
-    prepared = dict(resource)
-    if not include_narrative:
-        prepared.pop("text", None)
-    canonical = _canonical_json_value(prepared)
+    canonical = _canonical_json_value(
+        dict(resource),
+        strip_resource_narrative=not include_narrative,
+    )
     if not isinstance(canonical, dict):
         raise AssertionError("FHIR resource canonicalization must produce an object")
     return canonical
@@ -177,15 +187,33 @@ def fhir_case_to_benchmark_item(
     )
 
 
-def _canonical_json_value(value: JsonValue) -> JsonValue:
+def _canonical_json_value(
+    value: JsonValue,
+    *,
+    strip_resource_narrative: bool,
+) -> JsonValue:
     if isinstance(value, dict):
-        return {key: _canonical_json_value(value[key]) for key in sorted(value)}
+        is_resource = isinstance(value.get("resourceType"), str)
+        return {
+            key: _canonical_json_value(
+                value[key],
+                strip_resource_narrative=strip_resource_narrative,
+            )
+            for key in sorted(value)
+            if not (strip_resource_narrative and is_resource and key == "text")
+        }
     if isinstance(value, list):
-        return [_canonical_json_value(item) for item in value]
+        return [
+            _canonical_json_value(
+                item,
+                strip_resource_narrative=strip_resource_narrative,
+            )
+            for item in value
+        ]
     return value
 
 
-def _flatten_json(value: JsonValue, path: str = "$" ) -> list[str]:
+def _flatten_json(value: JsonValue, path: str = "$") -> list[str]:
     if isinstance(value, dict):
         rows: list[str] = []
         for key in sorted(value):
