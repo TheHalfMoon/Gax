@@ -15,8 +15,8 @@
     "ablation",
     "calibration"
   ],
-  "outcome": "Implement Evidence-Calibrated Action Learning as a set of independently switchable, falsifiable training mechanisms with deterministic matched ablations, hidden-label-safe evidence supervision, proper-scoring gradients, and equal-step replay/retention accounting.",
-  "rationale": "P03 established a genuine trainable non-generative GAX reference model. P04 must now test ECAL mechanisms without retroactively relabeling the P03 NLL objective as novel, leaking benchmark annotations into model inputs, or promoting synthetic mechanistic results into paper claims.",
+  "outcome": "Implement Evidence-Calibrated Action Learning as a set of independently switchable, falsifiable training mechanisms with deterministic matched ablations, hidden-label-safe evidence supervision, proper-scoring gradients, equal-step replay/retention accounting, and a bounded robustness correction for a zero-norm feature-hash collision exposed by P04 qualification.",
+  "rationale": "P03 established a genuine trainable non-generative GAX reference model. P04 must now test ECAL mechanisms without retroactively relabeling the P03 NLL objective as novel, leaking benchmark annotations into model inputs, or promoting synthetic mechanistic results into paper claims. P04 qualification also exposed a latent signed-hash cancellation case in the P03 reference featurizer; fixing that previously crashing valid-input case is required for the P04 mechanisms to execute and is governed explicitly here rather than hidden by changing fixtures.",
   "scope_in": [
     "Bidirectional multi-positive state/action contrastive objective",
     "Deterministic hard-negative ranking objective with equal-budget random-negative control",
@@ -27,7 +27,8 @@
     "Development and retention evaluation through the canonical GAXBench runner",
     "Abstract CC0 synthetic mechanistic fixtures",
     "Keep/reject/defer research ledger",
-    "CLI reproduction surface",
+    "CLI reproduction surface with explicit git-SHA and compute-provenance binding",
+    "Deterministic zero-norm feature-hash fallback for exact signed-collision cancellation discovered by P04 qualification",
     "Linux/Windows Python 3.11/3.12 qualification"
   ],
   "scope_out": [
@@ -49,11 +50,12 @@
     "Replay replaces target steps rather than silently increasing the optimizer-step budget",
     "Replay evaluation reports a frozen retention slice in addition to the current development slice",
     "Matched ablation control and treatment use the same architecture, seed protocol, data eligibility, and optimizer-step budget",
-    "A deterministic manifest binds train, development, replay, and retention data hashes plus every control/treatment configuration hash",
+    "A deterministic manifest binds git SHA, compute provenance, train, development, replay, and retention data hashes plus every control/treatment configuration hash",
     "Final test labels are prohibited from P04 hyperparameter or keep/reject decisions",
     "Synthetic P04 fixtures are CC0, contain no clinical text or PHI, and are forbidden for paper or clinical performance claims",
     "Mechanistic synthetic qualification can only yield implementation evidence; paper-level keep/reject decisions remain deferred until licensed development evidence is available",
     "The canonical GAXBench runner is reused for development and retention metrics with no alternate metric implementation",
+    "Exact signed-hash cancellation that previously produced a zero-norm feature vector receives a deterministic unit-norm fallback while nonzero feature-vector behavior remains unchanged",
     "Exact-head CI passes Ruff, mypy strict, pytest, and compileall on Python 3.11/3.12 across Linux and Windows",
     "Implementation merges with an exact-head guard, post-main CI succeeds, and a separate closeout is required before SG-000007 becomes PROVEN"
   ],
@@ -61,6 +63,7 @@
     ".specgrain/specs/SG-000007.json",
     "src/gaxbench/ecal.py",
     "src/gaxbench/gax_cli.py",
+    "src/gaxbench/gax_v0.py",
     "src/gaxbench/__init__.py",
     "registry/datasets.json",
     "tests/fixtures/ecal_train.jsonl",
@@ -69,6 +72,7 @@
     "tests/fixtures/ecal_retention.jsonl",
     "tests/test_ecal.py",
     "tests/test_ecal_cli.py",
+    "tests/test_gax_v0.py",
     "docs/research/P04_ECAL.md",
     "experiments/p04/decision_ledger.json"
   ],
@@ -90,6 +94,8 @@
       "replay-equal-step-pass",
       "retention-evaluation-pass",
       "matched-ablation-manifest-pass",
+      "experiment-context-binding-pass",
+      "zero-norm-feature-hash-fallback-pass",
       "canonical-runner-reuse-pass",
       "synthetic-dataset-registry-pass",
       "decision-ledger-pass",
@@ -105,13 +111,13 @@
   },
   "risk": {
     "level": "medium",
-    "recovery": "Revert the P04 implementation and return to canonical P03 main f8d735447234317739311349ffa03db45547accf. P04 introduces only abstract synthetic research infrastructure and no public clinical claim."
+    "recovery": "Revert the P04 implementation and return to canonical P03 main f8d735447234317739311349ffa03db45547accf. P04 introduces abstract synthetic research infrastructure plus a bounded deterministic fallback for a valid input class that previously crashed; it introduces no public clinical claim."
   },
   "metadata": {
     "readiness": {
       "minimality": {
         "choice": "component-wise-controlled-ablation-framework",
-        "rationale": "The minimal defensible P04 contribution is not a monolithic ECAL loss but independently testable mechanisms with matched controls, exact data/config manifests, and explicit negative-result handling."
+        "rationale": "The minimal defensible P04 contribution is not a monolithic ECAL loss but independently testable mechanisms with matched controls, exact data/config/context manifests, explicit negative-result handling, and only the bounded reference-model robustness fix required by mechanistic qualification."
       },
       "safety": {
         "requirements": [
@@ -119,7 +125,8 @@
           "Never select objective weights from final test labels.",
           "Never promote synthetic mechanistic results into clinical or paper superiority claims.",
           "Keep replay and control optimizer-step budgets matched.",
-          "Preserve rejected or deferred mechanisms in the research ledger."
+          "Preserve rejected or deferred mechanisms in the research ledger.",
+          "Do not change previously nonzero feature-hash outputs while correcting the zero-norm collision case."
         ],
         "status": "implementation-pending-exact-head-ci"
       },
@@ -129,7 +136,7 @@
         "Licensed development datasets for paper-level ECAL keep/reject decisions remain a later evidence gate.",
         "Native sufficiency and selective abstention remain P05 hypotheses."
       ],
-      "version": 1
+      "version": 2
     }
   }
 }
