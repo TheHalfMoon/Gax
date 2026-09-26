@@ -31,6 +31,38 @@
       "review_status": "approved",
       "reviewer": "TheHalfMoon/Gax maintainers",
       "review_date": "2026-09-24"
+    },
+    {
+      "id": "gax-v0-synthetic-smoke",
+      "name": "GAX v0 abstract train/validation smoke fixture",
+      "source_url": null,
+      "upstream_revision": "gax-p03-v0.1",
+      "license": "CC0-1.0",
+      "redistribution": "permitted",
+      "access_requirements": null,
+      "contains_clinical_text": false,
+      "contains_phi": false,
+      "patient_or_entity_key": "source_id",
+      "intended_uses": [
+        "GAX v0 deterministic training tests",
+        "checkpoint round-trip tests",
+        "train/evaluate CLI smoke tests"
+      ],
+      "forbidden_uses": [
+        "clinical validation claims",
+        "medical performance claims",
+        "patient care",
+        "paper benchmark claims"
+      ],
+      "split_strategy": "Hand-authored abstract alpha/beta train and validation fixtures; no real clinical concept, threshold, patient, or external source",
+      "transforms": [],
+      "derived_artifacts": [
+        "tests/fixtures/gax_v0_train.jsonl",
+        "tests/fixtures/gax_v0_validation.jsonl"
+      ],
+      "review_status": "approved",
+      "reviewer": "TheHalfMoon/Gax maintainers",
+      "review_date": "2026-09-26"
     }
   ]
 }

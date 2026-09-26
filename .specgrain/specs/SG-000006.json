@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "id": "SG-000006",
+  "title": "GAX-P03 - First trainable non-generative GAX v0",
+  "state": "GRAIN",
+  "method": "research-implementation",
+  "parent_id": null,
+  "dependencies": [
+    "SG-000005"
+  ],
+  "labels": [
+    "model",
+    "p03",
+    "training",
+    "reproducibility"
+  ],
+  "outcome": "Establish the first genuine trainable GAX typed-decision model with deterministic training, integrity-bound checkpoints, deterministic inference, GAXBench integration, and a research-safe model card before ECAL experiments begin.",
+  "rationale": "P00-P02 froze the research, benchmark, and comparison contracts. P03 must now prove the complete model lifecycle without conflating lifecycle qualification with clinical backbone selection or ECAL novelty. A dependency-light bilinear state/action reference model is sufficient for this gate and can be qualified on free CPU CI.",
+  "scope_in": [
+    "Pure-Python deterministic GAX bilinear state/action reference model",
+    "Versioned SHA-256 hashed feature representation",
+    "Fixed-seed multiclass NLL training pipeline",
+    "Canonical training-data manifest hashing",
+    "Integrity-bound JSON checkpoint schema and fail-closed loader",
+    "GAX adapter integration with the existing GAXBench runner",
+    "Train/evaluate CLI",
+    "Abstract CC0 synthetic train/validation fixtures",
+    "P03 architecture contract and model-card draft",
+    "Linux/Windows Python 3.11/3.12 qualification"
+  ],
+  "scope_out": [
+    "No real clinical dataset",
+    "No PHI",
+    "No transformer backbone qualification",
+    "No ECAL contribution claim",
+    "No learned abstention claim",
+    "No FHIR capability claim",
+    "No external-baseline benchmark result",
+    "No clinical performance or safety claim",
+    "No paid founder compute"
+  ],
+  "acceptance": [
+    "GAX v0 accepts caller-provided finite actions and emits normalized probabilities over exactly those action IDs without free-form generation",
+    "Action IDs are preserved as schema identifiers but excluded from semantic action featurization",
+    "Training accepts train split items only and optional validation split items, rejects missing labels and duplicate IDs, and never consumes test labels",
+    "Fixed-seed training reduces NLL on the abstract learnable smoke fixture and learns its deterministic alpha/beta mapping",
+    "Repeated fixed-seed training is deterministic within the declared protocol",
+    "Checkpoint payload binds architecture, feature revision, config, weights, seed, training manifest hash, epoch count, and a canonical integrity digest",
+    "Checkpoint loading fails closed on integrity mismatch, unsupported revision, malformed dimensions, or non-finite parameters",
+    "Checkpoint round trip preserves model revision and predictions",
+    "Action permutation preserves action-ID/probability alignment",
+    "Loaded GAX v0 runs through the existing GAXBench run_baseline path with no alternate metric implementation",
+    "Train/evaluate CLI runs end to end on repository synthetic fixtures",
+    "Synthetic fixtures are registered as CC0, contain no clinical text or PHI, and are forbidden for clinical or paper performance claims",
+    "Model card explicitly prohibits diagnosis, treatment, prescribing, triage, emergency guidance, patient advice, and clinical-performance claims",
+    "Exact-head CI passes Ruff, mypy strict, pytest, and compileall on Python 3.11/3.12 across Linux and Windows",
+    "Implementation merge and post-main CI succeed before a separate canonical closeout marks SG-000006 PROVEN"
+  ],
+  "change_surface": [
+    ".specgrain/specs/SG-000006.json",
+    "src/gaxbench/gax_v0.py",
+    "src/gaxbench/gax_cli.py",
+    "pyproject.toml",
+    "registry/datasets.json",
+    "tests/fixtures/gax_v0_train.jsonl",
+    "tests/fixtures/gax_v0_validation.jsonl",
+    "tests/test_gax_v0.py",
+    "tests/test_gax_cli.py",
+    "docs/research/P03_GAX_V0.md",
+    "models/GAX_V0_MODEL_CARD.md"
+  ],
+  "children": [],
+  "context": {
+    "budget_tokens": 18000,
+    "estimated_tokens": 13000
+  },
+  "evidence": {
+    "required": [
+      "p02-closed-canonical",
+      "trainable-model-contract",
+      "synthetic-overfit-pass",
+      "fixed-seed-determinism-pass",
+      "checkpoint-roundtrip-pass",
+      "checkpoint-integrity-failure-pass",
+      "action-permutation-pass",
+      "gaxbench-runner-integration-pass",
+      "cli-end-to-end-pass",
+      "dataset-registry-pass",
+      "model-card-pass",
+      "linux-python311-ci-pass",
+      "linux-python312-ci-pass",
+      "windows-python311-ci-pass",
+      "windows-python312-ci-pass",
+      "implementation-pr-pass",
+      "post-merge-ci-pass",
+      "canonical-p03-closeout-pass"
+    ]
+  },
+  "risk": {
+    "level": "medium",
+    "recovery": "Revert P03 files and return to canonical P02 at 8424a84b94fc980523497d79a35a2421a8de6b29. P03 introduces no external model weight, clinical dataset, or public performance claim."
+  },
+  "metadata": {
+    "readiness": {
+      "minimality": {
+        "choice": "dependency-light-reference-model",
+        "rationale": "A small pure-Python bilinear model is the minimum genuine trainable typed model that proves the lifecycle contract without preselecting the final clinical backbone or requiring paid compute."
+      },
+      "safety": {
+        "requirements": [
+          "Synthetic smoke metrics are infrastructure evidence only.",
+          "Do not interpret top-1 probability as permission to act.",
+          "Do not introduce real patient data or clinical-use claims.",
+          "Do not promote the reference architecture as the final paper model without later evidence."
+        ],
+        "status": "pending-exact-head-ci"
+      },
+      "unresolved_decisions": [
+        "Final GAX clinical backbone remains a later controlled experiment.",
+        "ECAL objective components remain P04 hypotheses.",
+        "Learned sufficiency and selective policy remain P05 hypotheses."
+      ],
+      "version": 1
+    }
+  }
+}
