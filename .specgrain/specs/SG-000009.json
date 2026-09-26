@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "id": "SG-000009",
+  "title": "GAX-P06 - Evidence interventions and counterfactual robustness",
+  "state": "GRAIN",
+  "method": "research-implementation",
+  "parent_id": null,
+  "dependencies": ["SG-000008"],
+  "labels": ["research", "p06", "evidence", "counterfactual", "robustness"],
+  "outcome": "Create a model-agnostic, lineage-safe paired intervention framework that distinguishes material sensitivity, irrelevant-edit stability, evidence dependence, determinability, abstention response, and counterfactual failure before any paper-level grounding claim is allowed.",
+  "rationale": "A model can appear grounded while merely receiving evidence, can change for irrelevant edits, or can follow implausible evidence too faithfully. P06 therefore evaluates controlled pairs rather than rewarding raw evidence adherence. Synthetic fixtures qualify mechanics only; paper-level mechanisms remain deferred until licensed, reviewed, leakage-audited development evidence exists.",
+  "scope_in": [
+    "Versioned strict intervention manifest and pair schema",
+    "Same-source, same-split, same-counterfactual-group lineage validation",
+    "Identical action sets within P06 v0.1 pairs",
+    "Total variation and natural-log Jensen-Shannon distribution distances",
+    "Base accuracy, intervention accuracy, and paired robust accuracy",
+    "Base-conditioned Bias Trap Rate-style counterfactual failure",
+    "Required action-flip success",
+    "Irrelevant-edit top-1 agreement and preregistered TV stability threshold",
+    "Directional target-action probability response",
+    "Explicit abstention response",
+    "Information-sufficiency and evidence-support direction checks",
+    "Determinable missing-information controls where evidence removal does not imply abstention",
+    "Exact denominator alignment with no silent item/prediction exclusion",
+    "Model-agnostic prediction-file CLI",
+    "P06 final-test rejection; final frozen test evaluation remains P08 work",
+    "Abstract CC0 synthetic mechanics fixtures",
+    "Per-family results and keep/reject/defer ledger",
+    "Linux/Windows Python 3.11/3.12 qualification"
+  ],
+  "scope_out": [
+    "No real patient data or PHI",
+    "No autonomous diagnosis, treatment, prescribing, triage, or emergency-use claim",
+    "No candidate-set-changing pair semantics in P06 v0.1",
+    "No final-test mechanism tuning or evaluation in the P06 CLI",
+    "No claim that evidence sensitivity equals correctness or safety",
+    "No claim that counterfactual robustness establishes causal identification",
+    "No paper superiority claim from synthetic fixtures",
+    "No FHIR implementation",
+    "No founder-paid cloud compute"
+  ],
+  "acceptance": [
+    "InterventionManifest and InterventionPair reject extra fields, duplicate pair ids, impossible pair contracts, and malformed directional declarations",
+    "Every evaluated pair preserves source_id, split, and a non-null shared counterfactual_group",
+    "P06 v0.1 requires identical action ids in base/intervention items so TV/JSD and action-flip semantics remain unambiguous",
+    "Manifest-referenced item ids and prediction ids match exactly; missing or extra records fail closed",
+    "Total variation has the frozen 0.5*L1 convention and Jensen-Shannon uses natural logarithms",
+    "Bias Trap Rate-style failure is conditioned only on flip pairs whose base/control prediction is correct",
+    "Required-flip success, paired robust accuracy, and base/intervention accuracy are reported separately",
+    "Irrelevant-edit pairs require expected_relation=same and report top-1 agreement plus stability violations against a declared TV threshold",
+    "Directional target-action, sufficiency, and evidence-support expectations fail closed when required scores/actions are missing",
+    "An abstain expectation tests explicit intervention abstention rather than silently treating low confidence as abstention",
+    "A determinable-missing-information fixture proves that missing information does not automatically imply abstention",
+    "Contradictory/implausible evidence fixtures can require lower evidence support and sufficiency rather than rewarding blind evidence adherence",
+    "Per-family metrics remain visible rather than being hidden by one aggregate score",
+    "The P06 CLI rejects test-split items so mechanism qualification cannot inspect final-test behavior",
+    "The public intervention JSON Schema snapshot matches the live Pydantic contract",
+    "Synthetic P06 fixtures contain no clinical text, patient data, medical thresholds, diagnosis rules, treatment guidance, or external source claims",
+    "All candidate paper mechanisms remain defer-real-data after synthetic qualification",
+    "Exact-head CI passes Ruff, mypy strict, pytest, and compileall on Python 3.11/3.12 across Linux and Windows",
+    "Implementation merges with an expected-head guard, post-main CI succeeds, and a separate canonical closeout is required before SG-000009 becomes PROVEN"
+  ],
+  "change_surface": [
+    ".specgrain/specs/SG-000009.json",
+    "src/gaxbench/interventions.py",
+    "src/gaxbench/cli.py",
+    "src/gaxbench/__init__.py",
+    "schemas/gaxbench-intervention-manifest-v0.1.json",
+    "registry/datasets.json",
+    "tests/fixtures/p06_items.jsonl",
+    "tests/fixtures/p06_predictions.jsonl",
+    "tests/fixtures/p06_interventions.json",
+    "tests/test_interventions.py",
+    "tests/test_intervention_cli.py",
+    "tests/test_intervention_schema_snapshot.py",
+    "docs/research/P06_EVIDENCE_COUNTERFACTUALS.md",
+    "experiments/p06/decision_ledger.json"
+  ],
+  "children": [],
+  "context": {"budget_tokens": 24000, "estimated_tokens": 18000},
+  "evidence": {
+    "required": [
+      "p05-closed-canonical",
+      "manifest-schema-pass",
+      "lineage-split-group-pass",
+      "exact-denominator-pass",
+      "tv-jsd-definition-pass",
+      "pair-conditioned-btr-pass",
+      "flip-success-pass",
+      "irrelevant-stability-pass",
+      "directional-response-pass",
+      "abstention-response-pass",
+      "determinability-control-pass",
+      "score-missing-fail-closed-pass",
+      "final-test-rejection-pass",
+      "synthetic-dataset-registry-pass",
+      "decision-ledger-pass",
+      "cli-reproduction-pass",
+      "linux-python311-ci-pass",
+      "linux-python312-ci-pass",
+      "windows-python311-ci-pass",
+      "windows-python312-ci-pass",
+      "implementation-pr-pass",
+      "post-merge-ci-pass",
+      "canonical-p06-closeout-pass"
+    ]
+  },
+  "risk": {
+    "level": "medium",
+    "recovery": "Revert the P06 implementation branch and return to canonical P05 main 3a3d1379479e32127b0a44b85043dfbda53c944f. No real clinical dataset, released clinical model, or production behavior is affected."
+  },
+  "metadata": {
+    "readiness": {
+      "minimality": {
+        "choice": "model-agnostic-paired-evaluator-first",
+        "rationale": "The smallest scientifically useful P06 surface is a strict pair manifest plus generic Prediction-based metrics. It can evaluate GAX and external baselines identically without coupling the benchmark to one model architecture."
+      },
+      "safety": {
+        "requirements": [
+          "Never infer medical truth in the transformation builder; expected relations require governed source labels/rationale.",
+          "Never let a base/intervention family cross splits.",
+          "Never reward evidence sensitivity alone as safety or correctness.",
+          "Never use final-test labels for P06 mechanism selection or repair.",
+          "Never promote synthetic pair results into a medical or paper superiority claim."
+        ],
+        "status": "implementation-pending-exact-head-qualification"
+      },
+      "unresolved_decisions": [
+        "All P06 candidate paper mechanisms remain defer-real-data pending licensed development evidence.",
+        "Candidate-set-changing interventions are deferred beyond P06 v0.1.",
+        "Final clinical evidence sources and real counterfactual review protocol remain P08 data-governance work.",
+        "FHIR representation and tool-action interventions remain P07 work."
+      ],
+      "version": 1
+    }
+  }
+}
