@@ -100,6 +100,42 @@
       "review_status": "approved",
       "reviewer": "TheHalfMoon/Gax maintainers",
       "review_date": "2026-09-26"
+    },
+    {
+      "id": "p05-selective-synthetic",
+      "name": "P05 abstract information-sufficiency and selective-abstention fixtures",
+      "source_url": null,
+      "upstream_revision": "gax-p05-v0.1",
+      "license": "CC0-1.0",
+      "redistribution": "permitted",
+      "access_requirements": null,
+      "contains_clinical_text": false,
+      "contains_phi": false,
+      "patient_or_entity_key": "source_id",
+      "intended_uses": [
+        "information-sufficiency implementation tests",
+        "confidence/entropy/margin selector controls",
+        "calibration-split threshold tests",
+        "matched-coverage selective-risk qualification",
+        "hidden-label leakage regression tests"
+      ],
+      "forbidden_uses": [
+        "clinical validation claims",
+        "medical performance claims",
+        "patient care",
+        "paper benchmark claims",
+        "learned-sufficiency superiority claims"
+      ],
+      "split_strategy": "Hand-authored abstract train/calibration/validation fixtures with explicit sufficient/insufficient labels; no real clinical concept, threshold, patient, or external source",
+      "transforms": [],
+      "derived_artifacts": [
+        "tests/fixtures/p05_train.jsonl",
+        "tests/fixtures/p05_calibration.jsonl",
+        "tests/fixtures/p05_validation.jsonl"
+      ],
+      "review_status": "approved",
+      "reviewer": "TheHalfMoon/Gax maintainers",
+      "review_date": "2026-09-26"
     }
   ]
 }
