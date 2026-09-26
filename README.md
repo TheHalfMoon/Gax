@@ -80,7 +80,7 @@ Founder-paid cloud compute is out of scope. Smoke tests and tutorials should run
 
 ## Status
 
-**P02 — Matched baseline harness.** P00 and P01 are canonical. GAX model training and performance claims remain out of scope until the baseline harness is qualified and canonically closed.
+**P03 — GAX v0.** P00-P02 are canonical. The active work is the first genuine trainable non-generative GAX model: typed interface, deterministic inference, checkpoint contract, training pipeline, synthetic smoke qualification, and model-card draft. No clinical performance claim is authorized yet.
 
 ## License
 
