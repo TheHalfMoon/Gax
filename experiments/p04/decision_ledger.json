@@ -7,6 +7,13 @@
     "synthetic_mechanistic_results_are_paper_evidence": false,
     "negative_results_retained": true
   },
+  "implementation_evidence": {
+    "head_sha": "d1f3315c949ed4a10783a6bfd3881e80521f8e74",
+    "exact_head_ci_run": 36247918779,
+    "merge_sha": "4baf5104314d1a1eecbb91cb7984ccb5e7df7866",
+    "post_merge_ci_run": 36248363024,
+    "all_ci_conclusions": "success"
+  },
   "components": [
     {
       "id": "bidirectional",
@@ -14,9 +21,9 @@
       "control": "action NLL reference",
       "treatment": "action NLL plus bidirectional multi-positive objective",
       "development_gate": "Improve the preregistered ranking/generalization metric without a material calibration/selective-risk regression.",
-      "mechanistic_status": "pending-exact-head-ci",
+      "mechanistic_status": "implementation-proven",
       "paper_decision": "defer-real-data",
-      "rationale": "Abstract synthetic fixtures can validate multi-positive semantics and gradients but cannot establish a paper-level benefit."
+      "rationale": "Abstract synthetic fixtures validate multi-positive semantics and gradients but cannot establish a paper-level benefit."
     },
     {
       "id": "hard-negative",
@@ -24,7 +31,7 @@
       "control": "action NLL plus random-negative margin objective",
       "treatment": "action NLL plus deterministic hard-negative margin objective",
       "development_gate": "Improve hard-candidate discrimination beyond the random-negative control without a material calibration regression.",
-      "mechanistic_status": "pending-exact-head-ci",
+      "mechanistic_status": "implementation-proven",
       "paper_decision": "defer-real-data",
       "rationale": "Synthetic fixtures validate deterministic negative selection and matched budget only; paper acceptance requires licensed development evidence."
     },
@@ -34,7 +41,7 @@
       "control": "action NLL reference",
       "treatment": "action NLL plus evidence intervention objective",
       "development_gate": "Any benefit must survive evidence removal/swap controls and evidence-relation input-invariance tests.",
-      "mechanistic_status": "pending-exact-head-ci",
+      "mechanistic_status": "implementation-proven",
       "paper_decision": "defer-real-data",
       "rationale": "P04 proves the supervision/input boundary mechanically; evidence faithfulness on health data remains a later evidence gate."
     },
@@ -44,7 +51,7 @@
       "control": "action NLL reference",
       "treatment": "action NLL plus multiclass Brier objective",
       "development_gate": "Improve the declared NLL/Brier calibration criterion while preserving action quality within the preregistered tolerance.",
-      "mechanistic_status": "pending-exact-head-ci",
+      "mechanistic_status": "implementation-proven",
       "paper_decision": "defer-real-data",
       "rationale": "Finite-difference gradient verification proves implementation correctness, not clinical calibration benefit."
     },
@@ -54,7 +61,7 @@
       "control": "target-only schedule at the same optimizer-step budget",
       "treatment": "target schedule with a preregistered fraction of target steps replaced by replay steps",
       "development_gate": "Improve the frozen retention slice while preserving current-task development performance within the declared tolerance.",
-      "mechanistic_status": "pending-exact-head-ci",
+      "mechanistic_status": "implementation-proven",
       "paper_decision": "defer-real-data",
       "rationale": "Synthetic retention validates accounting and evaluator wiring; paper acceptance requires licensed development evidence."
     }
