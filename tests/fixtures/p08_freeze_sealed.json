@@ -1,0 +1,72 @@
+{
+  "authorization_digest": null,
+  "benchmarks": [
+    {
+      "access_requirements": null,
+      "id": "synthetic-benchmark",
+      "leakage_audit_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "license": "CC0-1.0",
+      "license_audit_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "redistribution": "permitted",
+      "revision": "synthetic-v1",
+      "split_manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "test_manifest_frozen": true
+    }
+  ],
+  "calibration": {
+    "calibration_split_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "coverage_targets": [0.5, 0.8, 0.9],
+    "method": "temperature-scaling",
+    "revision": "synthetic-cal-v1",
+    "test_tuning_forbidden": true
+  },
+  "dirty_tree": false,
+  "experiment_revision": "synthetic-p08-freeze",
+  "p07_closeout": {
+    "conclusion": "success",
+    "merge_sha": "2222222222222222222222222222222222222222",
+    "post_main_run_id": 123
+  },
+  "protocol": {
+    "evidence_protocol_revision": "synthetic-evidence-v1",
+    "failure_policy_revision": "synthetic-failure-v1",
+    "fhir_representation_revision": "synthetic-fhir-v1",
+    "hardware_protocol_revision": "synthetic-hw-v1",
+    "intervention_revision": "synthetic-intervention-v1"
+  },
+  "repo_revision": "1111111111111111111111111111111111111111",
+  "schema_version": "0.1",
+  "statistics": {
+    "bootstrap_replicates": 10000,
+    "bootstrap_seed": 17,
+    "ci_level": 0.95,
+    "multiplicity_policy": "primary comparisons frozen; exploratory labeled",
+    "primary_comparisons": ["gax-vs-control"],
+    "primary_metrics": ["risk@80", "accuracy", "brier"]
+  },
+  "systems": [
+    {
+      "adapter_revision": "synthetic-p08",
+      "blocked_reason": null,
+      "id": "gax",
+      "model_revision": null,
+      "qualification_status": "qualified",
+      "role": "gax",
+      "seeds": [0, 1, 2],
+      "source_revision": "synthetic-gax-v1",
+      "tokenizer_revision": null
+    },
+    {
+      "adapter_revision": "synthetic-p08",
+      "blocked_reason": "synthetic fixture intentionally blocks external access",
+      "id": "external-baseline",
+      "model_revision": null,
+      "qualification_status": "blocked",
+      "role": "baseline",
+      "seeds": [],
+      "source_revision": null,
+      "tokenizer_revision": null
+    }
+  ],
+  "test_access": "sealed"
+}
