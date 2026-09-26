@@ -11,6 +11,7 @@ Completed grains:
 - **SG-000005 — GAX-P02 Phase closeout and final baseline identity freeze** — PROVEN
 - **SG-000006 — GAX-P03 First trainable non-generative GAX v0** — PROVEN
 - **SG-000007 — GAX-P04 ECAL controlled ablation framework** — PROVEN
+- **SG-000008 — GAX-P05 Native information sufficiency and selective abstention** — PROVEN
 
 Canonical P03 evidence chain:
 
@@ -39,24 +40,43 @@ Canonical P04 evidence chain:
 - implementation qualification includes multi-positive alignment, deterministic hard-negative control, hidden-label-safe evidence intervention, Brier-gradient verification, equal-step replay/retention, explicit experiment context, and a governed deterministic fallback for exact zero-norm signed-hash cancellation
 - all ECAL paper decisions remain `defer-real-data`; synthetic mechanism fixtures are implementation evidence only
 
-P04 is **CLOSED_CANONICAL**. GAX now has a qualified component-wise ECAL experiment framework, not an ECAL superiority claim. No ECAL component may enter the paper as a positive contribution until its preregistered keep/reject gate is evaluated on licensed, leakage-audited development evidence.
+P04 is **CLOSED_CANONICAL**. GAX has a qualified component-wise ECAL experiment framework, not an ECAL superiority claim. No ECAL component may enter the paper as a positive contribution until its preregistered keep/reject gate is evaluated on licensed, leakage-audited development evidence.
+
+Canonical P05 evidence chain:
+
+- implementation PR: #22
+- implementation exact head: `309e7c108f4dab87f80d2ab24849d9c3032102db`
+- implementation exact-head CI: run `36251925614` — SUCCESS
+- implementation merge: `ced14e8e8f599f8022a273c762fda56452c335c6`
+- implementation post-merge CI: run `36252259764` — SUCCESS
+- exact-head and post-main matrices: Linux/Windows × Python 3.11/3.12 — SUCCESS
+- Windows Python 3.11 exact-head qualification: Ruff PASS, mypy strict PASS across 17 source files, 84 pytest tests PASS, compileall PASS
+- confidence-only controls: max probability, normalized entropy confidence, top-1/top-2 margin
+- learned information sufficiency remains a separate model-visible probability-like signal trained without updating the frozen action model
+- calibration-split threshold selection remains isolated from validation evaluation; P05 final-test selector evaluation is rejected
+- unsafe-commit and over-abstention accounting are both required under matched coverage
+- learned sufficiency paper decision remains `defer-real-data`; synthetic fixtures are implementation evidence only
+
+P05 is **CLOSED_CANONICAL** as an implementation and selective-evaluation framework result. It does not establish clinical safety, a formal conformal guarantee, or learned-sufficiency superiority. A paper-level keep decision still requires licensed, leakage-audited development evidence under the preregistered matched-coverage gate.
 
 Active frontier:
 
-**P05 — Native Information Sufficiency and Selective Abstention**
+**P06 — Evidence Interventions and Counterfactual Clinical Robustness**
 
-P05 separates action preference from permission to act. It compares max-probability, entropy, and top-1/top-2 margin controls against a dedicated learned information-sufficiency signal and a calibration/selective-risk control under matched coverage.
+P06 tests whether GAX changes action beliefs for materially relevant state/evidence changes while remaining stable to irrelevant edits. It is a falsification program for grounding and counterfactual claims, not a generic data-augmentation phase.
 
-Core research invariant:
+Core research invariants:
 
 ```text
-action confidence != information sufficiency
+uses evidence != merely receives evidence
+material sensitivity != irrelevant-edit instability
+counterfactual robustness != causal identification != clinical safety
 ```
 
-A P05 selector may use model-visible state/candidate information and action-distribution summaries, but it may not consume `gold.sufficient`, gold actions, provenance/split labels, benchmark-only evidence relations, or final-test annotations at inference. Thresholds and calibration parameters must be selected without final-test labels.
+Every base/intervention family must remain in the source split. Final-test labels cannot be used to generate interventions, tune thresholds, choose mechanisms, or repair failures. Evidence relation labels remain benchmark supervision and may not become model-visible inference features unless a future explicitly governed task changes that contract.
 
-P05 abstention means **do not commit to a clinical action from the current information**. Later P06/P07 work may map insufficiency to evidence retrieval, clarification, FHIR queries, or escalation; those behaviors remain outside P05.
+Synthetic P06 fixtures may prove parser, lineage, metric, and invariance behavior only. Real medical counterfactuals or evidence-based paper claims require licensed sources, leakage controls, explicit review, matched baselines, and artifact-backed statistical evidence.
 
-Primary selective comparisons use matched coverage and report both unsafe commits and over-abstention. A selector cannot win merely by refusing nearly everything.
+P06 research contract: Issue #23.
 
 Research claims remain subject to `docs/research/REPRODUCIBILITY.md`.
