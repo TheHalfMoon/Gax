@@ -8,6 +8,7 @@ from pydantic import ValidationError
 
 from gaxbench.p08_stats import (
     ComparisonResult,
+    ComparisonResultSet,
     PrimaryComparison,
     PrimaryComparisonRegistry,
     RunOutcome,
@@ -99,7 +100,7 @@ def test_evidence_ranking_reports_undefined_cases() -> None:
 
 
 def test_evidence_ranking_rejects_non_probability_scores() -> None:
-    with pytest.raises(ValueError, match="in \[0, 1\]"):
+    with pytest.raises(ValueError, match=r"in \[0, 1\]"):
         evidence_ranking_metrics([1.2, 0.2], [True, False])
 
 
@@ -222,10 +223,17 @@ def complete_result() -> ComparisonResult:
     )
 
 
+def result_set() -> ComparisonResultSet:
+    return ComparisonResultSet(
+        experiment_revision="p08-test",
+        results=[complete_result()],
+    )
+
+
 def test_primary_report_is_deterministic_and_digest_bound() -> None:
     report = build_primary_report(
         registry(),
-        [complete_result()],
+        result_set(),
         repo_revision="a" * 40,
     )
     encoded = serialize_primary_report(report)
@@ -236,8 +244,35 @@ def test_primary_report_is_deterministic_and_digest_bound() -> None:
 
 
 def test_primary_report_requires_exact_registry_coverage() -> None:
+    mismatched = ComparisonResultSet(
+        experiment_revision="p08-test",
+        results=[
+            ComparisonResult(
+                comparison_id="other",
+                status="blocked",
+                requested=0,
+                completed=0,
+                failed=0,
+                reason="not run",
+            )
+        ],
+    )
     with pytest.raises(ValueError, match="ids mismatch"):
-        build_primary_report(registry(), [], repo_revision="a" * 40)
+        build_primary_report(registry(), mismatched, repo_revision="a" * 40)
+
+
+def test_primary_report_requires_matching_experiment_revision() -> None:
+    mismatched = ComparisonResultSet(
+        experiment_revision="other-experiment",
+        results=[complete_result()],
+    )
+    with pytest.raises(ValueError, match="experiment revisions must match"):
+        build_primary_report(registry(), mismatched, repo_revision="a" * 40)
+
+
+def test_primary_report_requires_real_git_sha() -> None:
+    with pytest.raises(ValidationError, match="40-character"):
+        build_primary_report(registry(), result_set(), repo_revision="main")
 
 
 def test_comparison_result_preserves_failed_denominator() -> None:
