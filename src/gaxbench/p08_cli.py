@@ -156,22 +156,36 @@ def main() -> None:
         payload = _read_object(args.input)
         values_a = _finite_number_list(payload.get("values_a"), "values_a")
         values_b = _finite_number_list(payload.get("values_b"), "values_b")
-        result = paired_bootstrap_mean_difference(
+        bootstrap_result = paired_bootstrap_mean_difference(
             values_a,
             values_b,
             replicates=args.replicates,
             seed=args.seed,
             ci_level=args.ci_level,
         )
-        print(json.dumps(asdict(result), indent=2, sort_keys=True, allow_nan=False))
+        print(
+            json.dumps(
+                asdict(bootstrap_result),
+                indent=2,
+                sort_keys=True,
+                allow_nan=False,
+            )
+        )
         return
 
     if args.command == "evidence-rank":
         payload = _read_object(args.input)
         scores = _finite_number_list(payload.get("scores"), "scores")
         labels = _bool_list(payload.get("labels"), "labels")
-        result = evidence_ranking_metrics(scores, labels)
-        print(json.dumps(asdict(result), indent=2, sort_keys=True, allow_nan=False))
+        evidence_result = evidence_ranking_metrics(scores, labels)
+        print(
+            json.dumps(
+                asdict(evidence_result),
+                indent=2,
+                sort_keys=True,
+                allow_nan=False,
+            )
+        )
         return
 
     if args.command == "reliability":
@@ -181,10 +195,14 @@ def main() -> None:
             "confidences",
         )
         correctness = _bool_list(payload.get("correctness"), "correctness")
-        result = reliability_bins(confidences, correctness, bins=args.bins)
+        reliability_result = reliability_bins(
+            confidences,
+            correctness,
+            bins=args.bins,
+        )
         print(
             json.dumps(
-                [asdict(entry) for entry in result],
+                [asdict(entry) for entry in reliability_result],
                 indent=2,
                 sort_keys=True,
                 allow_nan=False,
