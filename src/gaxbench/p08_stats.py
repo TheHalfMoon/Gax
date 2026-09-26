@@ -204,9 +204,13 @@ class ComparisonResult(StrictModel):
             raise ValueError("comparison numeric fields must be finite")
         if self.status == "complete":
             if self.failed != 0 or self.completed == 0:
-                raise ValueError("complete comparisons require nonzero completed and zero failed")
+                raise ValueError(
+                    "complete comparisons require nonzero completed and zero failed"
+                )
             if any(value is None for value in numeric):
-                raise ValueError("complete comparisons require estimates and confidence interval")
+                raise ValueError(
+                    "complete comparisons require estimates and confidence interval"
+                )
             assert self.ci_level is not None
             assert self.ci_lower is not None
             assert self.ci_upper is not None
@@ -220,16 +224,39 @@ class ComparisonResult(StrictModel):
         if not self.reason:
             raise ValueError("blocked/undefined comparisons require reason")
         if any(value is not None for value in numeric):
-            raise ValueError("blocked/undefined comparisons must not carry estimates")
+            raise ValueError(
+                "blocked/undefined comparisons must not carry estimates"
+            )
+        return self
+
+
+class ComparisonResultSet(StrictModel):
+    schema_version: Literal["0.1"] = "0.1"
+    experiment_revision: str = Field(min_length=1)
+    results: list[ComparisonResult] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_results(self) -> ComparisonResultSet:
+        ids = [result.comparison_id for result in self.results]
+        if len(ids) != len(set(ids)):
+            raise ValueError("comparison results must have unique ids")
+        if ids != sorted(ids):
+            raise ValueError("comparison results must be sorted by comparison_id")
         return self
 
 
 class PrimaryComparisonReport(StrictModel):
     schema_version: Literal["0.1"] = "0.1"
     experiment_revision: str = Field(min_length=1)
-    repo_revision: str = Field(min_length=1)
+    repo_revision: str
     results: list[ComparisonResult] = Field(min_length=1)
     report_digest: str | None = None
+
+    @field_validator("repo_revision")
+    @classmethod
+    def validate_repo_revision(cls, value: str) -> str:
+        _require_git_sha(value, "repo_revision")
+        return value
 
     @model_validator(mode="after")
     def validate_report(self) -> PrimaryComparisonReport:
@@ -311,7 +338,9 @@ def reliability_bins(
     confidences: Sequence[float], correctness: Sequence[bool], *, bins: int
 ) -> tuple[ReliabilityBin, ...]:
     if len(confidences) != len(correctness) or not confidences:
-        raise ValueError("confidences and correctness must be non-empty and equally sized")
+        raise ValueError(
+            "confidences and correctness must be non-empty and equally sized"
+        )
     if bins < 2:
         raise ValueError("bins must be >= 2")
 
@@ -351,7 +380,9 @@ def reliability_bins(
     return tuple(output)
 
 
-def aggregate_run_outcomes(outcomes: Sequence[RunOutcome]) -> FailurePreservingAggregate:
+def aggregate_run_outcomes(
+    outcomes: Sequence[RunOutcome],
+) -> FailurePreservingAggregate:
     if not outcomes:
         raise ValueError("outcomes must not be empty")
     ids = [outcome.item_id for outcome in outcomes]
@@ -362,12 +393,21 @@ def aggregate_run_outcomes(outcomes: Sequence[RunOutcome]) -> FailurePreservingA
     completed = counts.get("success", 0)
     failed = len(outcomes) - completed
     complete = failed == 0
-    values = [outcome.value for outcome in outcomes if outcome.status == "success"]
+    values = [
+        outcome.value for outcome in outcomes if outcome.status == "success"
+    ]
     mean_value: float | None = None
     if complete:
         assert all(value is not None for value in values)
         mean_value = sum(value for value in values if value is not None) / len(values)
 
+    failure_item_ids = tuple(
+        sorted(
+            outcome.item_id
+            for outcome in outcomes
+            if outcome.status != "success"
+        )
+    )
     return FailurePreservingAggregate(
         requested=len(outcomes),
         completed=completed,
@@ -375,7 +415,7 @@ def aggregate_run_outcomes(outcomes: Sequence[RunOutcome]) -> FailurePreservingA
         complete=complete,
         status_counts=dict(sorted(counts.items())),
         mean_value=mean_value,
-        failure_item_ids=tuple(sorted(outcome.item_id for outcome in outcomes if outcome.status != "success")),
+        failure_item_ids=failure_item_ids,
     )
 
 
@@ -413,20 +453,34 @@ def build_derived_artifact_manifest(
     return DerivedArtifactManifest.model_validate(payload)
 
 
+def load_primary_comparison_registry(
+    path: str | Path,
+) -> PrimaryComparisonRegistry:
+    payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    return PrimaryComparisonRegistry.model_validate(payload)
+
+
+def load_comparison_result_set(path: str | Path) -> ComparisonResultSet:
+    payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    return ComparisonResultSet.model_validate(payload)
+
+
 def build_primary_report(
     registry: PrimaryComparisonRegistry,
-    results: Sequence[ComparisonResult],
+    result_set: ComparisonResultSet,
     *,
     repo_revision: str,
 ) -> PrimaryComparisonReport:
-    result_map = {result.comparison_id: result for result in results}
-    if len(result_map) != len(results):
-        raise ValueError("comparison results must have unique ids")
+    if registry.experiment_revision != result_set.experiment_revision:
+        raise ValueError("registry and result-set experiment revisions must match")
+    result_map = {result.comparison_id: result for result in result_set.results}
     expected = {comparison.id for comparison in registry.comparisons}
     if set(result_map) != expected:
         missing = sorted(expected - set(result_map))
         extra = sorted(set(result_map) - expected)
-        raise ValueError(f"comparison result ids mismatch: missing={missing}, extra={extra}")
+        raise ValueError(
+            f"comparison result ids mismatch: missing={missing}, extra={extra}"
+        )
 
     report = PrimaryComparisonReport(
         experiment_revision=registry.experiment_revision,
@@ -439,12 +493,15 @@ def build_primary_report(
 
 
 def serialize_primary_report(report: PrimaryComparisonReport) -> str:
-    return json.dumps(
-        report.model_dump(mode="json"),
-        indent=2,
-        sort_keys=True,
-        allow_nan=False,
-    ) + "\n"
+    return (
+        json.dumps(
+            report.model_dump(mode="json"),
+            indent=2,
+            sort_keys=True,
+            allow_nan=False,
+        )
+        + "\n"
+    )
 
 
 def _auroc(
@@ -459,8 +516,12 @@ def _auroc(
     if negatives == 0:
         return RankingMetric(None, False, "AUROC undefined without negative labels")
 
-    positive_scores = [score for score, label in zip(scores, labels, strict=True) if label]
-    negative_scores = [score for score, label in zip(scores, labels, strict=True) if not label]
+    positive_scores = [
+        score for score, label in zip(scores, labels, strict=True) if label
+    ]
+    negative_scores = [
+        score for score, label in zip(scores, labels, strict=True) if not label
+    ]
     wins = 0.0
     for positive in positive_scores:
         for negative in negative_scores:
@@ -487,8 +548,9 @@ def _auprc(
     area = 0.0
     for score in sorted(groups, reverse=True):
         group = groups[score]
-        true_positive += sum(group)
-        false_positive += len(group) - sum(group)
+        positive_in_group = sum(group)
+        true_positive += positive_in_group
+        false_positive += len(group) - positive_in_group
         recall = true_positive / positives
         precision = true_positive / (true_positive + false_positive)
         area += (recall - previous_recall) * precision
@@ -496,7 +558,9 @@ def _auprc(
     return RankingMetric(area, True, None)
 
 
-def _validate_paired_values(values_a: Sequence[float], values_b: Sequence[float]) -> None:
+def _validate_paired_values(
+    values_a: Sequence[float], values_b: Sequence[float]
+) -> None:
     if len(values_a) != len(values_b) or not values_a:
         raise ValueError("paired values must be non-empty and equally sized")
     for value in (*values_a, *values_b):
@@ -514,7 +578,10 @@ def _quantile(values: Sequence[float], probability: float) -> float:
     if lower_index == upper_index:
         return ordered[lower_index]
     fraction = position - lower_index
-    return ordered[lower_index] * (1.0 - fraction) + ordered[upper_index] * fraction
+    return (
+        ordered[lower_index] * (1.0 - fraction)
+        + ordered[upper_index] * fraction
+    )
 
 
 def _derived_manifest_digest(manifest: DerivedArtifactManifest) -> str:
@@ -537,5 +604,16 @@ def _require_unique_sorted(values: Sequence[str], field: str) -> None:
 
 
 def _require_sha256(value: str, field: str) -> None:
-    if len(value) != 64 or any(character not in "0123456789abcdef" for character in value):
+    if len(value) != 64 or any(
+        character not in "0123456789abcdef" for character in value
+    ):
         raise ValueError(f"{field} must be a lowercase SHA-256 digest")
+
+
+def _require_git_sha(value: str, field: str) -> None:
+    if len(value) != 40 or any(
+        character not in "0123456789abcdef" for character in value
+    ):
+        raise ValueError(
+            f"{field} must be a 40-character lowercase hexadecimal git SHA"
+        )
