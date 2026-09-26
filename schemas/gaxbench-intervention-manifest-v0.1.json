@@ -1,0 +1,117 @@
+{
+  "$defs": {
+    "InterventionPair": {
+      "additionalProperties": false,
+      "properties": {
+        "base_item_id": {
+          "minLength": 1,
+          "title": "Base Item Id",
+          "type": "string"
+        },
+        "changed_path": {
+          "minLength": 1,
+          "title": "Changed Path",
+          "type": "string"
+        },
+        "expected_evidence_support_direction": {
+          "anyOf": [
+            {
+              "enum": ["increase", "decrease", "same"],
+              "type": "string"
+            },
+            {"type": "null"}
+          ],
+          "default": null,
+          "title": "Expected Evidence Support Direction"
+        },
+        "expected_relation": {
+          "enum": ["same", "flip", "directional-only", "abstain"],
+          "title": "Expected Relation",
+          "type": "string"
+        },
+        "expected_sufficiency_direction": {
+          "anyOf": [
+            {
+              "enum": ["increase", "decrease", "same"],
+              "type": "string"
+            },
+            {"type": "null"}
+          ],
+          "default": null,
+          "title": "Expected Sufficiency Direction"
+        },
+        "family": {
+          "minLength": 1,
+          "title": "Family",
+          "type": "string"
+        },
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "intervention_item_id": {
+          "minLength": 1,
+          "title": "Intervention Item Id",
+          "type": "string"
+        },
+        "materiality": {
+          "enum": ["material", "irrelevant"],
+          "title": "Materiality",
+          "type": "string"
+        },
+        "rationale": {
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "target_action": {
+          "anyOf": [{"type": "string"}, {"type": "null"}],
+          "default": null,
+          "title": "Target Action"
+        },
+        "target_direction": {
+          "anyOf": [
+            {
+              "enum": ["increase", "decrease", "same"],
+              "type": "string"
+            },
+            {"type": "null"}
+          ],
+          "default": null,
+          "title": "Target Direction"
+        }
+      },
+      "required": [
+        "id",
+        "base_item_id",
+        "intervention_item_id",
+        "family",
+        "materiality",
+        "expected_relation",
+        "changed_path",
+        "rationale"
+      ],
+      "title": "InterventionPair",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "pairs": {
+      "items": {"$ref": "#/$defs/InterventionPair"},
+      "minItems": 1,
+      "title": "Pairs",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "0.1",
+      "default": "0.1",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": ["pairs"],
+  "title": "InterventionManifest",
+  "type": "object"
+}
