@@ -54,21 +54,21 @@ def main() -> None:
             l2=args.l2,
             seed=args.seed,
         )
-        result = train_gax_v0(
+        training_result = train_gax_v0(
             train_items,
             config,
             validation_items=validation_items,
         )
-        artifact_sha256 = save_gax_v0_checkpoint(args.checkpoint, result)
+        artifact_sha256 = save_gax_v0_checkpoint(args.checkpoint, training_result)
         payload = {
-            "architecture_id": result.model.architecture_id,
-            "feature_revision": result.model.feature_revision,
-            "model_revision": result.model.model_revision,
+            "architecture_id": training_result.model.architecture_id,
+            "feature_revision": training_result.model.feature_revision,
+            "model_revision": training_result.model.model_revision,
             "checkpoint_sha256": artifact_sha256,
-            "training_manifest_sha256": result.training_manifest_sha256,
-            "epochs_completed": len(result.history),
-            "first_epoch_nll": result.history[0].mean_nll,
-            "final_epoch_nll": result.history[-1].mean_nll,
+            "training_manifest_sha256": training_result.training_manifest_sha256,
+            "epochs_completed": len(training_result.history),
+            "first_epoch_nll": training_result.history[0].mean_nll,
+            "final_epoch_nll": training_result.history[-1].mean_nll,
         }
         print(json.dumps(payload, indent=2, sort_keys=True))
         return
@@ -76,26 +76,30 @@ def main() -> None:
     if args.command == "evaluate":
         model, artifact_sha256 = load_gax_v0_checkpoint(args.checkpoint)
         items = load_items(args.items)
-        result = run_baseline(
+        run_result = run_baseline(
             items,
             GaxV0Adapter(model, artifact_sha256=artifact_sha256),
             ece_bins=args.ece_bins,
         )
         payload = {
-            "identity": asdict(result.identity),
-            "requested": result.requested,
-            "completed": result.completed,
-            "failed": result.failed,
+            "identity": asdict(run_result.identity),
+            "requested": run_result.requested,
+            "completed": run_result.completed,
+            "failed": run_result.failed,
             "action_metrics": (
-                None if result.action_metrics is None else asdict(result.action_metrics)
+                None
+                if run_result.action_metrics is None
+                else asdict(run_result.action_metrics)
             ),
             "abstention_metrics": (
-                None if result.abstention_metrics is None else asdict(result.abstention_metrics)
+                None
+                if run_result.abstention_metrics is None
+                else asdict(run_result.abstention_metrics)
             ),
-            "evaluation_error": result.evaluation_error,
+            "evaluation_error": run_result.evaluation_error,
         }
         print(json.dumps(payload, indent=2, sort_keys=True))
-        if result.failed or result.evaluation_error is not None:
+        if run_result.failed or run_result.evaluation_error is not None:
             raise SystemExit(2)
         return
 
