@@ -14,6 +14,7 @@ from gaxbench.gax_v0 import (
 )
 from gaxbench.io import load_items
 from gaxbench.runner import run_baseline
+from gaxbench.schema import BenchmarkItem
 
 _ECAL_COMPONENTS = (
     "bidirectional",
@@ -22,6 +23,8 @@ _ECAL_COMPONENTS = (
     "proper-scoring",
     "replay",
 )
+_ItemTuple = tuple[BenchmarkItem, ...]
+_EcalItemSets = tuple[_ItemTuple, _ItemTuple, _ItemTuple, _ItemTuple]
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -172,11 +175,11 @@ def _base_config_from_args(args: argparse.Namespace) -> GaxV0Config:
     )
 
 
-def _load_optional_items(path: str | None) -> tuple:
+def _load_optional_items(path: str | None) -> _ItemTuple:
     return tuple(load_items(path)) if path is not None else ()
 
 
-def _load_ecal_items(args: argparse.Namespace) -> tuple:
+def _load_ecal_items(args: argparse.Namespace) -> _EcalItemSets:
     train_items = tuple(load_items(args.train_items))
     validation_items = tuple(load_items(args.validation_items))
     replay_items = _load_optional_items(args.replay_items)
