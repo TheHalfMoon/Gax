@@ -168,7 +168,7 @@ def main() -> None:
         ecal_train, ecal_validation, replay, retention = _load_ecal_items(args)
         if args.component == "replay" and not replay:
             raise SystemExit("ecal-ablate replay requires --replay-items")
-        result = run_matched_ablation(
+        ecal_result = run_matched_ablation(
             args.component,
             ecal_train,
             ecal_validation,
@@ -178,7 +178,7 @@ def main() -> None:
             base=_base_config_from_args(args),
             ece_bins=args.ece_bins,
         )
-        print(json.dumps(asdict(result), indent=2, sort_keys=True))
+        print(json.dumps(asdict(ecal_result), indent=2, sort_keys=True))
         return
 
     if args.command in {"selective-manifest", "selective-evaluate"}:
@@ -207,7 +207,7 @@ def main() -> None:
             print(json.dumps(payload, indent=2, sort_keys=True))
             return
 
-        result = run_matched_selector_suite(
+        selective_result = run_matched_selector_suite(
             selective_train,
             calibration,
             validation,
@@ -219,7 +219,7 @@ def main() -> None:
         )
         payload = {
             "checkpoint_sha256": checkpoint_sha256,
-            "result": asdict(result),
+            "result": asdict(selective_result),
         }
         print(json.dumps(payload, indent=2, sort_keys=True))
         return
