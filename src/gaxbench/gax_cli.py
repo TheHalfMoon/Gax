@@ -120,27 +120,27 @@ def main() -> None:
         return
 
     if args.command == "ecal-manifest":
-        train_items, validation_items, replay_items, retention_items = _load_ecal_items(args)
+        ecal_train, ecal_validation, replay, retention = _load_ecal_items(args)
         payload = build_p04_ablation_manifest(
-            train_items,
-            validation_items,
-            replay_items=replay_items,
-            retention_items=retention_items,
+            ecal_train,
+            ecal_validation,
+            replay_items=replay,
+            retention_items=retention,
             base=_base_config_from_args(args),
         )
         print(json.dumps(payload, indent=2, sort_keys=True))
         return
 
     if args.command == "ecal-ablate":
-        train_items, validation_items, replay_items, retention_items = _load_ecal_items(args)
-        if args.component == "replay" and not replay_items:
+        ecal_train, ecal_validation, replay, retention = _load_ecal_items(args)
+        if args.component == "replay" and not replay:
             raise SystemExit("ecal-ablate replay requires --replay-items")
         result = run_matched_ablation(
             args.component,
-            train_items,
-            validation_items,
-            replay_items=replay_items,
-            retention_items=retention_items,
+            ecal_train,
+            ecal_validation,
+            replay_items=replay,
+            retention_items=retention,
             base=_base_config_from_args(args),
             ece_bins=args.ece_bins,
         )
