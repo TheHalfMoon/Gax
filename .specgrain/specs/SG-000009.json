@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "SG-000009",
   "title": "GAX-P06 - Evidence interventions and counterfactual robustness",
-  "state": "GRAIN",
+  "state": "PROVEN",
   "method": "research-implementation",
   "parent_id": null,
   "dependencies": ["SG-000008"],
@@ -59,13 +59,14 @@
     "Synthetic P06 fixtures contain no clinical text, patient data, medical thresholds, diagnosis rules, treatment guidance, or external source claims",
     "All candidate paper mechanisms remain defer-real-data after synthetic qualification",
     "Exact-head CI passes Ruff, mypy strict, pytest, and compileall on Python 3.11/3.12 across Linux and Windows",
-    "Implementation merges with an expected-head guard, post-main CI succeeds, and a separate canonical closeout is required before SG-000009 becomes PROVEN"
+    "Implementation merged with an expected-head guard and post-main CI passed before canonical closeout"
   ],
   "change_surface": [
     ".specgrain/specs/SG-000009.json",
     "src/gaxbench/interventions.py",
     "src/gaxbench/cli.py",
     "src/gaxbench/__init__.py",
+    "src/gaxbench/intervention_run.py",
     "schemas/gaxbench-intervention-manifest-v0.1.json",
     "registry/datasets.json",
     "tests/fixtures/p06_items.jsonl",
@@ -74,6 +75,7 @@
     "tests/test_interventions.py",
     "tests/test_intervention_cli.py",
     "tests/test_intervention_schema_snapshot.py",
+    "tests/test_intervention_run.py",
     "docs/research/P06_EVIDENCE_COUNTERFACTUALS.md",
     "experiments/p06/decision_ledger.json"
   ],
@@ -108,7 +110,7 @@
   },
   "risk": {
     "level": "medium",
-    "recovery": "Revert the P06 implementation branch and return to canonical P05 main 3a3d1379479e32127b0a44b85043dfbda53c944f. No real clinical dataset, released clinical model, or production behavior is affected."
+    "recovery": "Revert P06 to canonical P05 main 3a3d1379479e32127b0a44b85043dfbda53c944f. No real clinical dataset, released clinical model, or production behavior is affected."
   },
   "metadata": {
     "readiness": {
@@ -118,13 +120,13 @@
       },
       "safety": {
         "requirements": [
-          "Never infer medical truth in the transformation builder; expected relations require governed source labels/rationale.",
+          "Never infer medical truth in an intervention constructor; expected relations require governed source labels/rationale.",
           "Never let a base/intervention family cross splits.",
           "Never reward evidence sensitivity alone as safety or correctness.",
           "Never use final-test labels for P06 mechanism selection or repair.",
           "Never promote synthetic pair results into a medical or paper superiority claim."
         ],
-        "status": "implementation-pending-exact-head-qualification"
+        "status": "closed-canonical-synthetic-mechanics-only"
       },
       "unresolved_decisions": [
         "All P06 candidate paper mechanisms remain defer-real-data pending licensed development evidence.",
@@ -133,6 +135,19 @@
         "FHIR representation and tool-action interventions remain P07 work."
       ],
       "version": 1
+    },
+    "closeout": {
+      "implementation_pr": 25,
+      "implementation_exact_head": "e848499a2b1500de6fda2e1f55afd5afc79beae2",
+      "implementation_exact_head_ci_run": 36254832102,
+      "implementation_exact_head_ci": "SUCCESS",
+      "implementation_merge_sha": "a63704e89d4ad81c97358d3f65f5deb18cdcc041",
+      "post_main_ci_run": 36254912534,
+      "post_main_ci": "SUCCESS",
+      "qualification_matrix": "Linux/Windows x Python 3.11/3.12; Ruff, mypy strict, pytest, compileall all PASS",
+      "paper_mechanism_decisions": "defer-real-data",
+      "clinical_data": "none",
+      "phi": "none"
     }
   }
 }
