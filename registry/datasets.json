@@ -63,6 +63,43 @@
       "review_status": "approved",
       "reviewer": "TheHalfMoon/Gax maintainers",
       "review_date": "2026-09-26"
+    },
+    {
+      "id": "ecal-synthetic-mechanistic",
+      "name": "P04 ECAL abstract mechanistic ablation fixtures",
+      "source_url": null,
+      "upstream_revision": "gax-p04-v0.1",
+      "license": "CC0-1.0",
+      "redistribution": "permitted",
+      "access_requirements": null,
+      "contains_clinical_text": false,
+      "contains_phi": false,
+      "patient_or_entity_key": "source_id",
+      "intended_uses": [
+        "ECAL component unit tests",
+        "matched synthetic ablation qualification",
+        "hidden evidence-label leakage regression tests",
+        "replay and retention accounting tests",
+        "CLI reproducibility smoke tests"
+      ],
+      "forbidden_uses": [
+        "clinical validation claims",
+        "medical performance claims",
+        "patient care",
+        "paper benchmark claims",
+        "ECAL superiority claims"
+      ],
+      "split_strategy": "Hand-authored abstract train/development/replay/retention fixtures used only to isolate ECAL mechanics; no real clinical concept, threshold, patient, or external source",
+      "transforms": [],
+      "derived_artifacts": [
+        "tests/fixtures/ecal_train.jsonl",
+        "tests/fixtures/ecal_validation.jsonl",
+        "tests/fixtures/ecal_replay.jsonl",
+        "tests/fixtures/ecal_retention.jsonl"
+      ],
+      "review_status": "approved",
+      "reviewer": "TheHalfMoon/Gax maintainers",
+      "review_date": "2026-09-26"
     }
   ]
 }
