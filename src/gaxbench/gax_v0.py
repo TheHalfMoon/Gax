@@ -100,10 +100,15 @@ class GaxV0Model:
             raise ValueError("item actions must not be empty")
         actions = sorted(item.actions, key=lambda action: action.id)
         state_vector = _state_vector(item, self.config.feature_dim)
-        logits = [self._score(state_vector, _action_vector(action, self.config.feature_dim))
-                  for action in actions]
+        logits = [
+            self._score(state_vector, _action_vector(action, self.config.feature_dim))
+            for action in actions
+        ]
         probabilities = _softmax(logits)
-        return {action.id: probability for action, probability in zip(actions, probabilities, strict=True)}
+        return {
+            action.id: probability
+            for action, probability in zip(actions, probabilities, strict=True)
+        }
 
     def _score(self, state_vector: Sequence[float], action_vector: Sequence[float]) -> float:
         total = 0.0
