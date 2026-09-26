@@ -72,7 +72,7 @@ The intended publication path is:
 2. submission to an appropriate peer-reviewed health-ML, ML, or NLP venue based on the final demonstrated contribution and active call;
 3. a journal extension only if there is substantial new validation or analysis.
 
-The manuscript workspace is under [paper/](paper/README.md). It remains intentionally free of fabricated placeholder results during the foundation phase.
+The manuscript workspace is under [paper/](paper/README.md). It remains intentionally free of fabricated placeholder results until P08 produces frozen evidence.
 
 ## Compute constraint
 
@@ -80,11 +80,11 @@ Founder-paid cloud compute is out of scope. Smoke tests and tutorials should run
 
 ## Status
 
-**P06 — Evidence interventions and counterfactual robustness.** P00-P05 are canonical. P05 established a qualified native information-sufficiency and matched-coverage selective-abstention framework. The learned sufficiency mechanism is implementation-proven, but its paper-level benefit remains `defer-real-data` until licensed, leakage-audited development evidence satisfies the preregistered keep/reject gate.
+**P08 — Full Paper Evaluation.** P00-P07 are canonical implementation/research-infrastructure phases. P07 established deterministic, version-aware, read-only FHIR interoperability with explicit source-version preservation, frozen MedAgentBench/FHIR-AgentBench adapter contracts, representation controls, and final-test sealing. P07 does **not** establish FHIR benchmark superiority, clinical correctness, FHIR conformance certification, or R4-to-R5 semantic equivalence.
 
-The active P06 research tests whether GAX responds to **material state/evidence changes** while remaining stable to irrelevant edits. A positive grounding claim requires controlled evidence interventions: receiving evidence or emitting citation-shaped output is not enough. Paired counterfactual families must stay within source splits, final-test tuning remains prohibited, and synthetic fixtures can prove mechanics only.
+P08 is the evidence phase. Before final-test access, GAX must freeze benchmark/split manifests, GAX and baseline revisions, calibration/selective policies, representation choices, hardware protocols, and data/license/leakage audits. Final paper results must preserve null and negative findings, exact failure counts, confidence intervals, matched evaluation conditions, and immutable evidence packets. No post-test tuning is authorized.
 
-No clinical performance, safety, causal, deployment, or paper-superiority claim is authorized from synthetic P06 evidence.
+Paper-level claims for ECAL, learned information sufficiency, evidence grounding, counterfactual robustness, FHIR gains, efficiency, or baseline superiority remain unproven until they pass their preregistered P08 gates on licensed, leakage-audited evidence.
 
 ## License
 
