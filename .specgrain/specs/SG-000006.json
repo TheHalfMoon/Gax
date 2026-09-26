@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "SG-000006",
   "title": "GAX-P03 - First trainable non-generative GAX v0",
-  "state": "GRAIN",
+  "state": "PROVEN",
   "method": "research-implementation",
   "parent_id": null,
   "dependencies": [
@@ -15,7 +15,7 @@
     "reproducibility"
   ],
   "outcome": "Establish the first genuine trainable GAX typed-decision model with deterministic training, integrity-bound checkpoints, deterministic inference, GAXBench integration, and a research-safe model card before ECAL experiments begin.",
-  "rationale": "P00-P02 froze the research, benchmark, model-visible input, and comparison contracts. P03 must prove the complete model lifecycle without conflating lifecycle qualification with clinical backbone selection or ECAL novelty. A dependency-light bilinear state/action reference model is sufficient for this gate and can be qualified on free CPU CI.",
+  "rationale": "P00-P02 froze the research, benchmark, model-visible input, and comparison contracts. P03 proves the complete model lifecycle without conflating lifecycle qualification with clinical backbone selection or ECAL novelty. A dependency-light bilinear state/action reference model satisfies this gate on free CPU CI after correction of a model-visible evidence annotation leak discovered during closeout review.",
   "scope_in": [
     "Pure-Python deterministic GAX bilinear state/action reference model",
     "Versioned SHA-256 hashed feature representation",
@@ -98,13 +98,14 @@
       "windows-python311-ci-pass",
       "windows-python312-ci-pass",
       "implementation-pr-pass",
+      "correction-pr-pass",
       "post-merge-ci-pass",
       "canonical-p03-closeout-pass"
     ]
   },
   "risk": {
     "level": "medium",
-    "recovery": "Revert P03 files and return to canonical P02 at 8424a84b94fc980523497d79a35a2421a8de6b29. P03 introduces no external model weight, clinical dataset, or public performance claim."
+    "recovery": "Revert the P03 closeout and return to corrected main d04cc0c63d83b944c2f1f3527a358848c27dd304. P03 introduces no external model weight, clinical dataset, or public performance claim."
   },
   "metadata": {
     "readiness": {
@@ -120,14 +121,36 @@
           "Do not introduce real patient data or clinical-use claims.",
           "Do not promote the reference architecture as the final paper model without later evidence."
         ],
-        "status": "pending-correction-exact-head-ci"
+        "status": "requirements-satisfied-for-p03"
       },
       "unresolved_decisions": [
         "Final GAX clinical backbone remains a later controlled experiment.",
         "ECAL objective components remain P04 hypotheses.",
         "Learned sufficiency and selective policy remain P05 hypotheses."
       ],
-      "version": 2
+      "version": 3
+    },
+    "closeout": {
+      "implementation_pr": 15,
+      "implementation_head_sha": "18bad9e76ef161836875282e26acbaa0ff873a92",
+      "implementation_exact_head_ci_run": 36239680443,
+      "implementation_merge_sha": "5b51faf169ec828888d0f314acf2e8e8196bb5cb",
+      "implementation_post_merge_ci_run": 36239756362,
+      "correction_pr": 16,
+      "correction_head_sha": "89f19898ca4a46dcd9551979f216dc77737ef266",
+      "correction_exact_head_ci_run": 36240225652,
+      "correction_merge_sha": "d04cc0c63d83b944c2f1f3527a358848c27dd304",
+      "correction_post_merge_ci_run": 36240311386,
+      "all_ci_conclusions": "success",
+      "feature_revision": "sha256-word-v0.2",
+      "verification": [
+        "Initial lifecycle implementation passed exact-head and post-merge cross-platform CI",
+        "Closeout review found evidence.relation was incorrectly model-visible despite the P02 contract",
+        "Correction switched GAX v0 to the shared render_model_state boundary and advanced the feature revision",
+        "A regression test proves changing only evidence.relation leaves probabilities unchanged",
+        "Correction exact-head and post-merge CI passed on Linux/Windows and Python 3.11/3.12",
+        "No clinical benchmark result, PHI, ECAL claim, abstention claim, FHIR claim, or external-model result was introduced"
+      ]
     }
   }
 }
