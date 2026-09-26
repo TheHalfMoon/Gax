@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import math
 from collections import defaultdict
-from collections.abc import Sequence
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
@@ -484,8 +484,8 @@ def _require_same_action_keys(first: dict[str, float], second: dict[str, float])
         raise ValueError("probability distributions must use identical action keys")
 
 
-def _mean_bool(values: Sequence[bool] | object) -> float:
-    sequence = list(values)  # type: ignore[arg-type]
+def _mean_bool(values: Iterable[bool]) -> float:
+    sequence = list(values)
     if not sequence:
         raise ValueError("boolean sequence must not be empty")
-    return sum(bool(value) for value in sequence) / len(sequence)
+    return sum(sequence) / len(sequence)
