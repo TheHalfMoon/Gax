@@ -11,7 +11,6 @@ from gaxbench.gax_v0 import GaxV0Model, _state_vector
 from gaxbench.metrics import (
     AbstentionMetrics,
     evaluate_abstention,
-    expected_calibration_error,
     risk_at_coverage,
     risk_coverage_curve,
 )
@@ -196,8 +195,7 @@ def train_information_sufficiency(
     config: SufficiencyConfig,
 ) -> SufficiencyTrainingResult:
     _validate_sufficiency_items(train_items, required_split="train")
-    if config.feature_dim != action_model.config.feature_dim:
-        raise ValueError("sufficiency feature_dim must match the action model feature_dim")
+    _validate_config_matches_action_model(config, action_model)
 
     model = LearnedSufficiencyModel(config)
     rng = random.Random(config.seed)
@@ -413,6 +411,7 @@ def run_matched_selector_suite(
     _validate_coverage(target_coverage)
 
     config = sufficiency_config or SufficiencyConfig(feature_dim=action_model.config.feature_dim)
+    _validate_config_matches_action_model(config, action_model)
     training = train_information_sufficiency(train_items, action_model, config)
     selectors: tuple[SelectorName, ...] = (
         "max-probability",
@@ -483,6 +482,7 @@ def build_p05_manifest(
     _validate_sufficiency_items(validation_items, required_split="validation")
     _validate_coverage(target_coverage)
     config = sufficiency_config or SufficiencyConfig(feature_dim=action_model.config.feature_dim)
+    _validate_config_matches_action_model(config, action_model)
     payload: dict[str, object] = {
         "schema_version": _P05_SCHEMA_VERSION,
         "source_revision": _P05_SOURCE_REVISION,
@@ -528,9 +528,6 @@ def _validate_sufficiency_items(
     required_split: str,
 ) -> None:
     _validate_split_only(items, required_split=required_split)
-    ids = [item.id for item in items]
-    if len(ids) != len(set(ids)):
-        raise ValueError("sufficiency item ids must be unique")
     for item in items:
         if item.gold is None or item.gold.action is None or item.gold.sufficient is None:
             raise ValueError(
@@ -541,11 +538,22 @@ def _validate_sufficiency_items(
 def _validate_split_only(items: Sequence[BenchmarkItem], *, required_split: str) -> None:
     if not items:
         raise ValueError(f"{required_split} items must not be empty")
+    item_ids = [item.id for item in items]
+    if len(item_ids) != len(set(item_ids)):
+        raise ValueError(f"{required_split} item ids must be unique")
     for item in items:
         if item.split != required_split:
             raise ValueError(
                 f"item {item.id!r} has split {item.split!r}; expected {required_split!r}"
             )
+
+
+def _validate_config_matches_action_model(
+    config: SufficiencyConfig,
+    action_model: GaxV0Model,
+) -> None:
+    if config.feature_dim != action_model.config.feature_dim:
+        raise ValueError("sufficiency feature_dim must match the action model feature_dim")
 
 
 def _validate_coverage(value: float) -> None:
@@ -561,7 +569,12 @@ def _validate_probabilities(probabilities: dict[str, float]) -> None:
         for probability in probabilities.values()
     ):
         raise ValueError("probabilities must be finite and in [0, 1]")
-    if not math.isclose(math.fsum(probabilities.values()), 1.0, abs_tol=1e-6):
+    if not math.isclose(
+        math.fsum(probabilities.values()),
+        1.0,
+        rel_tol=0.0,
+        abs_tol=1e-6,
+    ):
         raise ValueError("probabilities must sum to 1 within 1e-6")
 
 
