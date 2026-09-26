@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "SG-000006",
   "title": "GAX-P03 - First trainable non-generative GAX v0",
-  "state": "GRAIN",
+  "state": "PROVEN",
   "method": "research-implementation",
   "parent_id": null,
   "dependencies": [
@@ -15,7 +15,7 @@
     "reproducibility"
   ],
   "outcome": "Establish the first genuine trainable GAX typed-decision model with deterministic training, integrity-bound checkpoints, deterministic inference, GAXBench integration, and a research-safe model card before ECAL experiments begin.",
-  "rationale": "P00-P02 froze the research, benchmark, and comparison contracts. P03 must now prove the complete model lifecycle without conflating lifecycle qualification with clinical backbone selection or ECAL novelty. A dependency-light bilinear state/action reference model is sufficient for this gate and can be qualified on free CPU CI.",
+  "rationale": "P00-P02 froze the research, benchmark, and comparison contracts. P03 proves the complete model lifecycle without conflating lifecycle qualification with clinical backbone selection or ECAL novelty. The dependency-light bilinear state/action reference model satisfies this gate on free CPU CI.",
   "scope_in": [
     "Pure-Python deterministic GAX bilinear state/action reference model",
     "Versioned SHA-256 hashed feature representation",
@@ -98,7 +98,7 @@
   },
   "risk": {
     "level": "medium",
-    "recovery": "Revert P03 files and return to canonical P02 at 8424a84b94fc980523497d79a35a2421a8de6b29. P03 introduces no external model weight, clinical dataset, or public performance claim."
+    "recovery": "Revert the canonical P03 closeout and return to merge 5b51faf169ec828888d0f314acf2e8e8196bb5cb. No external model weights, clinical datasets, or public performance claims are affected."
   },
   "metadata": {
     "readiness": {
@@ -113,7 +113,7 @@
           "Do not introduce real patient data or clinical-use claims.",
           "Do not promote the reference architecture as the final paper model without later evidence."
         ],
-        "status": "pending-exact-head-ci"
+        "status": "requirements-satisfied-for-p03"
       },
       "unresolved_decisions": [
         "Final GAX clinical backbone remains a later controlled experiment.",
@@ -121,6 +121,21 @@
         "Learned sufficiency and selective policy remain P05 hypotheses."
       ],
       "version": 1
+    },
+    "closeout": {
+      "implementation_pr": 15,
+      "implementation_head_sha": "18bad9e76ef161836875282e26acbaa0ff873a92",
+      "exact_head_ci_run": 36239680443,
+      "exact_head_ci_conclusion": "success",
+      "implementation_merge_sha": "5b51faf169ec828888d0f314acf2e8e8196bb5cb",
+      "post_merge_ci_run": 36239756362,
+      "post_merge_ci_conclusion": "success",
+      "verification": [
+        "Ruff, mypy strict, pytest, and compileall passed on Linux and Windows for Python 3.11 and 3.12 at the exact implementation head",
+        "The same cross-platform matrix passed on the resulting main merge",
+        "GAX v0 remains explicitly a synthetic lifecycle reference, not a clinical-performance result",
+        "No real clinical data, PHI, ECAL claim, abstention claim, FHIR claim, or external-baseline result was introduced"
+      ]
     }
   }
 }
