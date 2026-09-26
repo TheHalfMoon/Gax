@@ -1,0 +1,10 @@
+{"item_id":"flip-base","probabilities":{"left":0.90,"right":0.10},"evidence_support":0.80,"information_sufficiency":0.90,"abstain":false,"metadata":{}}
+{"item_id":"flip-edit","probabilities":{"left":0.15,"right":0.85},"evidence_support":0.80,"information_sufficiency":0.90,"abstain":false,"metadata":{}}
+{"item_id":"stable-base","probabilities":{"left":0.80,"right":0.20},"evidence_support":0.70,"information_sufficiency":0.85,"abstain":false,"metadata":{}}
+{"item_id":"stable-edit","probabilities":{"left":0.79,"right":0.21},"evidence_support":0.70,"information_sufficiency":0.85,"abstain":false,"metadata":{}}
+{"item_id":"det-base","probabilities":{"left":0.82,"right":0.18},"evidence_support":0.65,"information_sufficiency":0.88,"abstain":false,"metadata":{}}
+{"item_id":"det-edit","probabilities":{"left":0.80,"right":0.20},"evidence_support":0.64,"information_sufficiency":0.87,"abstain":false,"metadata":{}}
+{"item_id":"contradict-base","probabilities":{"left":0.84,"right":0.16},"evidence_support":0.88,"information_sufficiency":0.91,"abstain":false,"metadata":{}}
+{"item_id":"contradict-edit","probabilities":{"left":0.60,"right":0.40},"evidence_support":0.18,"information_sufficiency":0.22,"abstain":true,"metadata":{}}
+{"item_id":"support-base","probabilities":{"left":0.66,"right":0.34},"evidence_support":0.45,"information_sufficiency":0.80,"abstain":false,"metadata":{}}
+{"item_id":"support-edit","probabilities":{"left":0.88,"right":0.12},"evidence_support":0.90,"information_sufficiency":0.90,"abstain":false,"metadata":{}}
