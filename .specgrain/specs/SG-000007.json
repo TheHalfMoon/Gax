@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "id": "SG-000007",
+  "title": "GAX-P04 - ECAL controlled ablation framework",
+  "state": "GRAIN",
+  "method": "research-implementation",
+  "parent_id": null,
+  "dependencies": [
+    "SG-000006"
+  ],
+  "labels": [
+    "research",
+    "p04",
+    "ecal",
+    "ablation",
+    "calibration"
+  ],
+  "outcome": "Implement Evidence-Calibrated Action Learning as a set of independently switchable, falsifiable training mechanisms with deterministic matched ablations, hidden-label-safe evidence supervision, proper-scoring gradients, and equal-step replay/retention accounting.",
+  "rationale": "P03 established a genuine trainable non-generative GAX reference model. P04 must now test ECAL mechanisms without retroactively relabeling the P03 NLL objective as novel, leaking benchmark annotations into model inputs, or promoting synthetic mechanistic results into paper claims.",
+  "scope_in": [
+    "Bidirectional multi-positive state/action contrastive objective",
+    "Deterministic hard-negative ranking objective with equal-budget random-negative control",
+    "Evidence intervention objective using evidence.relation only as supervision metadata",
+    "Differentiable multiclass Brier proper-scoring objective with independently verified gradient",
+    "Equal-step replay sampling and frozen retention evaluation",
+    "Versioned deterministic matched-ablation manifest",
+    "Development and retention evaluation through the canonical GAXBench runner",
+    "Abstract CC0 synthetic mechanistic fixtures",
+    "Keep/reject/defer research ledger",
+    "CLI reproduction surface",
+    "Linux/Windows Python 3.11/3.12 qualification"
+  ],
+  "scope_out": [
+    "No real patient data or PHI",
+    "No clinical performance claim",
+    "No final ECAL superiority claim from synthetic fixtures",
+    "No final benchmark test-set tuning",
+    "No autonomous diagnosis, treatment, prescribing, triage, or emergency-use claim",
+    "No FHIR capability claim",
+    "No paid founder compute"
+  ],
+  "acceptance": [
+    "Every ECAL scalar objective is independently zeroable while the action NLL reference term remains positive",
+    "Bidirectional contrastive training treats semantically identical action descriptions as multi-positive groups rather than false negatives",
+    "Hard-negative selection is deterministic under score ties and is compared against an equal-weight random-negative control",
+    "Evidence supervision never exposes evidence.relation to the model-visible state and includes support, contradiction, irrelevant, and removal semantics",
+    "Changing only evidence.relation while holding visible evidence content fixed leaves inference probabilities unchanged",
+    "Multiclass Brier gradient is analytically implemented and verified against finite differences",
+    "Replay replaces target steps rather than silently increasing the optimizer-step budget",
+    "Replay evaluation reports a frozen retention slice in addition to the current development slice",
+    "Matched ablation control and treatment use the same architecture, seed protocol, data eligibility, and optimizer-step budget",
+    "A deterministic manifest binds train, development, replay, and retention data hashes plus every control/treatment configuration hash",
+    "Final test labels are prohibited from P04 hyperparameter or keep/reject decisions",
+    "Synthetic P04 fixtures are CC0, contain no clinical text or PHI, and are forbidden for paper or clinical performance claims",
+    "Mechanistic synthetic qualification can only yield implementation evidence; paper-level keep/reject decisions remain deferred until licensed development evidence is available",
+    "The canonical GAXBench runner is reused for development and retention metrics with no alternate metric implementation",
+    "Exact-head CI passes Ruff, mypy strict, pytest, and compileall on Python 3.11/3.12 across Linux and Windows",
+    "Implementation merges with an exact-head guard, post-main CI succeeds, and a separate closeout is required before SG-000007 becomes PROVEN"
+  ],
+  "change_surface": [
+    ".specgrain/specs/SG-000007.json",
+    "src/gaxbench/ecal.py",
+    "src/gaxbench/gax_cli.py",
+    "src/gaxbench/__init__.py",
+    "registry/datasets.json",
+    "tests/fixtures/ecal_train.jsonl",
+    "tests/fixtures/ecal_validation.jsonl",
+    "tests/fixtures/ecal_replay.jsonl",
+    "tests/fixtures/ecal_retention.jsonl",
+    "tests/test_ecal.py",
+    "tests/test_ecal_cli.py",
+    "docs/research/P04_ECAL.md",
+    "experiments/p04/decision_ledger.json"
+  ],
+  "children": [],
+  "context": {
+    "budget_tokens": 24000,
+    "estimated_tokens": 18000
+  },
+  "evidence": {
+    "required": [
+      "p03-closed-canonical",
+      "component-zeroability-pass",
+      "multi-positive-not-false-negative-pass",
+      "hard-negative-determinism-pass",
+      "random-negative-control-pass",
+      "evidence-relation-hidden-pass",
+      "evidence-intervention-mechanistic-pass",
+      "brier-finite-difference-gradient-pass",
+      "replay-equal-step-pass",
+      "retention-evaluation-pass",
+      "matched-ablation-manifest-pass",
+      "canonical-runner-reuse-pass",
+      "synthetic-dataset-registry-pass",
+      "decision-ledger-pass",
+      "cli-reproduction-pass",
+      "linux-python311-ci-pass",
+      "linux-python312-ci-pass",
+      "windows-python311-ci-pass",
+      "windows-python312-ci-pass",
+      "implementation-pr-pass",
+      "post-merge-ci-pass",
+      "canonical-p04-closeout-pass"
+    ]
+  },
+  "risk": {
+    "level": "medium",
+    "recovery": "Revert the P04 implementation and return to canonical P03 main f8d735447234317739311349ffa03db45547accf. P04 introduces only abstract synthetic research infrastructure and no public clinical claim."
+  },
+  "metadata": {
+    "readiness": {
+      "minimality": {
+        "choice": "component-wise-controlled-ablation-framework",
+        "rationale": "The minimal defensible P04 contribution is not a monolithic ECAL loss but independently testable mechanisms with matched controls, exact data/config manifests, and explicit negative-result handling."
+      },
+      "safety": {
+        "requirements": [
+          "Never expose evidence.relation or other benchmark-only labels as model-visible input.",
+          "Never select objective weights from final test labels.",
+          "Never promote synthetic mechanistic results into clinical or paper superiority claims.",
+          "Keep replay and control optimizer-step budgets matched.",
+          "Preserve rejected or deferred mechanisms in the research ledger."
+        ],
+        "status": "implementation-pending-exact-head-ci"
+      },
+      "unresolved_decisions": [
+        "No ECAL component is yet accepted as a paper contribution.",
+        "Final clinical backbone remains unresolved.",
+        "Licensed development datasets for paper-level ECAL keep/reject decisions remain a later evidence gate.",
+        "Native sufficiency and selective abstention remain P05 hypotheses."
+      ],
+      "version": 1
+    }
+  }
+}
