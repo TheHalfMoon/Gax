@@ -128,16 +128,21 @@ The final test split remains sealed until P08, when model revisions, interventio
 
 ## CLI
 
+Every P06 run is bound to an exact repository revision and a non-empty compute-provenance label. `--git-sha` must be the 40-character lowercase hexadecimal revision actually evaluated.
+
 ```bash
 gaxbench interventions-evaluate \
   --items tests/fixtures/p06_items.jsonl \
   --predictions tests/fixtures/p06_predictions.jsonl \
   --manifest tests/fixtures/p06_interventions.json \
-  --stability-tv-threshold 0.05
+  --stability-tv-threshold 0.05 \
+  --git-sha <40-character-git-sha> \
+  --compute-provenance <compute-description>
 ```
 
 Output contains:
 
+- a run manifest binding the git SHA, compute provenance, items, predictions, intervention manifest, threshold, and evaluator revision;
 - manifest SHA-256;
 - declared stability threshold;
 - aggregate metrics;
