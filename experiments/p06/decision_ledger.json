@@ -1,0 +1,66 @@
+{
+  "schema_version": "0.1",
+  "phase": "P06",
+  "mechanisms": [
+    {
+      "id": "material-counterfactual-sensitivity",
+      "class": "candidate-paper-mechanism",
+      "implementation_status": "candidate",
+      "paper_decision": "defer-real-data",
+      "primary_evidence": "paired robust accuracy and base-conditioned counterfactual failure",
+      "rationale": "Synthetic pairs can qualify mechanics but cannot establish medical counterfactual robustness."
+    },
+    {
+      "id": "irrelevant-edit-stability",
+      "class": "required-guardrail",
+      "implementation_status": "candidate",
+      "paper_decision": "defer-real-data",
+      "primary_evidence": "top-1 agreement and preregistered total-variation stability",
+      "rationale": "Material sensitivity is not useful if harmless edits also destabilize the action distribution."
+    },
+    {
+      "id": "evidence-dependence",
+      "class": "candidate-paper-mechanism",
+      "implementation_status": "candidate",
+      "paper_decision": "defer-real-data",
+      "primary_evidence": "directional action/support/sufficiency response under controlled evidence interventions",
+      "rationale": "Receiving evidence is not evidence use; real claims require licensed controlled interventions."
+    },
+    {
+      "id": "determinability-under-missing-information",
+      "class": "required-guardrail",
+      "implementation_status": "candidate",
+      "paper_decision": "defer-real-data",
+      "primary_evidence": "paired same-action behavior and over-abstention under non-critical information removal",
+      "rationale": "Evidence removal must not automatically force abstention when enough information remains."
+    },
+    {
+      "id": "contradictory-or-implausible-evidence-response",
+      "class": "required-guardrail",
+      "implementation_status": "candidate",
+      "paper_decision": "defer-real-data",
+      "primary_evidence": "lower support/sufficiency and explicit abstention where governed labels require it",
+      "rationale": "Blind evidence faithfulness is not safety; implausible or contradictory evidence may need rejection or abstention."
+    }
+  ],
+  "paper_gate": {
+    "synthetic_default": "defer-real-data",
+    "required_before_keep": [
+      "licensed reviewed development evidence",
+      "entity/source leakage audit",
+      "paired matched-baseline evaluation",
+      "predeclared primary metric and stability tolerance",
+      "confidence intervals where statistically appropriate",
+      "per-family failure analysis",
+      "no final-test tuning",
+      "explicit requested/completed/failed counts"
+    ],
+    "reject_conditions": [
+      "apparent gain disappears under leakage-safe splits",
+      "material sensitivity is accompanied by unacceptable irrelevant-edit instability",
+      "evidence response rewards implausible evidence rather than governed support",
+      "gain depends on final-test tuning or hidden metadata",
+      "result cannot be reproduced from frozen artifacts"
+    ]
+  }
+}
