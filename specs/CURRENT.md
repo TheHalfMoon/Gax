@@ -12,6 +12,7 @@ Completed grains:
 - **SG-000006 — GAX-P03 First trainable non-generative GAX v0** — PROVEN
 - **SG-000007 — GAX-P04 ECAL controlled ablation framework** — PROVEN
 - **SG-000008 — GAX-P05 Native information sufficiency and selective abstention** — PROVEN
+- **SG-000009 — GAX-P06 Evidence interventions and counterfactual robustness** — PROVEN
 
 Canonical P03 evidence chain:
 
@@ -59,24 +60,40 @@ Canonical P05 evidence chain:
 
 P05 is **CLOSED_CANONICAL** as an implementation and selective-evaluation framework result. It does not establish clinical safety, a formal conformal guarantee, or learned-sufficiency superiority. A paper-level keep decision still requires licensed, leakage-audited development evidence under the preregistered matched-coverage gate.
 
+Canonical P06 evidence chain:
+
+- research contract: Issue #23
+- implementation PR: #25
+- implementation exact head: `e848499a2b1500de6fda2e1f55afd5afc79beae2`
+- implementation exact-head CI: run `36254832102` — SUCCESS
+- implementation merge: `a63704e89d4ad81c97358d3f65f5deb18cdcc041`
+- implementation post-merge CI: run `36254912534` — SUCCESS
+- exact-head and post-main matrices: Linux/Windows × Python 3.11/3.12 — SUCCESS
+- exact-head and post-main gates include Ruff, mypy strict, pytest, and compileall
+- paired evaluator freezes total-variation and natural-log Jensen-Shannon conventions, same-split/source/group lineage, exact denominator alignment, explicit abstention, directional action/support/sufficiency response, and irrelevant-edit stability
+- P06 CLI rejects final-test items and binds runs to a 40-character git revision plus compute provenance and artifact hashes
+- abstract fixtures contain no patient data, PHI, real medical thresholds, diagnosis rules, treatment guidance, or clinical source claims
+- all P06 paper mechanism decisions remain `defer-real-data`
+
+P06 is **CLOSED_CANONICAL** as a paired intervention/evaluation framework result. It does not establish clinical safety, causal identification, or medical counterfactual superiority. The proven surface is a governed pair manifest/evaluator and synthetic mechanics suite; real medical intervention construction and paper-level keep decisions require licensed, reviewed, leakage-audited development evidence.
+
 Active frontier:
 
-**P06 — Evidence Interventions and Counterfactual Clinical Robustness**
+**P07 — FHIR Interoperable Decision Layer**
 
-P06 tests whether GAX changes action beliefs for materially relevant state/evidence changes while remaining stable to irrelevant edits. It is a falsification program for grounding and counterfactual claims, not a generic data-augmentation phase.
+P07 builds the interoperable state/action boundary required to test GAX as a decision layer in EHR-agent workflows. The phase must not turn FHIR serialization into a hidden label or claim that syntactic FHIR support establishes clinical correctness.
 
-Core research invariants:
+Core P07 goals:
 
 ```text
-uses evidence != merely receives evidence
-material sensitivity != irrelevant-edit instability
-counterfactual robustness != causal identification != clinical safety
+FHIR-native input != FHIR-format memorization
+resource retrieval != clinical correctness
+tool routing != permission to execute a clinical action
+representation gain != serialization artifact
 ```
 
-Every base/intervention family must remain in the source split. Final-test labels cannot be used to generate interventions, tune thresholds, choose mechanisms, or repair failures. Evidence relation labels remain benchmark supervision and may not become model-visible inference features unless a future explicitly governed task changes that contract.
+P07 must first freeze a stable FHIR version/compatibility contract, then implement deterministic canonicalization, typed FHIR resource/tool actions, information-sufficiency decisions, representation controls, and source/license-qualified MedAgentBench/FHIR-AgentBench adapters where their terms permit. Synthetic or explicitly permitted FHIR fixtures are required for public tests; PHI and restricted clinical source text remain out of scope.
 
-Synthetic P06 fixtures may prove parser, lineage, metric, and invariance behavior only. Real medical counterfactuals or evidence-based paper claims require licensed sources, leakage controls, explicit review, matched baselines, and artifact-backed statistical evidence.
-
-P06 research contract: Issue #23.
+Final-test labels remain sealed until P08. Any benchmark requiring credentialed or restricted data must be supported through local user-supplied adapters rather than redistributed through GAX.
 
 Research claims remain subject to `docs/research/REPRODUCIBILITY.md`.

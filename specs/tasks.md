@@ -80,31 +80,42 @@
 
 ## P06 — Evidence and counterfactuals
 
-- [ ] Versioned intervention/pair schema
-- [ ] Source/intervention lineage contract
-- [ ] Counterfactual taxonomy
-- [ ] Material-change builder
-- [ ] Irrelevant-edit control builder
-- [ ] Evidence support/removal/swap/contradiction builder
-- [ ] Same-split pair-family enforcement
-- [ ] Pair-conditioned robust-accuracy and counterfactual-failure metrics
-- [ ] Directional probability-shift metrics
-- [ ] Irrelevant-edit stability metrics
-- [ ] Evidence-dependence and unsupported-confident-action metrics
-- [ ] Requested/completed/failed denominator preservation
-- [ ] Abstract CC0 synthetic fixtures
-- [ ] Keep/reject/defer decision ledger
-- [ ] CLI/reproduction manifest
-- [ ] Exact-head cross-platform qualification
-- [ ] Guarded merge, post-main CI, and canonical P06 closeout
+- [x] Versioned intervention/pair schema
+- [x] Source/intervention lineage contract
+- [x] Counterfactual and evidence-intervention taxonomy
+- [x] Controlled material-change pair representation
+- [x] Irrelevant-edit control representation
+- [x] Evidence support/removal/contradiction intervention representation
+- [x] Same-split pair-family enforcement
+- [x] Pair-conditioned robust-accuracy and counterfactual-failure metrics
+- [x] Directional probability-shift metrics
+- [x] Irrelevant-edit stability metrics
+- [x] Evidence-support and information-sufficiency response metrics
+- [x] Exact item/prediction denominator preservation
+- [x] Abstract CC0 synthetic fixtures
+- [x] Keep/reject/defer decision ledger
+- [x] CLI and exact run-reproduction manifest
+- [x] Final-test rejection during P06 mechanism qualification
+- [x] Exact-head Linux/Windows Python 3.11/3.12 qualification
+- [x] Guarded implementation merge and post-main CI
+- [x] Canonical P06 phase closeout
+
+P06 deliberately does not claim a generic medical transformation builder. Its proven surface is a governed pair manifest/evaluator plus abstract fixtures. Real medical intervention construction and paper-level mechanism decisions remain gated on licensed, reviewed, leakage-audited development evidence.
 
 ## P07 — FHIR
 
+- [ ] Stable FHIR version/compatibility contract
 - [ ] Canonicalizer
 - [ ] FHIR action schemas
-- [ ] MedAgentBench adapter
-- [ ] FHIR-AgentBench adapter
+- [ ] Synthetic/permitted FHIR fixtures
 - [ ] Representation controls
+- [ ] MedAgentBench source/license/revision qualification
+- [ ] FHIR-AgentBench source/license/revision qualification
+- [ ] MedAgentBench adapter where terms permit
+- [ ] FHIR-AgentBench adapter where terms permit
+- [ ] Information-sufficiency/tool-routing evaluation
+- [ ] Exact-head cross-platform qualification
+- [ ] Guarded merge, post-main CI, and canonical P07 closeout
 
 ## P08 — Full paper evaluation
 
