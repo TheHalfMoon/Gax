@@ -95,7 +95,15 @@ def test_learned_score_cannot_see_evidence_relation_label() -> None:
     model = LearnedSufficiencyModel(SufficiencyConfig(feature_dim=16))
     base = _items("p05_validation.jsonl")[0]
     support = base.model_copy(
-        update={"evidence": [Evidence(id="e", text="visible abstract evidence", relation="support")]}
+        update={
+            "evidence": [
+                Evidence(
+                    id="e",
+                    text="visible abstract evidence",
+                    relation="support",
+                )
+            ]
+        }
     )
     contradict = base.model_copy(
         update={
