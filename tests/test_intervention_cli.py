@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 FIXTURES = Path(__file__).parent / "fixtures"
+TEST_SHA = "a" * 40
 
 
 def test_interventions_cli_smoke() -> None:
@@ -24,7 +25,7 @@ def test_interventions_cli_smoke() -> None:
             "--stability-tv-threshold",
             "0.05",
             "--git-sha",
-            "test-sha",
+            TEST_SHA,
             "--compute-provenance",
             "synthetic-test",
         ],
@@ -39,7 +40,7 @@ def test_interventions_cli_smoke() -> None:
     assert metrics["same_top1_agreement"] == 1.0
     assert metrics["abstain_success_rate"] == 1.0
     assert metrics["directional_success_rate"] == 1.0
-    assert payload["run_manifest"]["git_sha"] == "test-sha"
+    assert payload["run_manifest"]["git_sha"] == TEST_SHA
     assert payload["run_manifest"]["compute_provenance"] == "synthetic-test"
 
 
@@ -62,7 +63,7 @@ def test_interventions_cli_rejects_test_split(tmp_path: Path) -> None:
             "--manifest",
             str(FIXTURES / "p06_interventions.json"),
             "--git-sha",
-            "test-sha",
+            TEST_SHA,
             "--compute-provenance",
             "synthetic-test",
         ],
