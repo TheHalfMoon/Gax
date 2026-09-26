@@ -13,6 +13,7 @@ from gaxbench.ecal import (
     _select_negative_index,
     build_p04_ablation_manifest,
     default_p04_decisions,
+    run_matched_ablation,
     train_ecal,
 )
 from gaxbench.gax_v0 import GaxV0Config, GaxV0Model, _softmax
@@ -83,6 +84,13 @@ def validation_items() -> list[BenchmarkItem]:
     return [
         make_item("v1", "alpha validation", "route alpha", split="validation"),
         make_item("v2", "beta validation", "route beta", split="validation"),
+    ]
+
+
+def retention_items() -> list[BenchmarkItem]:
+    return [
+        make_item("rv1", "prior gamma validation one", "route gamma", split="validation"),
+        make_item("rv2", "prior gamma validation two", "route gamma", split="validation"),
     ]
 
 
@@ -167,12 +175,26 @@ def test_ablation_manifest_is_deterministic_and_defers_paper_decisions() -> None
     train = target_items()
     validation = validation_items()
     replay = replay_items()
+    retention = retention_items()
     base = GaxV0Config(feature_dim=8, epochs=3, learning_rate=0.05, seed=3)
-    first = build_p04_ablation_manifest(train, validation, replay_items=replay, base=base)
-    second = build_p04_ablation_manifest(train, validation, replay_items=replay, base=base)
+    first = build_p04_ablation_manifest(
+        train,
+        validation,
+        replay_items=replay,
+        retention_items=retention,
+        base=base,
+    )
+    second = build_p04_ablation_manifest(
+        train,
+        validation,
+        replay_items=replay,
+        retention_items=retention,
+        base=base,
+    )
     assert first == second
     payload = first["payload"]
     assert isinstance(payload, dict)
+    assert payload["retention_manifest_sha256"] is not None
     arms = payload["ablation_arms"]
     assert isinstance(arms, list)
     assert [arm["component"] for arm in arms] == [
@@ -212,3 +234,23 @@ def test_all_components_train_deterministically_without_hidden_label_inference()
     support = make_item("probe", "alpha", "route alpha", relation="support")
     contradict = make_item("probe", "alpha", "route alpha", relation="contradict")
     assert first.model.probabilities(support) == first.model.probabilities(contradict)
+
+
+def test_matched_replay_ablation_reports_development_and_retention() -> None:
+    result = run_matched_ablation(
+        "replay",
+        target_items(),
+        validation_items(),
+        replay_items=replay_items(),
+        retention_items=retention_items(),
+        base=GaxV0Config(feature_dim=8, epochs=3, learning_rate=0.05, seed=13),
+        ece_bins=5,
+    )
+    assert result.component == "replay"
+    assert result.optimizer_steps_equal
+    assert result.control_development.n == 2
+    assert result.treatment_development.n == 2
+    assert result.control_retention is not None
+    assert result.treatment_retention is not None
+    assert result.control_retention.n == 2
+    assert result.treatment_retention.n == 2
