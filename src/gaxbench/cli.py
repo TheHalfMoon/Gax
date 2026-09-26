@@ -13,12 +13,15 @@ from gaxbench.baselines import (
     PredictionFileAdapter,
     UniformBaselineAdapter,
 )
+from gaxbench.ecal import ExperimentContext
 from gaxbench.evidence_packet import write_evidence_packet
 from gaxbench.external_adapters import (
     JSONCommandAdapter,
     TypeSafeHTTPAdapter,
     TypeSafeHTTPConfig,
 )
+from gaxbench.intervention_run import build_intervention_run_manifest
+from gaxbench.interventions import evaluate_interventions, load_intervention_manifest
 from gaxbench.io import load_items, load_predictions
 from gaxbench.metrics import evaluate_abstention, evaluate_action_predictions
 from gaxbench.runner import run_baseline
@@ -35,6 +38,17 @@ def build_parser() -> argparse.ArgumentParser:
 
     audit = subparsers.add_parser("audit", help="audit exact cross-split leakage")
     audit.add_argument("--items", required=True)
+
+    interventions = subparsers.add_parser(
+        "interventions-evaluate",
+        help="evaluate paired P06 evidence/counterfactual interventions",
+    )
+    interventions.add_argument("--items", required=True)
+    interventions.add_argument("--predictions", required=True)
+    interventions.add_argument("--manifest", required=True)
+    interventions.add_argument("--stability-tv-threshold", type=float, default=0.05)
+    interventions.add_argument("--git-sha", required=True)
+    interventions.add_argument("--compute-provenance", required=True)
 
     baseline = subparsers.add_parser(
         "baseline-run",
@@ -97,6 +111,43 @@ def main() -> None:
         report = audit_split_integrity(load_items(args.items))
         payload = {"ok": report.ok, **asdict(report)}
         print(json.dumps(payload, indent=2, sort_keys=True))
+        return
+
+    if args.command == "interventions-evaluate":
+        items = load_items(args.items)
+        if any(item.split == "test" for item in items):
+            parser.error(
+                "P06 mechanism qualification rejects test items; final-test evaluation is P08 work"
+            )
+        predictions = load_predictions(args.predictions)
+        intervention_manifest = load_intervention_manifest(args.manifest)
+        context = ExperimentContext(
+            git_sha=args.git_sha,
+            compute_provenance=args.compute_provenance,
+        )
+        run_manifest = build_intervention_run_manifest(
+            items,
+            predictions,
+            intervention_manifest,
+            context=context,
+            stability_tv_threshold=args.stability_tv_threshold,
+        )
+        intervention_result = evaluate_interventions(
+            items,
+            predictions,
+            intervention_manifest,
+            stability_tv_threshold=args.stability_tv_threshold,
+        )
+        print(
+            json.dumps(
+                {
+                    "run_manifest": asdict(run_manifest),
+                    "evaluation": asdict(intervention_result),
+                },
+                indent=2,
+                sort_keys=True,
+            )
+        )
         return
 
     if args.command == "baseline-run":

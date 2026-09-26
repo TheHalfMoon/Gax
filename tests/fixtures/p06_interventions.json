@@ -1,0 +1,75 @@
+{
+  "schema_version": "0.1",
+  "pairs": [
+    {
+      "id": "pair-material-flip",
+      "base_item_id": "flip-base",
+      "intervention_item_id": "flip-edit",
+      "family": "material-state",
+      "materiality": "material",
+      "expected_relation": "flip",
+      "changed_path": "/state/signal",
+      "rationale": "Abstract material signal changes the correct route.",
+      "target_action": "right",
+      "target_direction": "increase",
+      "expected_sufficiency_direction": null,
+      "expected_evidence_support_direction": null
+    },
+    {
+      "id": "pair-irrelevant-stability",
+      "base_item_id": "stable-base",
+      "intervention_item_id": "stable-edit",
+      "family": "irrelevant-edit",
+      "materiality": "irrelevant",
+      "expected_relation": "same",
+      "changed_path": "/state/format",
+      "rationale": "Formatting-only change must preserve the decision.",
+      "target_action": null,
+      "target_direction": null,
+      "expected_sufficiency_direction": "same",
+      "expected_evidence_support_direction": "same"
+    },
+    {
+      "id": "pair-determinable-missing",
+      "base_item_id": "det-base",
+      "intervention_item_id": "det-edit",
+      "family": "determinable-missing-information",
+      "materiality": "material",
+      "expected_relation": "same",
+      "changed_path": "/state/irrelevant_detail",
+      "rationale": "Removing a non-required detail must not automatically force abstention.",
+      "target_action": null,
+      "target_direction": null,
+      "expected_sufficiency_direction": null,
+      "expected_evidence_support_direction": null
+    },
+    {
+      "id": "pair-contradict-abstain",
+      "base_item_id": "contradict-base",
+      "intervention_item_id": "contradict-edit",
+      "family": "contradictory-evidence",
+      "materiality": "material",
+      "expected_relation": "abstain",
+      "changed_path": "/evidence/0",
+      "rationale": "Abstract contradiction should reduce support and sufficiency and trigger abstention.",
+      "target_action": null,
+      "target_direction": null,
+      "expected_sufficiency_direction": "decrease",
+      "expected_evidence_support_direction": "decrease"
+    },
+    {
+      "id": "pair-support-direction",
+      "base_item_id": "support-base",
+      "intervention_item_id": "support-edit",
+      "family": "supporting-evidence",
+      "materiality": "material",
+      "expected_relation": "directional-only",
+      "changed_path": "/evidence",
+      "rationale": "Abstract supporting evidence should increase support for the intended route.",
+      "target_action": "left",
+      "target_direction": "increase",
+      "expected_sufficiency_direction": "increase",
+      "expected_evidence_support_direction": "increase"
+    }
+  ]
+}
