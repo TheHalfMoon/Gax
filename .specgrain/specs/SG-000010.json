@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "SG-000010",
   "title": "GAX-P07 - FHIR interoperable read-only decision layer",
-  "state": "GRAIN",
+  "state": "PROVEN",
   "method": "research-implementation",
   "parent_id": null,
   "dependencies": ["SG-000009"],
@@ -111,7 +111,7 @@
           "Never redistribute PHI, MIMIC-derived content, or restricted reference artifacts without explicit rights.",
           "Never use final-test labels for P07 representation or adapter repair."
         ],
-        "status": "implementation-pending-exact-head-qualification"
+        "status": "proven-canonical"
       },
       "unresolved_decisions": [
         "Paper-level FHIR representation gains remain unclaimed until P08 matched real-benchmark evaluation.",
@@ -120,6 +120,22 @@
         "Any future write-action research requires a separate safety-governed phase and is not implied by P07."
       ],
       "version": 1
+    },
+    "closeout": {
+      "implementation_pr": 28,
+      "implementation_head_sha": "01e818a5139dea3d0ea3258b49f60f24593ade41",
+      "exact_head_ci_run": 36258059106,
+      "implementation_merge_sha": "a9128a7f8de49dfa614ded1bd472cf1230f0041a",
+      "post_main_ci_run": 36258143003,
+      "qualification": [
+        "Linux Python 3.11: Ruff, mypy strict, pytest, compileall PASS",
+        "Linux Python 3.12: Ruff, mypy strict, pytest, compileall PASS",
+        "Windows Python 3.11: Ruff, mypy strict, pytest, compileall PASS",
+        "Windows Python 3.12: Ruff, mypy strict, pytest, compileall PASS",
+        "Implementation merged with expected-head guard",
+        "Post-main CI SUCCESS on canonical merge"
+      ],
+      "scientific_boundary": "P07 proves deterministic read-only FHIR interoperability mechanics and frozen adapter/source contracts only. It does not prove FHIR benchmark superiority, clinical correctness, FHIR conformance certification, or R4-to-R5 semantic equivalence. Paper-level FHIR claims remain gated on P08 frozen real-benchmark evaluation."
     }
   }
 }

@@ -115,28 +115,61 @@ P06 deliberately does not claim a generic medical transformation builder. Its pr
 - [x] FHIR-AgentBench local normalized-export adapter protocol
 - [x] Information-sufficiency/tool-routing reuse of GAXBench metrics
 - [x] P07 final-test rejection in conversion/export paths
-- [ ] Exact-head cross-platform qualification
-- [ ] Guarded implementation merge and post-main CI
-- [ ] Canonical P07 closeout
+- [x] Exact-head cross-platform qualification
+- [x] Guarded implementation merge and post-main CI
+- [x] Canonical P07 closeout
 
-P07 adapters intentionally qualify a frozen local/user-supplied normalized-export protocol rather than pretending unstable or separately restricted upstream runtime artifacts are redistributable. P07 exposes no EHR write operation.
+P07 proves deterministic read-only interoperability mechanics and frozen source/adapter contracts. It does not prove clinical correctness, FHIR conformance certification, semantic R4-to-R5 conversion, or benchmark superiority. Those paper claims remain gated on P08.
 
 ## P08 — Full paper evaluation
 
-- [ ] Freeze benchmark
-- [ ] Freeze baseline revisions
-- [ ] Freeze model revisions
+### Freeze before final-test access
+
+- [ ] Freeze benchmark version and immutable split manifests
+- [ ] Freeze GAX model/checkpoint revisions and training seeds
+- [ ] Freeze all baseline model/tokenizer/source revisions
+- [ ] Freeze calibration method, calibration split, and selective policy
+- [ ] Freeze ECAL component keep/reject candidate set from development evidence
+- [ ] Freeze FHIR representation candidates and selection protocol
+- [ ] Freeze hardware/timing protocol and comparability rules
+- [ ] Complete dataset/license/redistribution audit
+- [ ] Complete train/dev/calibration/test leakage audit
+- [ ] Sign final-test opening manifest
+
+### Real-model qualification
+
 - [ ] Clinical encoder real-model qualification
 - [ ] CLM real-model qualification
 - [ ] Laya real-model qualification
 - [ ] decider real-model qualification
 - [ ] restricted-logit real-model qualification
 - [ ] structured-output LLM real-model qualification
-- [ ] Main tables
-- [ ] Ablations
-- [ ] Shift analysis
-- [ ] Failure analysis
-- [ ] Efficiency evaluation
+- [ ] Jev evaluation if reproducible access and terms permit; otherwise record explicit blocked status
+
+### Primary paper evaluation
+
+- [ ] Main action-selection tables
+- [ ] NLL, Brier, ECE, reliability analysis
+- [ ] Risk-coverage curves, AURC, and risk@50/80/90
+- [ ] Matched-coverage abstention analysis with unsafe-commit and over-abstention rates
+- [ ] ECAL component ablations with multiple seeds where train-sensitive
+- [ ] Evidence-intervention evaluation
+- [ ] Counterfactual material-sensitivity and irrelevant-edit stability evaluation
+- [ ] FHIR representation and EHR-agent action-selection evaluation
+- [ ] Distribution-shift slices
+- [ ] Failure taxonomy and qualitative error analysis
+- [ ] Latency, throughput, peak-memory, and candidate/context scaling
+- [ ] Paired bootstrap confidence intervals and declared primary comparisons
+- [ ] Preserve null, negative, timeout, OOM, and parse-failure outcomes
+
+### Reproducibility and claim freeze
+
+- [ ] Complete evidence packet for every paper-table row
+- [ ] Generate every table from raw versioned artifacts
+- [ ] Generate every figure from raw versioned artifacts
+- [ ] Create paper claim ledger mapping each claim to exact evidence or rejection
+- [ ] Freeze P08 final results without post-test tuning
+- [ ] Canonical P08 closeout
 
 ## P09 — ArXiv and release
 
