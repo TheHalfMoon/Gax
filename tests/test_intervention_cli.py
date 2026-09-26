@@ -39,7 +39,8 @@ def test_interventions_cli_smoke() -> None:
 def test_interventions_cli_rejects_test_split(tmp_path: Path) -> None:
     source = (FIXTURES / "p06_items.jsonl").read_text(encoding="utf-8")
     test_items = tmp_path / "test-items.jsonl"
-    test_items.write_text(source.replace('"split":"validation"', '"split":"test"'), encoding="utf-8")
+    test_source = source.replace('"split":"validation"', '"split":"test"')
+    test_items.write_text(test_source, encoding="utf-8")
 
     completed = subprocess.run(
         [
