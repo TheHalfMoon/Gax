@@ -13,12 +13,14 @@ from gaxbench.baselines import (
     PredictionFileAdapter,
     UniformBaselineAdapter,
 )
+from gaxbench.ecal import ExperimentContext
 from gaxbench.evidence_packet import write_evidence_packet
 from gaxbench.external_adapters import (
     JSONCommandAdapter,
     TypeSafeHTTPAdapter,
     TypeSafeHTTPConfig,
 )
+from gaxbench.intervention_run import build_intervention_run_manifest
 from gaxbench.interventions import evaluate_interventions, load_intervention_manifest
 from gaxbench.io import load_items, load_predictions
 from gaxbench.metrics import evaluate_abstention, evaluate_action_predictions
@@ -45,6 +47,8 @@ def build_parser() -> argparse.ArgumentParser:
     interventions.add_argument("--predictions", required=True)
     interventions.add_argument("--manifest", required=True)
     interventions.add_argument("--stability-tv-threshold", type=float, default=0.05)
+    interventions.add_argument("--git-sha", required=True)
+    interventions.add_argument("--compute-provenance", required=True)
 
     baseline = subparsers.add_parser(
         "baseline-run",
@@ -117,13 +121,30 @@ def main() -> None:
             )
         predictions = load_predictions(args.predictions)
         manifest = load_intervention_manifest(args.manifest)
+        context = ExperimentContext(
+            git_sha=args.git_sha,
+            compute_provenance=args.compute_provenance,
+        )
+        run_manifest = build_intervention_run_manifest(
+            items,
+            predictions,
+            manifest,
+            context=context,
+            stability_tv_threshold=args.stability_tv_threshold,
+        )
         result = evaluate_interventions(
             items,
             predictions,
             manifest,
             stability_tv_threshold=args.stability_tv_threshold,
         )
-        print(json.dumps(asdict(result), indent=2, sort_keys=True))
+        print(
+            json.dumps(
+                {"run_manifest": asdict(run_manifest), "evaluation": asdict(result)},
+                indent=2,
+                sort_keys=True,
+            )
+        )
         return
 
     if args.command == "baseline-run":
