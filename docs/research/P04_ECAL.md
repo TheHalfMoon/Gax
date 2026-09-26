@@ -1,6 +1,6 @@
 # P04 — Evidence-Calibrated Action Learning (ECAL)
 
-Status: **implementation grain SG-000007 / paper contribution not yet proven**
+Status: **CLOSED_CANONICAL / SG-000007 PROVEN / paper contributions remain defer-real-data**
 
 P04 turns ECAL from a working research idea into a falsifiable set of controlled mechanisms. It does not assume that any ECAL component improves GAX, and it does not treat synthetic mechanism tests as clinical or paper-performance evidence.
 
@@ -134,6 +134,14 @@ The repository produces a deterministic P04 manifest that binds:
 
 `--git-sha` and `--compute-provenance` are required CLI inputs. They are not inferred silently. A paper-eligible run must use the exact code revision being executed and a truthful compute description.
 
+## Feature-hash robustness correction
+
+Exact-head qualification exposed a valid-input edge case in the P03 signed feature hashing: at small feature dimensions, signed collisions could cancel the entire vector and produce zero norm. P04 fixed that case with a deterministic fallback index derived from the canonical token multiset.
+
+The fallback executes only for the previously crashing zero-norm case. Inputs that already produced a nonzero vector keep the original feature path. A regression test binds the exact discovered failure class and requires deterministic unit-norm output.
+
+This correction is implementation robustness evidence, not a modeling contribution or performance claim.
+
 ## Paper decision policy
 
 The P04 synthetic fixtures are sufficient to prove implementation properties such as:
@@ -146,7 +154,7 @@ The P04 synthetic fixtures are sufficient to prove implementation properties suc
 
 They are **not** sufficient to prove that an ECAL mechanism improves clinical decision quality.
 
-Therefore the initial paper decision for every mechanism is:
+Therefore the paper decision for every P04 mechanism remains:
 
 ```text
 defer-real-data
@@ -195,16 +203,16 @@ gax ecal-ablate replay \
 
 Numeric output from these fixtures is infrastructure qualification only and must not enter the paper as a clinical performance result.
 
-## Exit gate
+## Canonical qualification
 
-P04 is not closed by implementation alone. SG-000007 can become `PROVEN` only after:
+P04 implementation evidence is bound to:
 
-1. every mechanism and matched-control path is unit tested;
-2. hidden evidence labels are proven non-visible at inference;
-3. the Brier gradient finite-difference test passes;
-4. deterministic manifest and replay/retention accounting tests pass;
-5. the decision ledger remains explicit about deferred or negative mechanisms;
-6. exact-head Ruff, mypy strict, pytest, and compileall pass on Linux/Windows and Python 3.11/3.12;
-7. the implementation merges with an exact-head guard;
-8. post-main CI succeeds;
-9. a separate canonical closeout advances the frontier to P05 native abstention.
+- implementation PR: `#19`;
+- exact implementation head: `d1f3315c949ed4a10783a6bfd3881e80521f8e74`;
+- exact-head CI: run `36247918779` — SUCCESS on Linux/Windows × Python 3.11/3.12;
+- merge: `4baf5104314d1a1eecbb91cb7984ccb5e7df7866`;
+- post-main CI: run `36248363024` — SUCCESS on Linux/Windows × Python 3.11/3.12.
+
+The Windows/Python 3.11 exact-head job recorded Ruff success, mypy strict success with no issues in 16 source files, 71 passing tests, and compileall success. The other matrix jobs also completed successfully.
+
+P04 is therefore closed as an **implementation and experiment-framework result**, while all ECAL paper-level benefits remain unresolved pending real licensed development evidence.
