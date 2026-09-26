@@ -6,6 +6,8 @@ import sys
 from pathlib import Path
 
 FIXTURES = Path(__file__).parent / "fixtures"
+_TEST_GIT_SHA = "1" * 40
+_TEST_COMPUTE_PROVENANCE = "synthetic-cli-test"
 
 
 def base_command() -> list[str]:
@@ -34,6 +36,10 @@ def data_args() -> list[str]:
         "0.05",
         "--seed",
         "13",
+        "--git-sha",
+        _TEST_GIT_SHA,
+        "--compute-provenance",
+        _TEST_COMPUTE_PROVENANCE,
     ]
 
 
@@ -44,6 +50,10 @@ def test_ecal_manifest_cli_is_deterministic() -> None:
     assert first.stdout == second.stdout
     payload = json.loads(first.stdout)
     assert len(payload["sha256"]) == 64
+    assert payload["payload"]["experiment_context"] == {
+        "git_sha": _TEST_GIT_SHA,
+        "compute_provenance": _TEST_COMPUTE_PROVENANCE,
+    }
     arms = payload["payload"]["ablation_arms"]
     assert [arm["component"] for arm in arms] == [
         "bidirectional",
@@ -66,6 +76,10 @@ def test_ecal_replay_ablation_cli_uses_matched_step_budget() -> None:
     completed = subprocess.run(command, check=True, capture_output=True, text=True)
     payload = json.loads(completed.stdout)
     assert payload["component"] == "replay"
+    assert payload["experiment_context"] == {
+        "git_sha": _TEST_GIT_SHA,
+        "compute_provenance": _TEST_COMPUTE_PROVENANCE,
+    }
     assert payload["optimizer_steps_equal"] is True
     assert payload["control_development"]["n"] == 2
     assert payload["treatment_development"]["n"] == 2
