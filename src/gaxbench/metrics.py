@@ -48,6 +48,7 @@ class AbstentionMetrics:
     f1: float | None
     unsafe_commit_rate: float | None
     over_abstain_rate: float | None
+    sufficiency_nll: float | None
     sufficiency_brier: float | None
     sufficiency_ece: float | None
 
@@ -203,6 +204,10 @@ def evaluate_abstention(
     over_abstain_rate = _safe_ratio(fp, fp + tn)
 
     if all_scores:
+        sufficiency_nll = math.fsum(
+            _binary_nll(score, label)
+            for score, label in zip(sufficiency_scores, sufficiency_labels, strict=True)
+        ) / len(records)
         sufficiency_brier = sum(
             (score - float(label)) ** 2
             for score, label in zip(sufficiency_scores, sufficiency_labels, strict=True)
@@ -211,6 +216,7 @@ def evaluate_abstention(
             sufficiency_scores, sufficiency_labels, bins=ece_bins
         )
     else:
+        sufficiency_nll = None
         sufficiency_brier = None
         sufficiency_ece = None
 
@@ -223,6 +229,7 @@ def evaluate_abstention(
         f1=f1,
         unsafe_commit_rate=unsafe_commit_rate,
         over_abstain_rate=over_abstain_rate,
+        sufficiency_nll=sufficiency_nll,
         sufficiency_brier=sufficiency_brier,
         sufficiency_ece=sufficiency_ece,
     )
@@ -293,6 +300,11 @@ def risk_at_coverage(curve: Sequence[RiskCoveragePoint], target: float) -> float
         if point.coverage + 1e-12 >= target:
             return point.risk
     return curve[-1].risk
+
+
+def _binary_nll(probability: float, label: bool) -> float:
+    clipped = min(1.0 - _EPS, max(_EPS, probability))
+    return -math.log(clipped if label else 1.0 - clipped)
 
 
 def _safe_ratio(numerator: int, denominator: int) -> float | None:
