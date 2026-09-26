@@ -23,6 +23,7 @@ dev = [
 [project.scripts]
 gaxbench = "gaxbench.cli:main"
 gax = "gaxbench.gax_cli:main"
+gax-p08 = "gaxbench.p08_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
