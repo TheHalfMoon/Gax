@@ -243,7 +243,10 @@ def _evaluate_pair(
     base_correct = base_action == base.gold.action
     intervention_correct = intervention_action == intervention.gold.action
 
-    tv = total_variation_distance(base_prediction.probabilities, intervention_prediction.probabilities)
+    tv = total_variation_distance(
+        base_prediction.probabilities,
+        intervention_prediction.probabilities,
+    )
     js = jensen_shannon_divergence(
         base_prediction.probabilities,
         intervention_prediction.probabilities,
