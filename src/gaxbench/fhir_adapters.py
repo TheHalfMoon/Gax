@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from typing import Literal
 
-from pydantic import Field, JsonValue, model_validator
+from pydantic import Field, JsonValue, field_validator, model_validator
 
 from gaxbench.fhir import FHIRDecisionCase, FHIRReadOnlyAction, FHIRVersion
 from gaxbench.schema import Provenance, Split, StrictModel
@@ -35,6 +35,13 @@ class ExternalFHIRTask(StrictModel):
     dataset_license: str = Field(min_length=1)
     redistribution: Literal["permitted", "restricted", "unknown"]
     access_requirements: str | None = None
+
+    @field_validator("benchmark_revision")
+    @classmethod
+    def validate_revision(cls, value: str) -> str:
+        if any(character not in "0123456789abcdef" for character in value):
+            raise ValueError("benchmark_revision must be a 40-character lowercase hexadecimal SHA")
+        return value
 
     @model_validator(mode="after")
     def freeze_source_identity(self) -> ExternalFHIRTask:
