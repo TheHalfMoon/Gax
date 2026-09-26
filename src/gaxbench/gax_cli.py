@@ -4,7 +4,11 @@ import argparse
 import json
 from dataclasses import asdict
 
-from gaxbench.ecal import build_p04_ablation_manifest, run_matched_ablation
+from gaxbench.ecal import (
+    ExperimentContext,
+    build_p04_ablation_manifest,
+    run_matched_ablation,
+)
 from gaxbench.gax_v0 import (
     GaxV0Adapter,
     GaxV0Config,
@@ -51,6 +55,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     _add_ecal_data_args(manifest)
     _add_base_config_args(manifest)
+    _add_experiment_context_args(manifest)
 
     ablate = subparsers.add_parser(
         "ecal-ablate",
@@ -59,6 +64,7 @@ def build_parser() -> argparse.ArgumentParser:
     ablate.add_argument("component", choices=_ECAL_COMPONENTS)
     _add_ecal_data_args(ablate)
     _add_base_config_args(ablate)
+    _add_experiment_context_args(ablate)
     ablate.add_argument("--ece-bins", type=int, default=15)
     return parser
 
@@ -124,6 +130,7 @@ def main() -> None:
         payload = build_p04_ablation_manifest(
             ecal_train,
             ecal_validation,
+            context=_experiment_context_from_args(args),
             replay_items=replay,
             retention_items=retention,
             base=_base_config_from_args(args),
@@ -139,6 +146,7 @@ def main() -> None:
             args.component,
             ecal_train,
             ecal_validation,
+            context=_experiment_context_from_args(args),
             replay_items=replay,
             retention_items=retention,
             base=_base_config_from_args(args),
@@ -165,6 +173,11 @@ def _add_ecal_data_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--retention-items")
 
 
+def _add_experiment_context_args(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--git-sha", required=True)
+    parser.add_argument("--compute-provenance", required=True)
+
+
 def _base_config_from_args(args: argparse.Namespace) -> GaxV0Config:
     return GaxV0Config(
         feature_dim=args.feature_dim,
@@ -172,6 +185,13 @@ def _base_config_from_args(args: argparse.Namespace) -> GaxV0Config:
         epochs=args.epochs,
         l2=args.l2,
         seed=args.seed,
+    )
+
+
+def _experiment_context_from_args(args: argparse.Namespace) -> ExperimentContext:
+    return ExperimentContext(
+        git_sha=args.git_sha,
+        compute_provenance=args.compute_provenance,
     )
 
 
