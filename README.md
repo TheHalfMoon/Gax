@@ -80,7 +80,7 @@ Founder-paid cloud compute is out of scope. Smoke tests and tutorials should run
 
 ## Status
 
-**P03 — GAX v0.** P00-P02 are canonical. The active work is the first genuine trainable non-generative GAX model: typed interface, deterministic inference, checkpoint contract, training pipeline, synthetic smoke qualification, and model-card draft. No clinical performance claim is authorized yet.
+**P04 — ECAL research.** P00-P03 are canonical. GAX now has a trainable non-generative reference model and a corrected model-visible input boundary. The active work is preregistered controlled ablation of the proposed Evidence-Calibrated Action Learning mechanisms: bidirectional state/action contrastive structure, hard negatives, evidence supervision, proper-scoring/calibration objectives, and replay/retention. Every component remains a hypothesis until matched evidence supports it; no clinical performance claim is authorized yet.
 
 ## License
 
