@@ -824,13 +824,13 @@ def _apply_gradient_matrix(model: GaxV0Model, gradient: Sequence[Sequence[float]
         shrink = 1.0 - learning_rate * model.config.l2
         if shrink < 0.0:
             raise ValueError("learning_rate * l2 must be <= 1")
-        for row in model._weights:
-            for index in range(len(row)):
-                row[index] *= shrink
+        for weight_row in model._weights:
+            for index in range(len(weight_row)):
+                weight_row[index] *= shrink
 
-    for row_index, row in enumerate(gradient):
+    for row_index, gradient_row in enumerate(gradient):
         weights = model._weights[row_index]
-        for column_index, value in enumerate(row):
+        for column_index, value in enumerate(gradient_row):
             weights[column_index] -= learning_rate * value
             if not math.isfinite(weights[column_index]):
                 raise ValueError("ECAL training produced non-finite weights")
