@@ -223,11 +223,11 @@ def main() -> None:
 
     if args.command == "fhir-external-convert":
         benchmark: BenchmarkName = args.benchmark
-        representation: FHIRRepresentation = args.representation
+        external_representation: FHIRRepresentation = args.representation
         tasks = load_external_fhir_export(args.export, benchmark=benchmark)
         cases = [external_task_to_case(task) for task in tasks]
         fhir_items = [
-            fhir_case_to_benchmark_item(case, representation=representation)
+            fhir_case_to_benchmark_item(case, representation=external_representation)
             for case in cases
         ]
         dump_jsonl(args.output, fhir_items)
@@ -236,7 +236,7 @@ def main() -> None:
                 {
                     "benchmark": benchmark,
                     "converted": len(fhir_items),
-                    "representation": representation,
+                    "representation": external_representation,
                     "output": args.output,
                 },
                 sort_keys=True,
