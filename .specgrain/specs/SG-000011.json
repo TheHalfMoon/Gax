@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "id": "SG-000011",
+  "title": "GAX-P08 - Final-test freeze and claim-evidence contract",
+  "state": "GRAIN",
+  "method": "research-governance-implementation",
+  "parent_id": null,
+  "dependencies": ["SG-000010"],
+  "labels": ["research", "p08", "evaluation", "freeze", "claims"],
+  "outcome": "Make P08 final-test access an explicit digest-bound transition and make affirmative paper claims machine-readable, evidence-bound, and unable to silently discard null, rejected, blocked, or exploratory outcomes.",
+  "rationale": "P08 is the first paper-eligible evaluation phase. Without an enforceable pre-test freeze, GAX could accidentally tune thresholds, representations, baseline identities, metrics, or failure rules after observing test outcomes. Without a claim ledger, negative or blocked results could disappear from the public story. SG-000011 therefore builds the smallest pre-test-safe governance surface before any final-test access.",
+  "scope_in": [
+    "Strict P08 freeze-manifest schema",
+    "P07 canonical-closeout evidence binding",
+    "Repository revision and clean-tree binding",
+    "Benchmark split, leakage-audit, and license-audit hash binding",
+    "GAX/baseline identity and qualification-status binding",
+    "Explicit blocked-baseline reasons",
+    "Calibration split and target-coverage freeze",
+    "Statistical primary-metric/comparison and bootstrap freeze",
+    "Hardware, failure, evidence, intervention, and FHIR protocol revision freeze",
+    "Sealed-by-default final-test state",
+    "Digest-bound authorization into a separate artifact",
+    "Machine-readable claim ledger with candidate/supported/null/rejected/blocked/exploratory states",
+    "Supported-claim evidence-packet requirement",
+    "Standalone governance CLI and synthetic regression fixtures",
+    "P08 evaluation-protocol documentation",
+    "Linux/Windows Python 3.11/3.12 qualification"
+  ],
+  "scope_out": [
+    "No final-test labels or results are opened in SG-000011",
+    "No real benchmark score is produced",
+    "No model or baseline superiority claim",
+    "No ECAL mechanism keep decision from synthetic fixtures",
+    "No clinical-safety, deployment, regulatory, or FHIR-certification claim",
+    "No founder-paid cloud compute",
+    "No removal of blocked or negative outcomes from the claim ledger"
+  ],
+  "acceptance": [
+    "P08 freeze manifests are immutable strict Pydantic contracts with unknown fields rejected",
+    "Final-test access defaults to sealed",
+    "Authorization requires a clean repository tree and frozen benchmark test manifests",
+    "Every benchmark freeze binds split-manifest, leakage-audit, and license-audit SHA-256 digests",
+    "Every qualified system binds a source or model revision and every blocked system records an explicit reason",
+    "The manifest contains at least one GAX system and one baseline/control system",
+    "Calibration freeze forbids test tuning and target coverages are unique, sorted, and in (0,1]",
+    "Statistical freeze requires at least 1000 bootstrap replicates plus primary metrics/comparisons and multiplicity policy",
+    "Authorized manifests carry a digest computed from the exact authorized payload with the digest field excluded",
+    "Tampering with an authorized manifest invalidates schema validation or authorization verification",
+    "Authorization is written to a separate artifact rather than overwriting the sealed source manifest",
+    "Supported claims require at least one evidence-packet ID",
+    "Null, rejected, and blocked claims require explicit reasons",
+    "Exploratory claims cannot be primary candidates",
+    "Claim-ledger export exposes only supported claims as affirmative publishable claims while preserving other states in the ledger",
+    "Synthetic P08 fixtures contain no patient data, clinical threshold, or paper performance result",
+    "Exact-head CI passes Ruff, mypy strict, pytest, and compileall on Python 3.11/3.12 across Linux and Windows",
+    "Implementation merges with expected-head guard and post-main CI succeeds before SG-000011 can close"
+  ],
+  "change_surface": [
+    ".specgrain/specs/SG-000011.json",
+    "docs/research/P08_EVALUATION_PROTOCOL.md",
+    "src/gaxbench/p08_freeze.py",
+    "src/gaxbench/p08_cli.py",
+    "pyproject.toml",
+    "tests/test_p08_freeze.py",
+    "tests/test_p08_cli.py",
+    "tests/fixtures/p08_freeze_sealed.json",
+    "tests/fixtures/p08_claims.json"
+  ],
+  "children": [],
+  "context": {"budget_tokens": 28000, "estimated_tokens": 18000},
+  "evidence": {
+    "required": [
+      "p07-closed-canonical",
+      "sealed-default-pass",
+      "clean-tree-authorization-pass",
+      "benchmark-audit-hash-binding-pass",
+      "blocked-baseline-reason-pass",
+      "calibration-freeze-pass",
+      "statistics-freeze-pass",
+      "digest-bound-authorization-pass",
+      "tamper-detection-pass",
+      "separate-authorization-artifact-pass",
+      "claim-ledger-state-pass",
+      "supported-claim-evidence-pass",
+      "synthetic-fixture-safety-pass",
+      "linux-python311-ci-pass",
+      "linux-python312-ci-pass",
+      "windows-python311-ci-pass",
+      "windows-python312-ci-pass",
+      "implementation-pr-pass",
+      "post-merge-ci-pass",
+      "canonical-p08-freeze-closeout-pass"
+    ]
+  },
+  "risk": {
+    "level": "high",
+    "recovery": "Revert SG-000011 and P08 freeze/claim files to canonical P07. No final-test data, clinical model release, or production behavior is changed by this grain."
+  },
+  "metadata": {
+    "readiness": {
+      "minimality": {
+        "choice": "pre-test-governance-only",
+        "rationale": "The minimal safe P08 step is to make the test-opening and claim-promotion rules executable before qualifying or running real models on final evaluation data."
+      },
+      "safety": {
+        "requirements": [
+          "Do not open final-test labels/results in this grain.",
+          "Do not turn synthetic governance fixtures into performance evidence.",
+          "Do not authorize a dirty-tree experiment.",
+          "Do not silently drop blocked baselines or negative claims.",
+          "Do not promote exploratory findings into primary claims."
+        ],
+        "status": "implementation-pending-exact-head-qualification"
+      },
+      "unresolved_decisions": [
+        "Actual P08 benchmark/data identities remain sealed until license and leakage audits complete.",
+        "Actual final GAX checkpoint set remains unresolved until development-only mechanism gates complete.",
+        "Actual external baseline checkpoint qualification remains pending zero-founder-cost execution where applicable.",
+        "No final-test authorization exists yet."
+      ],
+      "version": 1
+    }
+  }
+}
