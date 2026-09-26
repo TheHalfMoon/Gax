@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "SG-000011",
   "title": "GAX-P08 - Final-test freeze and claim-evidence contract",
-  "state": "GRAIN",
+  "state": "PROVEN",
   "method": "research-governance-implementation",
   "parent_id": null,
   "dependencies": ["SG-000010"],
@@ -115,7 +115,7 @@
           "Do not silently drop blocked baselines or negative claims.",
           "Do not promote exploratory findings into primary claims."
         ],
-        "status": "implementation-pending-exact-head-qualification"
+        "status": "proven-canonical"
       },
       "unresolved_decisions": [
         "Actual P08 benchmark/data identities remain sealed until license and leakage audits complete.",
@@ -124,6 +124,22 @@
         "No final-test authorization exists yet."
       ],
       "version": 1
+    },
+    "closeout": {
+      "implementation_pr": 31,
+      "implementation_head_sha": "45bd2dcdcd1e4b96be20ffbf0c77080d3bd690d0",
+      "exact_head_ci_run": 36259370327,
+      "implementation_merge_sha": "1818aa67f93d5ed484611392011934ecfa770a1c",
+      "post_main_ci_run": 36259485349,
+      "qualification": [
+        "Linux Python 3.11: Ruff, mypy strict, pytest, compileall PASS",
+        "Linux Python 3.12: Ruff, mypy strict, pytest, compileall PASS",
+        "Windows Python 3.11: Ruff, mypy strict, pytest, compileall PASS",
+        "Windows Python 3.12: Ruff, mypy strict, pytest, compileall PASS",
+        "Implementation merged with expected-head guard",
+        "Post-main CI SUCCESS on canonical merge"
+      ],
+      "scientific_boundary": "SG-000011 proves only the pre-test governance and evidence-contract layer. Final-test access remains sealed. It does not prove a paper metric, model advantage, clinical validity, ECAL benefit, abstention benefit, evidence grounding, FHIR superiority, or efficiency superiority."
     }
   }
 }
