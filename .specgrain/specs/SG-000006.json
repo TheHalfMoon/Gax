@@ -15,10 +15,11 @@
     "reproducibility"
   ],
   "outcome": "Establish the first genuine trainable GAX typed-decision model with deterministic training, integrity-bound checkpoints, deterministic inference, GAXBench integration, and a research-safe model card before ECAL experiments begin.",
-  "rationale": "P00-P02 froze the research, benchmark, and comparison contracts. P03 must now prove the complete model lifecycle without conflating lifecycle qualification with clinical backbone selection or ECAL novelty. A dependency-light bilinear state/action reference model is sufficient for this gate and can be qualified on free CPU CI.",
+  "rationale": "P00-P02 froze the research, benchmark, model-visible input, and comparison contracts. P03 must prove the complete model lifecycle without conflating lifecycle qualification with clinical backbone selection or ECAL novelty. A dependency-light bilinear state/action reference model is sufficient for this gate and can be qualified on free CPU CI.",
   "scope_in": [
     "Pure-Python deterministic GAX bilinear state/action reference model",
     "Versioned SHA-256 hashed feature representation",
+    "Shared P02 model-visible rendering that excludes benchmark-only evidence relation annotations",
     "Fixed-seed multiclass NLL training pipeline",
     "Canonical training-data manifest hashing",
     "Integrity-bound JSON checkpoint schema and fail-closed loader",
@@ -42,6 +43,9 @@
   "acceptance": [
     "GAX v0 accepts caller-provided finite actions and emits normalized probabilities over exactly those action IDs without free-form generation",
     "Action IDs are preserved as schema identifiers but excluded from semantic action featurization",
+    "GAX v0 uses the canonical model-visible state renderer and never exposes gold fields, sufficiency labels, provenance construction labels, or evidence.relation annotations",
+    "Changing only evidence.relation while holding model-visible evidence fixed leaves GAX v0 probabilities unchanged",
+    "Feature revision is advanced rather than silently changing the semantics of an existing checkpoint revision",
     "Training accepts train split items only and optional validation split items, rejects missing labels and duplicate IDs, and never consumes test labels",
     "Fixed-seed training reduces NLL on the abstract learnable smoke fixture and learns its deterministic alpha/beta mapping",
     "Repeated fixed-seed training is deterministic within the declared protocol",
@@ -54,7 +58,7 @@
     "Synthetic fixtures are registered as CC0, contain no clinical text or PHI, and are forbidden for clinical or paper performance claims",
     "Model card explicitly prohibits diagnosis, treatment, prescribing, triage, emergency guidance, patient advice, and clinical-performance claims",
     "Exact-head CI passes Ruff, mypy strict, pytest, and compileall on Python 3.11/3.12 across Linux and Windows",
-    "Implementation merge and post-main CI succeed before a separate canonical closeout marks SG-000006 PROVEN"
+    "Implementation/correction merge and post-main CI succeed before a separate canonical closeout marks SG-000006 PROVEN"
   ],
   "change_surface": [
     ".specgrain/specs/SG-000006.json",
@@ -78,6 +82,8 @@
     "required": [
       "p02-closed-canonical",
       "trainable-model-contract",
+      "model-visible-input-boundary-pass",
+      "evidence-relation-hidden-pass",
       "synthetic-overfit-pass",
       "fixed-seed-determinism-pass",
       "checkpoint-roundtrip-pass",
@@ -110,17 +116,18 @@
         "requirements": [
           "Synthetic smoke metrics are infrastructure evidence only.",
           "Do not interpret top-1 probability as permission to act.",
+          "Do not expose benchmark-only evidence relation annotations or hidden labels to the model.",
           "Do not introduce real patient data or clinical-use claims.",
           "Do not promote the reference architecture as the final paper model without later evidence."
         ],
-        "status": "pending-exact-head-ci"
+        "status": "pending-correction-exact-head-ci"
       },
       "unresolved_decisions": [
         "Final GAX clinical backbone remains a later controlled experiment.",
         "ECAL objective components remain P04 hypotheses.",
         "Learned sufficiency and selective policy remain P05 hypotheses."
       ],
-      "version": 1
+      "version": 2
     }
   }
 }

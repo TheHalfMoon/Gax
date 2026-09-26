@@ -14,6 +14,7 @@ from gaxbench.gax_v0 import (
 )
 from gaxbench.io import load_items
 from gaxbench.runner import run_baseline
+from gaxbench.schema import Evidence
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -66,6 +67,28 @@ def test_action_permutation_preserves_id_probability_alignment() -> None:
     item = load_items(FIXTURES / "gax_v0_validation.jsonl")[0]
     reversed_item = item.model_copy(update={"actions": list(reversed(item.actions))})
     assert result.model.probabilities(item) == result.model.probabilities(reversed_item)
+
+
+def test_evidence_relation_annotation_is_not_model_visible() -> None:
+    result = train()
+    item = load_items(FIXTURES / "gax_v0_validation.jsonl")[0]
+    support_item = item.model_copy(
+        update={
+            "evidence": [
+                Evidence(id="e1", relation="support", text="same visible evidence text")
+            ]
+        }
+    )
+    contradict_item = item.model_copy(
+        update={
+            "evidence": [
+                Evidence(id="e1", relation="contradict", text="same visible evidence text")
+            ]
+        }
+    )
+    assert result.model.probabilities(support_item) == result.model.probabilities(
+        contradict_item
+    )
 
 
 def test_training_rejects_non_training_split() -> None:

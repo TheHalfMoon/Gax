@@ -2,7 +2,7 @@
 
 Model: **GAX Bilinear v0**  
 Architecture ID: `gax-bilinear-v0`  
-Feature revision: `sha256-word-v0.1`  
+Feature revision: `sha256-word-v0.2`  
 Status: **P03 research reference / not clinically validated**
 
 ## Model description
@@ -50,7 +50,7 @@ Future GAX research models may use separately governed biomedical/clinical datas
 
 ## Architecture
 
-The reference model uses deterministic SHA-256 hashed word features for state/evidence and action descriptions, plus a trainable bilinear matrix:
+The reference model uses deterministic SHA-256 hashed word features for model-visible state/evidence and action descriptions, plus a trainable bilinear matrix:
 
 ```text
 score(state, action) = s^T W a
@@ -59,6 +59,10 @@ score(state, action) = s^T W a
 Action scores are normalized with softmax.
 
 Action IDs are output/schema identifiers and are not used as semantic action text.
+
+The model-visible state is produced by the same `render_model_state` boundary used by external P02 baselines. Gold labels, sufficiency labels, provenance labels, and the benchmark-only `evidence.relation` annotation are excluded from inference features.
+
+Feature revision `sha256-word-v0.2` replaces the initial `v0.1` implementation, which incorrectly exposed `evidence.relation`. `v0.1` checkpoints are intentionally rejected rather than silently reinterpreted.
 
 ## Uncertainty and abstention
 
