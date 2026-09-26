@@ -70,7 +70,8 @@ def load_external_fhir_export(
                 payload = json.loads(line)
                 task = ExternalFHIRTask.model_validate(payload)
             except Exception as exc:  # noqa: BLE001 - preserve source line context
-                raise ValueError(f"{path}:{line_number}: invalid external FHIR task: {exc}") from exc
+                message = f"{path}:{line_number}: invalid external FHIR task: {exc}"
+                raise ValueError(message) from exc
             if task.benchmark != benchmark:
                 raise ValueError(
                     f"{path}:{line_number}: expected benchmark {benchmark!r}, "
