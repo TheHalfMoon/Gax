@@ -15,7 +15,9 @@ from gaxbench.gax_v0 import (
     _state_vector,
     _validate_training_items,
 )
+from gaxbench.metrics import ActionMetrics
 from gaxbench.provenance import canonical_json_sha256
+from gaxbench.runner import BaselineRunResult, run_baseline
 from gaxbench.schema import BenchmarkItem, Evidence, Prediction
 
 NegativePolicy = Literal["none", "hard", "random"]
@@ -90,6 +92,20 @@ class AblationDecision:
     component: str
     paper_decision: PaperDecision
     rationale: str
+
+
+@dataclass(frozen=True)
+class MatchedAblationResult:
+    component: str
+    control_config_sha256: str
+    treatment_config_sha256: str
+    control_model_revision: str
+    treatment_model_revision: str
+    control_development: ActionMetrics
+    treatment_development: ActionMetrics
+    control_retention: ActionMetrics | None
+    treatment_retention: ActionMetrics | None
+    optimizer_steps_equal: bool
 
 
 class EcalAdapter:
@@ -245,12 +261,15 @@ def build_p04_ablation_manifest(
     validation_items: Sequence[BenchmarkItem],
     *,
     replay_items: Sequence[BenchmarkItem] = (),
+    retention_items: Sequence[BenchmarkItem] = (),
     base: GaxV0Config | None = None,
 ) -> dict[str, object]:
     _validate_training_items(train_items, required_split="train")
     _validate_training_items(validation_items, required_split="validation")
     if replay_items:
         _validate_training_items(replay_items, required_split="train")
+    if retention_items:
+        _validate_training_items(retention_items, required_split="validation")
     base_config = base if base is not None else GaxV0Config()
 
     reference = EcalConfig(base=base_config)
@@ -306,11 +325,76 @@ def build_p04_ablation_manifest(
         "replay_manifest_sha256": (
             items_manifest_sha256(replay_items) if replay_items else None
         ),
+        "retention_manifest_sha256": (
+            items_manifest_sha256(retention_items) if retention_items else None
+        ),
         "base_config": asdict(base_config),
         "ablation_arms": arms,
         "test_label_policy": "final test labels prohibited for P04 selection",
     }
     return {"payload": payload, "sha256": canonical_json_sha256(payload)}
+
+
+def run_matched_ablation(
+    component: str,
+    train_items: Sequence[BenchmarkItem],
+    validation_items: Sequence[BenchmarkItem],
+    *,
+    replay_items: Sequence[BenchmarkItem] = (),
+    retention_items: Sequence[BenchmarkItem] = (),
+    base: GaxV0Config | None = None,
+    ece_bins: int = 15,
+) -> MatchedAblationResult:
+    _validate_training_items(train_items, required_split="train")
+    _validate_training_items(validation_items, required_split="validation")
+    if replay_items:
+        _validate_training_items(replay_items, required_split="train")
+    if retention_items:
+        _validate_training_items(retention_items, required_split="validation")
+
+    base_config = base if base is not None else GaxV0Config()
+    control_config, treatment_config = _configs_for_component(component, base_config)
+    control = train_ecal(
+        train_items,
+        control_config,
+        validation_items=validation_items,
+        replay_items=replay_items,
+    )
+    treatment = train_ecal(
+        train_items,
+        treatment_config,
+        validation_items=validation_items,
+        replay_items=replay_items,
+    )
+    control_development = _require_action_metrics(
+        run_baseline(validation_items, EcalAdapter(control), ece_bins=ece_bins)
+    )
+    treatment_development = _require_action_metrics(
+        run_baseline(validation_items, EcalAdapter(treatment), ece_bins=ece_bins)
+    )
+
+    control_retention = None
+    treatment_retention = None
+    if retention_items:
+        control_retention = _require_action_metrics(
+            run_baseline(retention_items, EcalAdapter(control), ece_bins=ece_bins)
+        )
+        treatment_retention = _require_action_metrics(
+            run_baseline(retention_items, EcalAdapter(treatment), ece_bins=ece_bins)
+        )
+
+    return MatchedAblationResult(
+        component=component,
+        control_config_sha256=control_config.sha256,
+        treatment_config_sha256=treatment_config.sha256,
+        control_model_revision=control.model.model_revision,
+        treatment_model_revision=treatment.model.model_revision,
+        control_development=control_development,
+        treatment_development=treatment_development,
+        control_retention=control_retention,
+        treatment_retention=treatment_retention,
+        optimizer_steps_equal=control.optimizer_steps == treatment.optimizer_steps,
+    )
 
 
 def default_p04_decisions() -> tuple[AblationDecision, ...]:
@@ -631,6 +715,46 @@ def _build_replay_schedule(
     for offset, position in enumerate(positions):
         schedule[position] = (replay_order[offset % len(replay_order)], True)
     return schedule
+
+
+def _configs_for_component(
+    component: str,
+    base: GaxV0Config,
+) -> tuple[EcalConfig, EcalConfig]:
+    reference = EcalConfig(base=base)
+    if component == "bidirectional":
+        return reference, EcalConfig(base=base, bidirectional_weight=0.25)
+    if component == "hard-negative":
+        return (
+            EcalConfig(
+                base=base,
+                hard_negative_weight=0.25,
+                negative_policy="random",
+            ),
+            EcalConfig(
+                base=base,
+                hard_negative_weight=0.25,
+                negative_policy="hard",
+            ),
+        )
+    if component == "evidence":
+        return reference, EcalConfig(base=base, evidence_weight=0.25)
+    if component == "proper-scoring":
+        return reference, EcalConfig(base=base, proper_weight=0.25)
+    if component == "replay":
+        return reference, EcalConfig(base=base, replay_ratio=0.25)
+    raise ValueError(f"unknown ECAL component: {component}")
+
+
+def _require_action_metrics(run_result: BaselineRunResult) -> ActionMetrics:
+    action_metrics = run_result.action_metrics
+    if (
+        run_result.failed
+        or run_result.evaluation_error is not None
+        or action_metrics is None
+    ):
+        raise ValueError("matched ablation evaluation did not produce complete action metrics")
+    return action_metrics
 
 
 def _ablation_arm(
