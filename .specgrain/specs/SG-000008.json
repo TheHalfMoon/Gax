@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "id": "SG-000008",
+  "title": "GAX-P05 - Native information sufficiency and selective abstention",
+  "state": "GRAIN",
+  "method": "research-implementation",
+  "parent_id": null,
+  "dependencies": [
+    "SG-000007"
+  ],
+  "labels": [
+    "research",
+    "p05",
+    "abstention",
+    "selective-prediction",
+    "calibration"
+  ],
+  "outcome": "Separate action preference from permission to act by implementing deterministic confidence controls, a dedicated learned information-sufficiency signal, calibration-split coverage policies, matched-coverage selective evaluation, explicit unsafe-commit/over-abstention accounting, and a reproducible keep/reject/defer ledger.",
+  "rationale": "P04 qualified the ECAL mechanism framework but does not solve overcommitment. P05 therefore treats abstention as a policy over model-visible information rather than another action option. The learned sufficiency mechanism is deliberately low complexity and must beat strong confidence-only controls on licensed leakage-audited development evidence before it can become a positive paper contribution.",
+  "scope_in": [
+    "Max-action-probability selector control",
+    "Normalized entropy-confidence selector control",
+    "Top-1/top-2 margin selector control",
+    "Dedicated learned information-sufficiency model with model-visible-only features",
+    "Calibration-split threshold selection for declared target coverage",
+    "Matched-coverage AURC and risk-at-coverage evaluation through canonical GAXBench functions",
+    "Unsafe-commit and over-abstention accounting",
+    "Probability calibration metrics for learned sufficiency where applicable",
+    "Exact requested/completed/failed denominator accounting",
+    "Abstract CC0 synthetic train/calibration/validation fixtures",
+    "Deterministic run manifest binding git SHA, compute provenance, data hashes, checkpoint identity, selector configuration, and coverage target",
+    "CLI reproduction surface",
+    "Keep/reject/defer research ledger",
+    "Linux/Windows Python 3.11/3.12 qualification"
+  ],
+  "scope_out": [
+    "No real patient data or PHI",
+    "No autonomous diagnosis, treatment, prescribing, triage, or emergency-use claim",
+    "No final test-label threshold tuning",
+    "No formal conformal guarantee unless later theorem assumptions are implemented and verified",
+    "No learned-sufficiency superiority claim from synthetic fixtures",
+    "No FHIR retrieval or clarification policy",
+    "No paid founder compute"
+  ],
+  "acceptance": [
+    "Max probability, normalized entropy confidence, and top-1/top-2 margin selectors have frozen deterministic definitions and unit tests",
+    "Learned information sufficiency is a separate probability-like signal and is not derived by relabeling the action top-1 probability",
+    "Learned sufficiency inference can consume only model-visible state/candidate information and action-distribution summaries",
+    "Changing only gold action, gold sufficiency, source identity, task-family bookkeeping, provenance, or evidence relation labels does not change learned sufficiency when model-visible content is unchanged",
+    "Learned sufficiency training uses train-split sufficiency labels only and does not update the frozen action model",
+    "Coverage thresholds are selected from calibration scores without final-test labels",
+    "P05 selector evaluation accepts validation evidence for mechanism qualification and rejects final-test use in the P05 keep/reject path",
+    "All selectors are compared on identical examples and declared target coverage using canonical risk-coverage functions",
+    "Unsafe-commit and over-abstention rates are reported together so a policy cannot win by refusing nearly everything",
+    "Requested, completed, and failed counts remain explicit and no example is silently dropped",
+    "Synthetic P05 fixtures contain no clinical text, PHI, real thresholds, diagnosis rules, or treatment guidance",
+    "Synthetic mechanism qualification can only yield implementation evidence; the learned mechanism paper decision remains defer-real-data until licensed leakage-audited development evidence exists",
+    "A deterministic manifest binds git SHA, compute provenance, model/checkpoint revision, train/calibration/validation hashes, sufficiency config, selectors, and target coverage",
+    "CLI commands reproduce the P05 manifest and matched selector suite from a frozen GAX v0 checkpoint",
+    "Exact-head CI passes Ruff, mypy strict, pytest, and compileall on Python 3.11/3.12 across Linux and Windows",
+    "Implementation merges with an exact-head guard, post-main CI succeeds, and a separate canonical closeout is required before SG-000008 becomes PROVEN"
+  ],
+  "change_surface": [
+    ".specgrain/specs/SG-000008.json",
+    "src/gaxbench/selective.py",
+    "src/gaxbench/gax_cli.py",
+    "src/gaxbench/__init__.py",
+    "registry/datasets.json",
+    "tests/fixtures/p05_train.jsonl",
+    "tests/fixtures/p05_calibration.jsonl",
+    "tests/fixtures/p05_validation.jsonl",
+    "tests/test_selective.py",
+    "tests/test_selective_cli.py",
+    "docs/research/P05_SELECTIVE_ABSTENTION.md",
+    "experiments/p05/decision_ledger.json"
+  ],
+  "children": [],
+  "context": {
+    "budget_tokens": 22000,
+    "estimated_tokens": 17000
+  },
+  "evidence": {
+    "required": [
+      "p04-closed-canonical",
+      "confidence-selector-definition-pass",
+      "entropy-selector-definition-pass",
+      "margin-selector-definition-pass",
+      "learned-sufficiency-determinism-pass",
+      "hidden-gold-label-invariance-pass",
+      "hidden-provenance-invariance-pass",
+      "hidden-evidence-relation-invariance-pass",
+      "calibration-label-independence-pass",
+      "final-test-rejection-pass",
+      "matched-coverage-pass",
+      "unsafe-commit-over-abstention-pass",
+      "manifest-context-binding-pass",
+      "synthetic-dataset-registry-pass",
+      "decision-ledger-pass",
+      "cli-reproduction-pass",
+      "linux-python311-ci-pass",
+      "linux-python312-ci-pass",
+      "windows-python311-ci-pass",
+      "windows-python312-ci-pass",
+      "implementation-pr-pass",
+      "post-merge-ci-pass",
+      "canonical-p05-closeout-pass"
+    ]
+  },
+  "risk": {
+    "level": "medium",
+    "recovery": "Revert the P05 implementation branch and return to canonical P04 main 623602fecb803943cb877e3051eeb97d086e892c. No real clinical datasets, released weights, or production clinical behavior are affected by this grain."
+  },
+  "metadata": {
+    "readiness": {
+      "minimality": {
+        "choice": "separate-low-complexity-sufficiency-selector",
+        "rationale": "The minimal falsifiable P05 mechanism is a dedicated logistic sufficiency signal over model-visible state features and action-distribution summaries, compared against strong deterministic confidence controls under the same calibration and coverage protocol."
+      },
+      "safety": {
+        "requirements": [
+          "Never expose gold.sufficient, gold action, provenance, split labels, task-family bookkeeping, or benchmark-only evidence relations to the sufficiency model at inference.",
+          "Never fit thresholds or calibration parameters on final-test labels.",
+          "Never call abstention itself clinical safety.",
+          "Always report both unsafe commits and over-abstention.",
+          "Never promote synthetic selective results into a paper superiority claim."
+        ],
+        "status": "implementation-pending-exact-head-qualification"
+      },
+      "unresolved_decisions": [
+        "Learned sufficiency paper status remains defer-real-data until licensed development evidence exists.",
+        "No formal conformal guarantee is claimed in P05.",
+        "Evidence retrieval/clarification behavior remains P06/P07 work.",
+        "Final clinical backbone remains unresolved until P08 qualification."
+      ],
+      "version": 1
+    }
+  }
+}
