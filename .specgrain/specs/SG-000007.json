@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "SG-000007",
   "title": "GAX-P04 - ECAL controlled ablation framework",
-  "state": "GRAIN",
+  "state": "PROVEN",
   "method": "research-implementation",
   "parent_id": null,
   "dependencies": [
@@ -16,7 +16,7 @@
     "calibration"
   ],
   "outcome": "Implement Evidence-Calibrated Action Learning as a set of independently switchable, falsifiable training mechanisms with deterministic matched ablations, hidden-label-safe evidence supervision, proper-scoring gradients, equal-step replay/retention accounting, and a bounded robustness correction for a zero-norm feature-hash collision exposed by P04 qualification.",
-  "rationale": "P03 established a genuine trainable non-generative GAX reference model. P04 must now test ECAL mechanisms without retroactively relabeling the P03 NLL objective as novel, leaking benchmark annotations into model inputs, or promoting synthetic mechanistic results into paper claims. P04 qualification also exposed a latent signed-hash cancellation case in the P03 reference featurizer; fixing that previously crashing valid-input case is required for the P04 mechanisms to execute and is governed explicitly here rather than hidden by changing fixtures.",
+  "rationale": "P03 established a genuine trainable non-generative GAX reference model. P04 tests ECAL mechanisms without retroactively relabeling the P03 NLL objective as novel, leaking benchmark annotations into model inputs, or promoting synthetic mechanistic results into paper claims. P04 qualification also exposed a latent signed-hash cancellation case in the P03 reference featurizer; the governed correction makes that previously crashing valid-input case deterministic without changing previously nonzero feature vectors.",
   "scope_in": [
     "Bidirectional multi-positive state/action contrastive objective",
     "Deterministic hard-negative ranking objective with equal-budget random-negative control",
@@ -111,7 +111,7 @@
   },
   "risk": {
     "level": "medium",
-    "recovery": "Revert the P04 implementation and return to canonical P03 main f8d735447234317739311349ffa03db45547accf. P04 introduces abstract synthetic research infrastructure plus a bounded deterministic fallback for a valid input class that previously crashed; it introduces no public clinical claim."
+    "recovery": "Revert the P04 canonical closeout and return to implementation merge 4baf5104314d1a1eecbb91cb7984ccb5e7df7866. The closeout changes governance and research status only; the implementation remains independently qualified."
   },
   "metadata": {
     "readiness": {
@@ -128,15 +128,33 @@
           "Preserve rejected or deferred mechanisms in the research ledger.",
           "Do not change previously nonzero feature-hash outputs while correcting the zero-norm collision case."
         ],
-        "status": "implementation-pending-exact-head-ci"
+        "status": "requirements-satisfied-for-p04"
       },
       "unresolved_decisions": [
-        "No ECAL component is yet accepted as a paper contribution.",
+        "No ECAL component is yet accepted as a paper contribution; all remain defer-real-data.",
         "Final clinical backbone remains unresolved.",
         "Licensed development datasets for paper-level ECAL keep/reject decisions remain a later evidence gate.",
         "Native sufficiency and selective abstention remain P05 hypotheses."
       ],
-      "version": 2
+      "version": 3
+    },
+    "closeout": {
+      "implementation_pr": 19,
+      "implementation_head_sha": "d1f3315c949ed4a10783a6bfd3881e80521f8e74",
+      "implementation_exact_head_ci_run": 36247918779,
+      "implementation_merge_sha": "4baf5104314d1a1eecbb91cb7984ccb5e7df7866",
+      "implementation_post_merge_ci_run": 36248363024,
+      "all_ci_conclusions": "success",
+      "paper_decisions": "defer-real-data",
+      "verification": [
+        "Exact-head CI passed Ruff, mypy strict, pytest, and compileall on Linux/Windows and Python 3.11/3.12",
+        "Windows Python 3.11 exact-head job recorded 71 passing tests and no mypy issues in 16 source files",
+        "Post-main CI passed on Linux/Windows and Python 3.11/3.12",
+        "Evidence relation remained hidden from model-visible input",
+        "Zero-norm signed-hash cancellation regression is covered by deterministic fallback test",
+        "Synthetic ECAL fixtures remain implementation evidence only; all paper-level component decisions remain defer-real-data",
+        "No real clinical data, PHI, FHIR claim, clinical performance claim, or founder-paid compute was introduced"
+      ]
     }
   }
 }
