@@ -14,6 +14,8 @@ from gaxbench.fhir_adapters import (
     load_external_fhir_export,
 )
 
+FIXTURES = Path(__file__).parent / "fixtures"
+
 
 def payload(benchmark: str = "FHIR-AgentBench") -> dict[str, object]:
     revision = (
@@ -63,6 +65,13 @@ def test_frozen_benchmark_revision_is_enforced() -> None:
         ExternalFHIRTask.model_validate(value)
 
 
+def test_benchmark_revision_requires_lowercase_hex_sha() -> None:
+    value = payload()
+    value["benchmark_revision"] = "Z" * 40
+    with pytest.raises(ValidationError, match="lowercase hexadecimal"):
+        ExternalFHIRTask.model_validate(value)
+
+
 def test_local_export_rejects_final_test_by_default(tmp_path: Path) -> None:
     value = payload()
     value["split"] = "test"
@@ -93,3 +102,22 @@ def test_medagentbench_protocol_uses_its_frozen_revision() -> None:
     case = external_task_to_case(task)
     assert task.benchmark_revision == MEDAGENTBENCH_REVISION
     assert case.provenance.dataset == "MedAgentBench"
+
+
+def test_repository_fhir_agentbench_fixture_qualifies_local_export_protocol() -> None:
+    tasks = load_external_fhir_export(
+        FIXTURES / "p07_fhir_agentbench_export.jsonl",
+        benchmark="FHIR-AgentBench",
+    )
+    assert len(tasks) == 1
+    assert tasks[0].source_fhir_version == "R4"
+    assert tasks[0].redistribution == "permitted"
+
+
+def test_repository_medagentbench_fixture_qualifies_local_export_protocol() -> None:
+    tasks = load_external_fhir_export(
+        FIXTURES / "p07_medagentbench_export.jsonl",
+        benchmark="MedAgentBench",
+    )
+    assert len(tasks) == 1
+    assert tasks[0].benchmark_revision == MEDAGENTBENCH_REVISION
