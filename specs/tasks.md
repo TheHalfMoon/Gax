@@ -53,19 +53,26 @@
 
 ## P04 — ECAL research
 
-- [ ] Bidirectional/multi-positive state-action contrastive ablation
-- [ ] Hard-negative ablation
-- [ ] Evidence objective ablation
-- [ ] Proper-scoring/calibration ablation
-- [ ] Replay/retention ablation
-- [ ] Matched-ablation manifest and keep/reject ledger
+- [x] Bidirectional/multi-positive state-action contrastive ablation
+- [x] Hard-negative ablation
+- [x] Evidence objective ablation
+- [x] Proper-scoring/calibration ablation
+- [x] Replay/retention ablation
+- [x] Matched-ablation manifest and keep/reject ledger
+- [x] Explicit experiment-context binding
+- [x] Zero-norm feature-hash robustness regression
+- [x] Canonical P04 phase closeout
 
 ## P05 — Abstention
 
 - [ ] Confidence baseline
-- [ ] Learned sufficiency
-- [ ] Selective policy
+- [ ] Entropy baseline
+- [ ] Top-1/top-2 margin baseline
+- [ ] Learned information sufficiency
+- [ ] Calibration/selective-risk control
 - [ ] Matched-coverage evaluation
+- [ ] Unsafe-commit and over-abstention analysis
+- [ ] Keep/reject/defer ledger
 
 ## P06 — Evidence and counterfactuals
 
