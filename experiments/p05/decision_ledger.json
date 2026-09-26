@@ -1,0 +1,52 @@
+{
+  "schema_version": "0.1",
+  "phase": "P05",
+  "mechanisms": [
+    {
+      "id": "max-probability",
+      "class": "confidence-control",
+      "implementation_status": "candidate",
+      "paper_decision": "control",
+      "rationale": "Frozen confidence-only control; retained regardless of outcome for matched comparison."
+    },
+    {
+      "id": "entropy-confidence",
+      "class": "confidence-control",
+      "implementation_status": "candidate",
+      "paper_decision": "control",
+      "rationale": "Full-distribution confidence control; retained regardless of outcome for matched comparison."
+    },
+    {
+      "id": "top1-top2-margin",
+      "class": "confidence-control",
+      "implementation_status": "candidate",
+      "paper_decision": "control",
+      "rationale": "Decision-margin confidence control; retained regardless of outcome for matched comparison."
+    },
+    {
+      "id": "learned-sufficiency",
+      "class": "candidate-paper-mechanism",
+      "implementation_status": "candidate",
+      "paper_decision": "defer-real-data",
+      "rationale": "Synthetic fixtures can qualify implementation and leakage boundaries only. Paper keep/reject requires licensed leakage-audited development evidence under the preregistered matched-coverage gate."
+    },
+    {
+      "id": "calibration-quantile-threshold",
+      "class": "selection-policy-control",
+      "implementation_status": "candidate",
+      "paper_decision": "control",
+      "rationale": "Coverage threshold is selected from calibration scores only. No formal conformal guarantee is claimed."
+    }
+  ],
+  "paper_gate": {
+    "primary_metric": "risk_at_preregistered_matched_coverage",
+    "must_report": [
+      "unsafe_commit_rate",
+      "over_abstain_rate",
+      "actual_coverage",
+      "full_action_accuracy"
+    ],
+    "learned_sufficiency_keep_rule": "Improve the primary matched-coverage selective-risk metric over the strongest confidence-only control on licensed leakage-audited development evidence without unacceptable over-abstention or action-quality regression.",
+    "synthetic_default": "defer-real-data"
+  }
+}
