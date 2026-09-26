@@ -38,7 +38,7 @@
 - [x] restricted-logit source/license freeze and canonical transport path
 - [x] Clinical encoder identity/revision/license freeze
 - [x] Structured-output LLM identity/revision/license freeze
-- [ ] Canonical P02 phase closeout
+- [x] Canonical P02 phase closeout
 
 ## P03 — GAX v0
 

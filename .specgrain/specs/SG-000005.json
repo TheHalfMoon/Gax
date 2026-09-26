@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "SG-000005",
   "title": "GAX-P02 - Phase closeout and final baseline identity freeze",
-  "state": "GRAIN",
+  "state": "PROVEN",
   "method": "research-governance",
   "parent_id": null,
   "dependencies": [
@@ -15,7 +15,7 @@
     "reproducibility"
   ],
   "outcome": "Close P02 after freezing every required baseline identity/access/license status, restore the original phase boundary, and move real external-model execution into the frozen P08 paper-evaluation track.",
-  "rationale": "P02 was defined to make comparison mechanics reproducible before GAX v0 training, not to require all expensive external-model inference before GAX exists. Issue #6 and the P02 harness contract require explicit revision/access/license status and qualified adapter paths. Those requirements are now satisfiable without fabricating benchmark numbers. Keeping real external inference as a P02 blocker would create a compute dependency that contradicts the roadmap and the zero-founder-cost constraint.",
+  "rationale": "P02 was defined to make comparison mechanics reproducible before GAX v0 training, not to require all expensive external-model inference before GAX exists. Issue #6 and the P02 harness contract require explicit revision/access/license status and qualified adapter paths. Those requirements are satisfied without fabricating benchmark numbers. Real external inference remains a P08 responsibility under the zero-founder-cost constraint.",
   "scope_in": [
     "Freeze BioClinical ModernBERT-base as the clinical encoder control with immutable Hugging Face revision and MIT license",
     "Freeze Qwen3.5-4B as the structured-output LLM control with immutable Hugging Face revision and Apache-2.0 license",
@@ -75,13 +75,13 @@
   },
   "risk": {
     "level": "low",
-    "recovery": "Revert SG-000005 governance changes and return to canonical SG-000004 closeout at b6b30af27c3d6e9d603c5b4407b7ba1e61ab6d24. No model weights or benchmark predictions are changed."
+    "recovery": "Revert the canonical P02 closeout and return to merge 718badb174c984c1dfb7571b4246a9cfb5fd274c. No model weights or benchmark predictions are changed."
   },
   "metadata": {
     "readiness": {
       "minimality": {
         "choice": "governance-and-model-identity-freeze",
-        "rationale": "The remaining P02 gap is model identity/provenance for two planned baseline classes plus a contradictory phase boundary. No runtime implementation is required to satisfy the original P02 exit contract."
+        "rationale": "The P02 gap was model identity/provenance for two baseline classes plus a contradictory phase boundary. No runtime implementation was required to satisfy the original P02 exit contract."
       },
       "safety": {
         "requirements": [
@@ -89,7 +89,7 @@
           "Do not execute final test benchmarks before P08 freeze.",
           "Keep all failed/parsing external inference visible when P08 runs occur."
         ],
-        "status": "pending-exact-head-ci"
+        "status": "requirements-satisfied-for-p02"
       },
       "unresolved_decisions": [
         "Task-specific clinical encoder training hyperparameters remain a P08 preregistration item.",
@@ -97,6 +97,21 @@
         "Jev inclusion remains blocked on reproducible access and terms."
       ],
       "version": 1
+    },
+    "closeout": {
+      "phase_closeout_pr": 12,
+      "phase_closeout_head_sha": "d413bd845b1cff66a90ae1da3c5ea07b42431216",
+      "exact_head_ci_run": 36035557131,
+      "exact_head_ci_conclusion": "success",
+      "phase_closeout_merge_sha": "718badb174c984c1dfb7571b4246a9cfb5fd274c",
+      "post_merge_ci_run": 36035720538,
+      "post_merge_ci_conclusion": "success",
+      "verification": [
+        "Required P02 baseline identities and licenses are frozen",
+        "No external benchmark number or clinical claim was introduced",
+        "Exact-head cross-platform CI passed on SG-000005 implementation head",
+        "Post-merge cross-platform CI passed on the resulting main commit"
+      ]
     }
   }
 }
