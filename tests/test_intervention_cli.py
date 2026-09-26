@@ -23,17 +23,24 @@ def test_interventions_cli_smoke() -> None:
             str(FIXTURES / "p06_interventions.json"),
             "--stability-tv-threshold",
             "0.05",
+            "--git-sha",
+            "test-sha",
+            "--compute-provenance",
+            "synthetic-test",
         ],
         check=True,
         capture_output=True,
         text=True,
     )
     payload = json.loads(completed.stdout)
-    assert payload["metrics"]["n_pairs"] == 5
-    assert payload["metrics"]["bias_trap_rate"] == 0.0
-    assert payload["metrics"]["same_top1_agreement"] == 1.0
-    assert payload["metrics"]["abstain_success_rate"] == 1.0
-    assert payload["metrics"]["directional_success_rate"] == 1.0
+    metrics = payload["evaluation"]["metrics"]
+    assert metrics["n_pairs"] == 5
+    assert metrics["bias_trap_rate"] == 0.0
+    assert metrics["same_top1_agreement"] == 1.0
+    assert metrics["abstain_success_rate"] == 1.0
+    assert metrics["directional_success_rate"] == 1.0
+    assert payload["run_manifest"]["git_sha"] == "test-sha"
+    assert payload["run_manifest"]["compute_provenance"] == "synthetic-test"
 
 
 def test_interventions_cli_rejects_test_split(tmp_path: Path) -> None:
@@ -54,6 +61,10 @@ def test_interventions_cli_rejects_test_split(tmp_path: Path) -> None:
             str(FIXTURES / "p06_predictions.jsonl"),
             "--manifest",
             str(FIXTURES / "p06_interventions.json"),
+            "--git-sha",
+            "test-sha",
+            "--compute-provenance",
+            "synthetic-test",
         ],
         check=False,
         capture_output=True,
