@@ -1,0 +1,10 @@
+{"item_id":"p05-t1","probabilities":{"alpha":0.60,"beta":0.40},"evidence_support":null,"information_sufficiency":null,"abstain":false,"metadata":{"source":"synthetic-action-prediction"}}
+{"item_id":"p05-t2","probabilities":{"alpha":0.40,"beta":0.60},"evidence_support":null,"information_sufficiency":null,"abstain":false,"metadata":{"source":"synthetic-action-prediction"}}
+{"item_id":"p05-t3","probabilities":{"alpha":0.55,"beta":0.45},"evidence_support":null,"information_sufficiency":null,"abstain":false,"metadata":{"source":"synthetic-action-prediction"}}
+{"item_id":"p05-t4","probabilities":{"alpha":0.45,"beta":0.55},"evidence_support":null,"information_sufficiency":null,"abstain":false,"metadata":{"source":"synthetic-action-prediction"}}
+{"item_id":"p05-t5","probabilities":{"alpha":0.95,"beta":0.05},"evidence_support":null,"information_sufficiency":null,"abstain":false,"metadata":{"source":"synthetic-action-prediction"}}
+{"item_id":"p05-t6","probabilities":{"alpha":0.05,"beta":0.95},"evidence_support":null,"information_sufficiency":null,"abstain":false,"metadata":{"source":"synthetic-action-prediction"}}
+{"item_id":"p05-t7","probabilities":{"alpha":0.90,"beta":0.10},"evidence_support":null,"information_sufficiency":null,"abstain":false,"metadata":{"source":"synthetic-action-prediction"}}
+{"item_id":"p05-t8","probabilities":{"alpha":0.10,"beta":0.90},"evidence_support":null,"information_sufficiency":null,"abstain":false,"metadata":{"source":"synthetic-action-prediction"}}
+{"item_id":"p05-t9","probabilities":{"alpha":0.92,"beta":0.08},"evidence_support":null,"information_sufficiency":null,"abstain":false,"metadata":{"source":"synthetic-action-prediction"}}
+{"item_id":"p05-t10","probabilities":{"alpha":0.08,"beta":0.92},"evidence_support":null,"information_sufficiency":null,"abstain":false,"metadata":{"source":"synthetic-action-prediction"}}
