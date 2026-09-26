@@ -1,0 +1,111 @@
+{
+  "acceptance": [
+    "Paired bootstrap computes a deterministic paired mean-difference percentile interval from a caller-supplied seed, replicate count, and CI level and rejects fewer than 1000 replicates",
+    "Evidence AUROC gives tied positive/negative scores half credit and reports undefined rather than fabricating a value when either class required by AUROC is absent",
+    "Evidence AUPRC enters identical scores as one threshold group, reports undefined without positive labels, and documents the exact step-area convention",
+    "Reliability artifacts use versioned equal-width bins, preserve empty bins, and disclose interval edges and final-bin inclusivity",
+    "Failure-preserving aggregation records requested, completed, failed, per-status counts, and failed item IDs and withholds an aggregate mean whenever any requested item failed",
+    "Derived artifact manifests bind source run IDs, evidence packet IDs, source-file SHA-256 hashes, output SHA-256, generator revision, and a canonical manifest digest",
+    "Primary-comparison registry and result-set contracts require deterministic ordering, exact comparison coverage, matching experiment revisions, and explicit blocked or undefined reasons",
+    "Primary comparison reports bind a 40-character repository revision and serialize deterministically with a canonical report digest",
+    "P08 CLI exposes bootstrap, evidence-ranking, reliability, and comparison-report operations using strict JSON inputs and deterministic JSON outputs",
+    "Tests cover deterministic bootstrap behavior, score ties, undefined ranking cases, empty reliability bins, failure denominators, manifest binding, report coverage, and blocked comparisons",
+    "Final-test access remains sealed and this grain introduces no final-test labels, real clinical benchmark result, model superiority claim, safety claim, or SOTA claim",
+    "Exact-head GitHub CI runs Ruff, mypy strict, pytest, and compileall on Python 3.11/3.12 across Linux and Windows",
+    "SG-000012 is not marked PROVEN until exact-head CI, exact-head merge, post-main CI, and a separate canonical closeout are complete"
+  ],
+  "change_surface": [
+    ".specgrain/specs/SG-000012.json",
+    "src/gaxbench/p08_stats.py",
+    "src/gaxbench/p08_cli.py",
+    "tests/test_p08_stats.py",
+    "tests/test_p08_stats_cli.py",
+    "docs/research/P08_STATISTICS_EVIDENCE.md",
+    "specs/CURRENT.md"
+  ],
+  "children": [],
+  "context": {
+    "budget_tokens": 18000,
+    "estimated_tokens": 13000
+  },
+  "dependencies": [
+    "SG-000011"
+  ],
+  "evidence": {
+    "required": [
+      "issue-34-research-contract",
+      "exact-head-linux-python311-ci-pass",
+      "exact-head-linux-python312-ci-pass",
+      "exact-head-windows-python311-ci-pass",
+      "exact-head-windows-python312-ci-pass",
+      "ruff-pass",
+      "mypy-strict-pass",
+      "pytest-pass",
+      "compileall-pass",
+      "implementation-pr-pass",
+      "post-merge-ci-pass",
+      "canonical-closeout-pass"
+    ]
+  },
+  "id": "SG-000012",
+  "labels": [
+    "p08",
+    "statistics",
+    "evidence",
+    "pre-test"
+  ],
+  "metadata": {
+    "readiness": {
+      "minimality": {
+        "choice": "new-code",
+        "rationale": "SG-000011 proved the final-test freeze mechanism, but paper evaluation still lacks frozen statistical uncertainty, ranking, reliability, denominator, and derived-artifact semantics. This grain implements only that missing pre-test infrastructure before any real final-test opening."
+      },
+      "safety": {
+        "requirements": [
+          "Keep final-test access sealed throughout SG-000012.",
+          "Do not ingest or expose final-test labels or results.",
+          "Do not turn synthetic/statistical mechanics evidence into clinical or superiority claims.",
+          "Never silently remove failed, blocked, timeout, OOM, parse-failure, or evaluation-failure outcomes from denominators."
+        ],
+        "status": "implementation-pending-exact-head-ci"
+      },
+      "unresolved_decisions": [
+        "Real benchmark/data freeze remains for a later P08 grain.",
+        "Real GAX checkpoint and baseline qualification state remains for a later P08 grain.",
+        "Multiplicity families and exact primary comparisons are frozen only when the real P08 evaluation inventory is populated.",
+        "No final-test authorization is permitted by SG-000012."
+      ],
+      "version": 1
+    }
+  },
+  "method": "research",
+  "outcome": "Freeze deterministic statistical uncertainty, evidence-ranking, reliability, failure-preserving aggregation, derived-artifact provenance, and primary-comparison report mechanics before real P08 final-test authorization.",
+  "parent_id": null,
+  "rationale": "Opening final-test access before fixing confidence-interval, AUROC/AUPRC, reliability, failure-denominator, and table/figure provenance semantics would allow post-test analytical flexibility. SG-000012 removes that flexibility by implementing and qualifying the paper statistics/evidence layer while the final test remains sealed.",
+  "risk": {
+    "level": "medium",
+    "recovery": "Revert SG-000012 files and return to canonical main 6c5b0075f4fdc5d42201720d69af5cbd24d9d0d8. No final-test labels, model weights, clinical datasets, or production behavior are changed by this grain."
+  },
+  "schema_version": 1,
+  "scope_in": [
+    "Paired percentile-bootstrap mean-difference confidence intervals",
+    "Evidence AUROC/AUPRC mechanics with deterministic tie handling",
+    "Reliability-bin artifact generation",
+    "Failure-preserving run aggregation",
+    "Derived table/figure/report source manifests and hashes",
+    "Primary-comparison registry, result-set, and deterministic report contracts",
+    "Pre-test CLI and tests"
+  ],
+  "scope_out": [
+    "No final-test authorization",
+    "No final-test labels or results",
+    "No real clinical benchmark performance claim",
+    "No real-model qualification",
+    "No model selection",
+    "No ECAL keep/reject paper decision",
+    "No FHIR representation winner selection",
+    "No SOTA or clinical-safety claim"
+  ],
+  "state": "GRAIN",
+  "title": "GAX-P08 - Statistical uncertainty and evidence aggregation infrastructure"
+}
