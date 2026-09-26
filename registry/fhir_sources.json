@@ -1,0 +1,46 @@
+{
+  "schema_version": "0.1",
+  "canonical_fhir": {
+    "release": "R5",
+    "version": "5.0.0",
+    "status": "current-published",
+    "source": "https://hl7.org/fhir/R5/",
+    "license": "CC0-1.0",
+    "note": "R6 6.0.0-snapshot1 is a September 2026 ballot/local build and is not the P07 canonical target."
+  },
+  "compatibility": [
+    {
+      "release": "R4",
+      "mode": "source-native-explicit",
+      "semantic_conversion_to_r5": false,
+      "note": "R4 resources may be rendered and evaluated with explicit R4 identity; P07 does not claim semantic conversion to R5."
+    }
+  ],
+  "benchmarks": [
+    {
+      "id": "medagentbench",
+      "repository": "stanfordmlgroup/MedAgentBench",
+      "revision": "99260117137b09f04837a8c18d18a1107efa55ae",
+      "code_license": "MIT",
+      "source_fhir_version": "upstream-runtime-specific",
+      "data_redistribution": "separate-review-required",
+      "external_artifacts": [
+        "FHIR server Docker image",
+        "externally downloaded refsol.py"
+      ],
+      "gax_adapter_mode": "local-user-supplied-export"
+    },
+    {
+      "id": "fhir-agentbench",
+      "repository": "glee4810/FHIR-AgentBench",
+      "revision": "bbb42909a5a7eb907d1cd91f72a560729e7037ea",
+      "repository_license": "CC-BY-4.0",
+      "source_fhir_version": "R4",
+      "data_redistribution": "separate-source-terms-apply",
+      "external_data": "MIMIC-IV FHIR demo / PhysioNet",
+      "reference_cloud": "Google Cloud Healthcare API",
+      "gax_adapter_mode": "local-user-supplied-export",
+      "founder_paid_cloud_required": false
+    }
+  ]
+}
