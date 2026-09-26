@@ -25,6 +25,7 @@
     "Supported-claim evidence-packet requirement",
     "Standalone governance CLI and synthetic regression fixtures",
     "P08 evaluation-protocol documentation",
+    "Time-stamped P08 literature/novelty refresh",
     "Linux/Windows Python 3.11/3.12 qualification"
   ],
   "scope_out": [
@@ -52,6 +53,7 @@
     "Null, rejected, and blocked claims require explicit reasons",
     "Exploratory claims cannot be primary candidates",
     "Claim-ledger export exposes only supported claims as affirmative publishable claims while preserving other states in the ledger",
+    "The 2026-09-26 literature refresh explicitly raises the novelty bar beyond generic Jev-like typed decisions and records peer-reviewed medical abstention, FHIR-agent, EHR-agent, and evidence-verification anchors",
     "Synthetic P08 fixtures contain no patient data, clinical threshold, or paper performance result",
     "Exact-head CI passes Ruff, mypy strict, pytest, and compileall on Python 3.11/3.12 across Linux and Windows",
     "Implementation merges with expected-head guard and post-main CI succeeds before SG-000011 can close"
@@ -59,6 +61,7 @@
   "change_surface": [
     ".specgrain/specs/SG-000011.json",
     "docs/research/P08_EVALUATION_PROTOCOL.md",
+    "docs/research/P08_LITERATURE_REFRESH_2026-09-26.md",
     "src/gaxbench/p08_freeze.py",
     "src/gaxbench/p08_cli.py",
     "pyproject.toml",
@@ -72,6 +75,7 @@
   "evidence": {
     "required": [
       "p07-closed-canonical",
+      "p08-literature-refresh-pass",
       "sealed-default-pass",
       "clean-tree-authorization-pass",
       "benchmark-audit-hash-binding-pass",
