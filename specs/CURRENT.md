@@ -14,8 +14,9 @@ Completed grains:
 - **SG-000008 — GAX-P05 Native information sufficiency and selective abstention** — PROVEN
 - **SG-000009 — GAX-P06 Evidence interventions and counterfactual robustness** — PROVEN
 - **SG-000010 — GAX-P07 FHIR interoperable read-only decision layer** — PROVEN
+- **SG-000011 — GAX-P08 Final-test freeze and claim-evidence contract** — PROVEN
 
-Canonical P03 evidence chain:
+## Canonical P03 evidence chain
 
 - implementation PR: #15
 - implementation exact head: `18bad9e76ef161836875282e26acbaa0ff873a92`
@@ -31,7 +32,7 @@ Canonical P03 evidence chain:
 
 P03 is **CLOSED_CANONICAL**. GAX has a genuine trainable non-generative typed-decision reference model with deterministic training, integrity-bound checkpointing, CLI, and direct GAXBench integration. Closeout review caught and corrected a model-visible evidence-label leak before freeze. Abstract smoke results remain infrastructure evidence only and are not clinical or paper performance results.
 
-Canonical P04 evidence chain:
+## Canonical P04 evidence chain
 
 - implementation PR: #19
 - implementation exact head: `d1f3315c949ed4a10783a6bfd3881e80521f8e74`
@@ -44,7 +45,7 @@ Canonical P04 evidence chain:
 
 P04 is **CLOSED_CANONICAL**. GAX has a qualified component-wise ECAL experiment framework, not an ECAL superiority claim. No ECAL component may enter the paper as a positive contribution until its preregistered keep/reject gate is evaluated on licensed, leakage-audited development evidence.
 
-Canonical P05 evidence chain:
+## Canonical P05 evidence chain
 
 - implementation PR: #22
 - implementation exact head: `309e7c108f4dab87f80d2ab24849d9c3032102db`
@@ -52,7 +53,6 @@ Canonical P05 evidence chain:
 - implementation merge: `ced14e8e8f599f8022a273c762fda56452c335c6`
 - implementation post-merge CI: run `36252259764` — SUCCESS
 - exact-head and post-main matrices: Linux/Windows × Python 3.11/3.12 — SUCCESS
-- Windows Python 3.11 exact-head qualification: Ruff PASS, mypy strict PASS across 17 source files, 84 pytest tests PASS, compileall PASS
 - confidence-only controls: max probability, normalized entropy confidence, top-1/top-2 margin
 - learned information sufficiency remains a separate model-visible probability-like signal trained without updating the frozen action model
 - calibration-split threshold selection remains isolated from validation evaluation; P05 final-test selector evaluation is rejected
@@ -61,7 +61,7 @@ Canonical P05 evidence chain:
 
 P05 is **CLOSED_CANONICAL** as an implementation and selective-evaluation framework result. It does not establish clinical safety, a formal conformal guarantee, or learned-sufficiency superiority. A paper-level keep decision still requires licensed, leakage-audited development evidence under the preregistered matched-coverage gate.
 
-Canonical P06 evidence chain:
+## Canonical P06 evidence chain
 
 - research contract: Issue #23
 - implementation PR: #25
@@ -70,7 +70,6 @@ Canonical P06 evidence chain:
 - implementation merge: `a63704e89d4ad81c97358d3f65f5deb18cdcc041`
 - implementation post-merge CI: run `36254912534` — SUCCESS
 - exact-head and post-main matrices: Linux/Windows × Python 3.11/3.12 — SUCCESS
-- exact-head and post-main gates include Ruff, mypy strict, pytest, and compileall
 - paired evaluator freezes total-variation and natural-log Jensen-Shannon conventions, same-split/source/group lineage, exact denominator alignment, explicit abstention, directional action/support/sufficiency response, and irrelevant-edit stability
 - P06 CLI rejects final-test items and binds runs to a 40-character git revision plus compute provenance and artifact hashes
 - abstract fixtures contain no patient data, PHI, real medical thresholds, diagnosis rules, treatment guidance, or clinical source claims
@@ -78,7 +77,7 @@ Canonical P06 evidence chain:
 
 P06 is **CLOSED_CANONICAL** as a paired intervention/evaluation framework result. It does not establish clinical safety, causal identification, or medical counterfactual superiority. The proven surface is a governed pair manifest/evaluator and synthetic mechanics suite; real medical intervention construction and paper-level keep decisions require licensed, reviewed, leakage-audited development evidence.
 
-Canonical P07 evidence chain:
+## Canonical P07 evidence chain
 
 - research contract: Issue #27 / SG-000010
 - implementation PR: #28
@@ -86,8 +85,12 @@ Canonical P07 evidence chain:
 - implementation exact-head CI: run `36258059106` — SUCCESS
 - implementation merge: `a9128a7f8de49dfa614ded1bd472cf1230f0041a`
 - implementation post-merge CI: run `36258143003` — SUCCESS
+- closeout PR: #29
+- closeout exact head: `ee04a3ae2e5c3c82aa82324ae0aaf566ed9dd996`
+- closeout exact-head CI: run `36258444879` — SUCCESS
+- canonical closeout merge: `250ffdf6d3c91c030c79fc2835daabe605efef40`
+- closeout post-main CI: run `36258521894` — SUCCESS
 - exact-head and post-main matrices: Linux/Windows × Python 3.11/3.12 — SUCCESS
-- exact-head and post-main gates include Ruff, mypy strict, pytest, and compileall
 - canonical published FHIR reference is R5 5.0.0 while R4 benchmark inputs preserve explicit source-native identity
 - P07 makes no R4-to-R5 semantic conversion claim and does not treat deterministic rendering as HL7 profile/conformance certification
 - FHIR actions are read-only; POST/PUT/PATCH/DELETE templates are rejected and no model-selected EHR write operation is exposed
@@ -96,13 +99,37 @@ Canonical P07 evidence chain:
 
 P07 is **CLOSED_CANONICAL** as an interoperability and evaluation-contract result. It proves deterministic FHIR rendering, explicit version identity, read-only action boundaries, representation controls, and frozen local-export adapter protocols. It does not prove FHIR benchmark superiority, clinical correctness, FHIR conformance certification, or semantic R4-to-R5 equivalence.
 
+## Canonical P08 pre-test freeze evidence chain
+
+- research contract: Issue #30 / SG-000011
+- implementation PR: #31
+- implementation exact head: `45bd2dcdcd1e4b96be20ffbf0c77080d3bd690d0`
+- implementation exact-head CI: run `36259370327` — SUCCESS
+- implementation merge: `1818aa67f93d5ed484611392011934ecfa770a1c`
+- implementation post-main CI: run `36259485349` — SUCCESS
+- exact-head and post-main matrices: Linux/Windows × Python 3.11/3.12 — SUCCESS
+- final-test access is sealed by default and authorization requires a clean tree, frozen benchmark manifests, audit hashes, frozen system identities, calibration/statistics/protocol contracts, and a digest-bound separate authorization artifact
+- the P08 gate is hard-bound to the canonical P07 closeout merge `250ffdf6d3c91c030c79fc2835daabe605efef40` and post-main run `36258521894`
+- claim states are machine-readable; affirmative export is restricted to `supported` claims carrying evidence-packet identifiers
+- null, rejected, blocked, and exploratory results remain visible by contract
+- the 2026-09-26 literature refresh raises the novelty bar beyond generic typed-decision/Jev-like behavior
+
+SG-000011 is **CLOSED_CANONICAL** as a pre-test governance result. It proves the freeze/authorization/claim discipline only. It does not authorize final-test access and does not establish any model, mechanism, clinical, FHIR, calibration, or efficiency result.
+
 Active frontier:
 
-**P08 — Full Paper Evaluation**
+**P08 — Full Paper Evaluation / statistical and evidence infrastructure**
 
-P08 is the evidence freeze and final evaluation phase. It is the first phase allowed to support paper-level comparative claims, and only after all selection surfaces are frozen before final-test access.
+P08 remains open. The next governed unit builds the paired uncertainty and evidence aggregation layer needed before a real final-test freeze:
 
-Core P08 rules:
+- paired bootstrap confidence intervals with frozen seeds/replicate counts;
+- deterministic evidence AUROC/AUPRC with tie handling and undefined-case reporting;
+- reliability-bin artifacts alongside ECE/NLL/Brier;
+- failure-preserving aggregation that never silently changes denominators;
+- table/figure source manifests binding every derived artifact to raw run/evidence identifiers;
+- deterministic primary-comparison report serialization.
+
+Core P08 rules remain:
 
 ```text
 final-test access != model selection
@@ -113,10 +140,4 @@ missing/failed inference != silent exclusion
 negative result != disposable result
 ```
 
-Before final-test access, P08 must freeze benchmark/split manifests, GAX checkpoints and training seeds, baseline model/tokenizer/source revisions, calibration and selective policies, ECAL candidate mechanisms, FHIR representation choices, hardware/timing protocols, data/license status, and leakage audits. A signed final-test opening manifest must bind this frozen state.
-
-P08 must then run matched primary evaluations, calibration/selective-risk analyses, ECAL ablations, evidence/counterfactual tests, FHIR evaluations, shift slices, failure analysis, and efficiency measurement with exact requested/completed/failed counts and confidence intervals. Every paper table and figure must regenerate from raw versioned evidence packets. Null and negative results remain in the ledger.
-
-No paper-level claim for ECAL, learned information sufficiency, evidence grounding, counterfactual robustness, FHIR gains, efficiency, or baseline superiority is authorized until its preregistered P08 gate passes. Jev must remain explicitly blocked if reproducible access or terms do not permit a fair zero-founder-cost evaluation; it must not be silently omitted or replaced by an invented result.
-
-Final-test labels remain sealed until the P08 freeze contract is canonical. Research claims remain subject to `docs/research/REPRODUCIBILITY.md`.
+Final-test labels remain sealed. No paper-level claim for ECAL, learned information sufficiency, evidence grounding, counterfactual robustness, FHIR gains, efficiency, or baseline superiority is authorized until the real P08 data/model/protocol freeze is populated, audited, digest-authorized, and evaluated under the preregistered contract. Research claims remain subject to `docs/research/REPRODUCIBILITY.md`.

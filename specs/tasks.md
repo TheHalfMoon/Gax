@@ -123,6 +123,27 @@ P07 proves deterministic read-only interoperability mechanics and frozen source/
 
 ## P08 — Full paper evaluation
 
+### Pre-test governance foundation
+
+- [x] P07 canonical-closeout evidence bound into P08 schema
+- [x] Final-test state sealed by default
+- [x] Digest-bound final-test authorization contract
+- [x] Separate authorized-artifact rule
+- [x] Benchmark split/license/leakage hash requirements
+- [x] Qualified/blocked system identity contract
+- [x] Calibration and target-coverage freeze contract
+- [x] Statistical primary-comparison/bootstrap freeze contract
+- [x] Hardware/failure/evidence/intervention/FHIR protocol revision binding
+- [x] Machine-readable claim ledger
+- [x] Supported-claim evidence-packet requirement
+- [x] Negative/null/blocked/exploratory claim preservation
+- [x] Time-stamped 2026-09-26 novelty/literature refresh
+- [x] SG-000011 exact-head cross-platform qualification
+- [x] SG-000011 guarded implementation merge and post-main CI
+- [x] SG-000011 canonical closeout
+
+Final-test access remains sealed after SG-000011. The freeze mechanism is proven; the real benchmark/model/data freeze has not yet been authorized.
+
 ### Freeze before final-test access
 
 - [ ] Freeze benchmark version and immutable split manifests
@@ -135,6 +156,15 @@ P07 proves deterministic read-only interoperability mechanics and frozen source/
 - [ ] Complete dataset/license/redistribution audit
 - [ ] Complete train/dev/calibration/test leakage audit
 - [ ] Sign final-test opening manifest
+
+### Statistical/evidence infrastructure
+
+- [ ] Paired bootstrap confidence-interval engine
+- [ ] Evidence AUROC/AUPRC implementation with deterministic tie handling
+- [ ] Reliability-bin artifact generation
+- [ ] Failure-preserving run aggregation
+- [ ] Table/figure source-manifest generation
+- [ ] Primary comparison registry and deterministic report serialization
 
 ### Real-model qualification
 
