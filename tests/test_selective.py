@@ -7,7 +7,7 @@ import pytest
 from gaxbench.ecal import ExperimentContext
 from gaxbench.gax_v0 import GaxV0Config, GaxV0Model
 from gaxbench.io import load_items
-from gaxbench.schema import Evidence, Gold, Provenance
+from gaxbench.schema import BenchmarkItem, Evidence, Gold, Provenance
 from gaxbench.selective import (
     LearnedSufficiencyModel,
     SufficiencyConfig,
@@ -25,7 +25,7 @@ from gaxbench.selective import (
 FIXTURES = Path(__file__).parent / "fixtures"
 
 
-def _items(name: str):
+def _items(name: str) -> list[BenchmarkItem]:
     return load_items(FIXTURES / name)
 
 
@@ -60,7 +60,7 @@ def test_sufficiency_training_is_deterministic() -> None:
     assert first.training_manifest_sha256 == second.training_manifest_sha256
 
 
-def test_learned_score_cannot_see_gold_or_provenance() -> None:
+def test_learned_score_cannot_see_hidden_gold_provenance_or_split() -> None:
     action_model = _action_model()
     training = train_information_sufficiency(
         _items("p05_train.jsonl"),
@@ -82,6 +82,7 @@ def test_learned_score_cannot_see_gold_or_provenance() -> None:
             ),
             "source_id": "hidden-source-change",
             "task_family": "hidden-family-change",
+            "split": "test",
         }
     )
     assert training.model.score(altered, action_model.probabilities(altered)) == pytest.approx(
@@ -146,6 +147,18 @@ def test_coverage_policy_does_not_read_calibration_labels() -> None:
     assert original.calibration_manifest_sha256 != changed.calibration_manifest_sha256
 
 
+def test_coverage_policy_rejects_duplicate_calibration_ids() -> None:
+    action_model = _action_model()
+    calibration = _items("p05_calibration.jsonl")
+    with pytest.raises(ValueError, match="calibration item ids must be unique"):
+        fit_coverage_policy(
+            [*calibration, calibration[0]],
+            action_model,
+            "max-probability",
+            target_coverage=0.8,
+        )
+
+
 def test_validation_evaluation_reports_both_abstention_harms() -> None:
     action_model = _action_model()
     calibration = _items("p05_calibration.jsonl")
@@ -163,6 +176,32 @@ def test_validation_evaluation_reports_both_abstention_harms() -> None:
     assert 0.0 <= metrics.actual_coverage <= 1.0
     assert metrics.abstention.unsafe_commit_rate is not None
     assert metrics.abstention.over_abstain_rate is not None
+
+
+def test_learned_selector_reports_sufficiency_nll_brier_and_ece() -> None:
+    action_model = _action_model()
+    training = train_information_sufficiency(
+        _items("p05_train.jsonl"),
+        action_model,
+        SufficiencyConfig(feature_dim=16, epochs=20, seed=5),
+    )
+    policy = fit_coverage_policy(
+        _items("p05_calibration.jsonl"),
+        action_model,
+        "learned-sufficiency",
+        target_coverage=0.75,
+        sufficiency_model=training.model,
+    )
+    metrics = evaluate_selector(
+        _items("p05_validation.jsonl"),
+        action_model,
+        policy,
+        sufficiency_model=training.model,
+        ece_bins=10,
+    )
+    assert metrics.abstention.sufficiency_nll is not None
+    assert metrics.abstention.sufficiency_brier is not None
+    assert metrics.abstention.sufficiency_ece is not None
 
 
 def test_final_test_split_is_rejected_by_p05_selector_evaluation() -> None:
@@ -215,7 +254,7 @@ def test_matched_suite_is_deterministic_and_defers_paper_decision() -> None:
     }
 
 
-def test_p05_manifest_binds_data_model_context_and_no_test_labels() -> None:
+def test_p05_manifest_binds_data_model_context_and_final_test_prohibition() -> None:
     action_model = _action_model()
     manifest = build_p05_manifest(
         _items("p05_train.jsonl"),
@@ -233,5 +272,5 @@ def test_p05_manifest_binds_data_model_context_and_no_test_labels() -> None:
         "compute_provenance": "pytest-cpu",
     }
     assert payload["action_model_revision"] == action_model.model_revision
-    assert "test" not in str(payload["threshold_protocol"]).casefold().replace("test labels", "")
-    assert manifest["sha256"]
+    assert "no final-test labels" in str(payload["threshold_protocol"])
+    assert len(str(manifest["sha256"])) == 64
