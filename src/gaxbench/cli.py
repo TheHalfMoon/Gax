@@ -120,7 +120,7 @@ def main() -> None:
                 "P06 mechanism qualification rejects test items; final-test evaluation is P08 work"
             )
         predictions = load_predictions(args.predictions)
-        manifest = load_intervention_manifest(args.manifest)
+        intervention_manifest = load_intervention_manifest(args.manifest)
         context = ExperimentContext(
             git_sha=args.git_sha,
             compute_provenance=args.compute_provenance,
@@ -128,19 +128,22 @@ def main() -> None:
         run_manifest = build_intervention_run_manifest(
             items,
             predictions,
-            manifest,
+            intervention_manifest,
             context=context,
             stability_tv_threshold=args.stability_tv_threshold,
         )
-        result = evaluate_interventions(
+        intervention_result = evaluate_interventions(
             items,
             predictions,
-            manifest,
+            intervention_manifest,
             stability_tv_threshold=args.stability_tv_threshold,
         )
         print(
             json.dumps(
-                {"run_manifest": asdict(run_manifest), "evaluation": asdict(result)},
+                {
+                    "run_manifest": asdict(run_manifest),
+                    "evaluation": asdict(intervention_result),
+                },
                 indent=2,
                 sort_keys=True,
             )
