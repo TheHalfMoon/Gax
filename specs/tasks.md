@@ -104,18 +104,22 @@ P06 deliberately does not claim a generic medical transformation builder. Its pr
 
 ## P07 — FHIR
 
-- [ ] Stable FHIR version/compatibility contract
-- [ ] Canonicalizer
-- [ ] FHIR action schemas
-- [ ] Synthetic/permitted FHIR fixtures
-- [ ] Representation controls
-- [ ] MedAgentBench source/license/revision qualification
-- [ ] FHIR-AgentBench source/license/revision qualification
-- [ ] MedAgentBench adapter where terms permit
-- [ ] FHIR-AgentBench adapter where terms permit
-- [ ] Information-sufficiency/tool-routing evaluation
+- [x] Stable FHIR R5 5.0.0 canonical / explicit R4 compatibility contract
+- [x] Deterministic FHIR canonicalizer and Bundle/contained-resource checks
+- [x] Read-only FHIR action schemas
+- [x] Abstract CC0 FHIR fixtures and registry entry
+- [x] Narrative/source-order/flat-text representation controls
+- [x] MedAgentBench source/license/revision freeze
+- [x] FHIR-AgentBench source/license/revision and R4 freeze
+- [x] MedAgentBench local normalized-export adapter protocol
+- [x] FHIR-AgentBench local normalized-export adapter protocol
+- [x] Information-sufficiency/tool-routing reuse of GAXBench metrics
+- [x] P07 final-test rejection in conversion/export paths
 - [ ] Exact-head cross-platform qualification
-- [ ] Guarded merge, post-main CI, and canonical P07 closeout
+- [ ] Guarded implementation merge and post-main CI
+- [ ] Canonical P07 closeout
+
+P07 adapters intentionally qualify a frozen local/user-supplied normalized-export protocol rather than pretending unstable or separately restricted upstream runtime artifacts are redistributable. P07 exposes no EHR write operation.
 
 ## P08 — Full paper evaluation
 

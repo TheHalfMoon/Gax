@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Sequence
 from pathlib import Path
 from typing import TypeVar
 
@@ -28,7 +29,7 @@ def load_jsonl(path: str | Path, model: type[ModelT]) -> list[ModelT]:
     return rows
 
 
-def dump_jsonl(path: str | Path, rows: list[BaseModel]) -> None:
+def dump_jsonl(path: str | Path, rows: Sequence[BaseModel]) -> None:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="\n") as handle:

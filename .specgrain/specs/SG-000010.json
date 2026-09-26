@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "id": "SG-000010",
+  "title": "GAX-P07 - FHIR interoperable read-only decision layer",
+  "state": "GRAIN",
+  "method": "research-implementation",
+  "parent_id": null,
+  "dependencies": ["SG-000009"],
+  "labels": ["research", "p07", "fhir", "interoperability", "read-only"],
+  "outcome": "Create a deterministic, version-aware, read-only FHIR representation and adapter layer that reuses GAXBench decision/calibration/selective-risk contracts without claiming clinical execution authority or FHIR conformance certification.",
+  "rationale": "FHIR support can be misleading if a model wins by serialization artifacts, silently mixes FHIR releases, or turns tool routing into EHR write authority. P07 freezes a published R5 reference, preserves source-native R4 identity for compatible benchmarks, enforces read-only actions, and qualifies local-export adapters without paid-cloud dependence.",
+  "scope_in": [
+    "HL7 FHIR R5 5.0.0 canonical published-reference freeze",
+    "Explicit R4 source-native compatibility metadata without semantic conversion claim",
+    "Deterministic strict-JSON FHIR resource and Bundle rendering",
+    "Narrative-excluded structured representation by default",
+    "Narrative-included, source-order JSON, and deterministic flat-text representation controls",
+    "Read-only FHIR action schema for resource selection, read/search routing, sufficiency, abstention, and support verification",
+    "FHIR decision-case conversion into canonical GAXBench BenchmarkItem contracts",
+    "Frozen MedAgentBench source identity and local-export adapter protocol",
+    "Frozen FHIR-AgentBench source identity, R4 preservation, and local-export adapter protocol",
+    "Final-test rejection during P07 adapter/representation qualification",
+    "Synthetic CC0 interoperability fixtures and data registry",
+    "No founder-paid cloud requirement",
+    "Linux/Windows Python 3.11/3.12 qualification"
+  ],
+  "scope_out": [
+    "No POST, PUT, PATCH, DELETE, or model-selected EHR write operations",
+    "No autonomous diagnosis, prescribing, treatment, triage, or emergency execution",
+    "No claim that deterministic rendering is full HL7 FHIR validation",
+    "No silent R4 to R5 semantic conversion",
+    "No MIMIC-derived data redistribution without source-term review",
+    "No externally restricted MedAgentBench reference solution redistribution",
+    "No final-test tuning or representation selection",
+    "No FHIR benchmark superiority claim from synthetic fixtures",
+    "No founder-paid cloud compute"
+  ],
+  "acceptance": [
+    "The P07 standards registry identifies FHIR R5 5.0.0 as the canonical published reference and records R6 snapshot/ballot exclusion",
+    "FHIR resources require a non-empty resourceType and strict finite JSON values",
+    "Bundle entry resources are recursively checked for resourceType when present",
+    "Canonical structured rendering sorts object keys while preserving array order",
+    "FHIR narrative text is excluded by default and only included through an explicit representation control",
+    "Source-order JSON and deterministic flat-text controls are available beside canonical rendering",
+    "FHIRReadOnlyAction cannot represent write action kinds and rejects explicit POST/PUT/PATCH/DELETE query methods",
+    "Retrieval actions require an explicit resource_type",
+    "FHIRDecisionCase preserves source FHIR version, allowed actions, sufficiency target, gold routing action, and provenance",
+    "Conversion into BenchmarkItem preserves explicit source FHIR version and representation revision in model-visible state",
+    "FHIR-AgentBench local exports must retain R4 identity and the frozen upstream revision",
+    "MedAgentBench local exports must retain the frozen upstream revision",
+    "P07 external-export loading rejects final-test rows unless a future P08 caller explicitly enables final evaluation",
+    "Benchmark repository licenses are tracked separately from external dataset/reference-artifact terms",
+    "P07 tests and registry use only abstract CC0 synthetic content with no PHI, medical thresholds, diagnosis rules, or treatment guidance",
+    "Exact-head CI passes Ruff, mypy strict, pytest, and compileall on Python 3.11/3.12 across Linux and Windows",
+    "Implementation merges with an expected-head guard, post-main CI succeeds, and a separate canonical closeout is required before SG-000010 becomes PROVEN"
+  ],
+  "change_surface": [
+    ".specgrain/specs/SG-000010.json",
+    "src/gaxbench/fhir.py",
+    "src/gaxbench/fhir_adapters.py",
+    "registry/fhir_sources.json",
+    "registry/datasets.json",
+    "tests/test_fhir.py",
+    "tests/test_fhir_adapters.py",
+    "docs/research/P07_FHIR.md",
+    "specs/CURRENT.md",
+    "specs/tasks.md"
+  ],
+  "children": [],
+  "context": {"budget_tokens": 26000, "estimated_tokens": 19000},
+  "evidence": {
+    "required": [
+      "p06-closed-canonical",
+      "hl7-r5-published-reference-freeze",
+      "hl7-r6-ballot-not-canonical",
+      "medagentbench-source-license-revision-freeze",
+      "fhir-agentbench-source-license-revision-freeze",
+      "strict-fhir-json-pass",
+      "bundle-nested-resource-pass",
+      "read-only-action-boundary-pass",
+      "narrative-control-pass",
+      "representation-control-pass",
+      "r4-identity-preservation-pass",
+      "benchmark-revision-freeze-pass",
+      "final-test-rejection-pass",
+      "synthetic-dataset-registry-pass",
+      "linux-python311-ci-pass",
+      "linux-python312-ci-pass",
+      "windows-python311-ci-pass",
+      "windows-python312-ci-pass",
+      "implementation-pr-pass",
+      "post-merge-ci-pass",
+      "canonical-p07-closeout-pass"
+    ]
+  },
+  "risk": {
+    "level": "medium",
+    "recovery": "Revert P07 files and return to canonical P06 main 54c4adde31e271004904670426a9472a279a3f98. No real clinical data, EHR write capability, released clinical model, or production behavior is affected."
+  },
+  "metadata": {
+    "readiness": {
+      "minimality": {
+        "choice": "read-only-rendering-and-local-export-protocol",
+        "rationale": "The smallest defensible P07 surface freezes version identity, deterministic representation, read-only actions, and benchmark-local export adapters before any real EHR-agent performance experiment."
+      },
+      "safety": {
+        "requirements": [
+          "Never expose model-selected EHR write operations in P07.",
+          "Never relabel R4 benchmark data as R5.",
+          "Never equate FHIR formatting with clinical correctness or conformance certification.",
+          "Never redistribute PHI, MIMIC-derived content, or restricted reference artifacts without explicit rights.",
+          "Never use final-test labels for P07 representation or adapter repair."
+        ],
+        "status": "implementation-pending-exact-head-qualification"
+      },
+      "unresolved_decisions": [
+        "Paper-level FHIR representation gains remain unclaimed until P08 matched real-benchmark evaluation.",
+        "MedAgentBench runtime FHIR release is not inferred when upstream documentation does not freeze it; exported tasks must declare their source version explicitly.",
+        "R4/R5 semantic conversion is deferred; P07 only preserves explicit source identity and deterministic rendering.",
+        "Any future write-action research requires a separate safety-governed phase and is not implied by P07."
+      ],
+      "version": 1
+    }
+  }
+}

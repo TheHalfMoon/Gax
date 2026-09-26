@@ -20,9 +20,19 @@ from gaxbench.external_adapters import (
     TypeSafeHTTPAdapter,
     TypeSafeHTTPConfig,
 )
+from gaxbench.fhir import (
+    FHIRDecisionCase,
+    FHIRRepresentation,
+    fhir_case_to_benchmark_item,
+)
+from gaxbench.fhir_adapters import (
+    BenchmarkName,
+    external_task_to_case,
+    load_external_fhir_export,
+)
 from gaxbench.intervention_run import build_intervention_run_manifest
 from gaxbench.interventions import evaluate_interventions, load_intervention_manifest
-from gaxbench.io import load_items, load_predictions
+from gaxbench.io import dump_jsonl, load_items, load_jsonl, load_predictions
 from gaxbench.metrics import evaluate_abstention, evaluate_action_predictions
 from gaxbench.runner import run_baseline
 
@@ -49,6 +59,45 @@ def build_parser() -> argparse.ArgumentParser:
     interventions.add_argument("--stability-tv-threshold", type=float, default=0.05)
     interventions.add_argument("--git-sha", required=True)
     interventions.add_argument("--compute-provenance", required=True)
+
+    fhir_convert = subparsers.add_parser(
+        "fhir-convert",
+        help="convert P07 FHIR decision cases into canonical GAXBench items",
+    )
+    fhir_convert.add_argument("--cases", required=True)
+    fhir_convert.add_argument("--output", required=True)
+    fhir_convert.add_argument(
+        "--representation",
+        default="canonical-structured",
+        choices=[
+            "canonical-structured",
+            "canonical-with-narrative",
+            "source-order-json",
+            "flat-text",
+        ],
+    )
+
+    fhir_external = subparsers.add_parser(
+        "fhir-external-convert",
+        help="convert a frozen local benchmark export into canonical GAXBench items",
+    )
+    fhir_external.add_argument("--export", required=True)
+    fhir_external.add_argument(
+        "--benchmark",
+        required=True,
+        choices=["MedAgentBench", "FHIR-AgentBench"],
+    )
+    fhir_external.add_argument("--output", required=True)
+    fhir_external.add_argument(
+        "--representation",
+        default="canonical-structured",
+        choices=[
+            "canonical-structured",
+            "canonical-with-narrative",
+            "source-order-json",
+            "flat-text",
+        ],
+    )
 
     baseline = subparsers.add_parser(
         "baseline-run",
@@ -145,6 +194,51 @@ def main() -> None:
                     "evaluation": asdict(intervention_result),
                 },
                 indent=2,
+                sort_keys=True,
+            )
+        )
+        return
+
+    if args.command == "fhir-convert":
+        cases = load_jsonl(args.cases, FHIRDecisionCase)
+        if any(case.split == "test" for case in cases):
+            parser.error("P07 rejects final-test FHIR cases; final evaluation is P08 work")
+        representation: FHIRRepresentation = args.representation
+        fhir_items = [
+            fhir_case_to_benchmark_item(case, representation=representation)
+            for case in cases
+        ]
+        dump_jsonl(args.output, fhir_items)
+        print(
+            json.dumps(
+                {
+                    "converted": len(fhir_items),
+                    "representation": representation,
+                    "output": args.output,
+                },
+                sort_keys=True,
+            )
+        )
+        return
+
+    if args.command == "fhir-external-convert":
+        benchmark: BenchmarkName = args.benchmark
+        external_representation: FHIRRepresentation = args.representation
+        tasks = load_external_fhir_export(args.export, benchmark=benchmark)
+        cases = [external_task_to_case(task) for task in tasks]
+        fhir_items = [
+            fhir_case_to_benchmark_item(case, representation=external_representation)
+            for case in cases
+        ]
+        dump_jsonl(args.output, fhir_items)
+        print(
+            json.dumps(
+                {
+                    "benchmark": benchmark,
+                    "converted": len(fhir_items),
+                    "representation": external_representation,
+                    "output": args.output,
+                },
                 sort_keys=True,
             )
         )
