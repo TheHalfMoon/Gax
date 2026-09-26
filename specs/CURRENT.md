@@ -12,6 +12,22 @@ Completed grains:
 - **SG-000006 — GAX-P03 First trainable non-generative GAX v0** — PROVEN
 - **SG-000007 — GAX-P04 ECAL controlled ablation framework** — PROVEN
 
+Canonical P03 evidence chain:
+
+- implementation PR: #15
+- implementation exact head: `18bad9e76ef161836875282e26acbaa0ff873a92`
+- implementation exact-head CI: run `36239680443` — SUCCESS
+- implementation merge: `5b51faf169ec828888d0f314acf2e8e8196bb5cb`
+- implementation post-merge CI: run `36239756362` — SUCCESS
+- model-visible-boundary correction PR: #16
+- correction exact head: `89f19898ca4a46dcd9551979f216dc77737ef266`
+- correction exact-head CI: run `36240225652` — SUCCESS
+- corrected main: `d04cc0c63d83b944c2f1f3527a358848c27dd304`
+- correction post-merge CI: run `36240311386` — SUCCESS
+- final P03 feature revision: `sha256-word-v0.2`
+
+P03 is **CLOSED_CANONICAL**. GAX has a genuine trainable non-generative typed-decision reference model with deterministic training, integrity-bound checkpointing, CLI, and direct GAXBench integration. Closeout review caught and corrected a model-visible evidence-label leak before freeze. Abstract smoke results remain infrastructure evidence only and are not clinical or paper performance results.
+
 Canonical P04 evidence chain:
 
 - implementation PR: #19
