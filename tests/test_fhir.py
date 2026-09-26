@@ -14,7 +14,8 @@ from gaxbench.fhir import (
     render_fhir_resource,
     validate_fhir_resource,
 )
-from gaxbench.schema import Provenance
+from gaxbench.metrics import evaluate_abstention, evaluate_action_predictions
+from gaxbench.schema import Prediction, Provenance
 
 
 def provenance() -> Provenance:
@@ -54,6 +55,24 @@ def test_narrative_is_excluded_by_default_and_opt_in_is_explicit() -> None:
     assert "synthetic narrative" in with_narrative
 
 
+def test_nested_resource_narrative_is_excluded_without_dropping_other_text() -> None:
+    bundle = {
+        "resourceType": "Bundle",
+        "entry": [
+            {
+                "resource": {
+                    "resourceType": "Observation",
+                    "text": {"status": "generated", "div": "nested narrative"},
+                    "valueCodeableConcept": {"text": "meaningful coded text"},
+                }
+            }
+        ],
+    }
+    rendered = render_fhir_resource(bundle, representation="canonical-structured")
+    assert "nested narrative" not in rendered
+    assert "meaningful coded text" in rendered
+
+
 def test_source_order_is_a_real_representation_control() -> None:
     resource = {"resourceType": "Patient", "id": "synthetic"}
     canonical = render_fhir_resource(resource, representation="canonical-structured")
@@ -89,6 +108,15 @@ def test_bundle_nested_resource_is_validated() -> None:
     }
     with pytest.raises(ValueError, match="resourceType"):
         validate_fhir_resource(bad_bundle)
+
+
+def test_contained_resource_is_validated() -> None:
+    resource = {
+        "resourceType": "Patient",
+        "contained": [{"id": "missing-type"}],
+    }
+    with pytest.raises(ValueError, match="resourceType"):
+        validate_fhir_resource(resource)
 
 
 def test_write_method_is_forbidden() -> None:
@@ -135,3 +163,65 @@ def test_action_requires_resource_type_for_retrieval() -> None:
             kind="search",
             description="Search without a resource type",
         )
+
+
+def test_fhir_cases_reuse_action_and_abstention_metrics() -> None:
+    actions = [
+        FHIRReadOnlyAction(
+            id="read-patient",
+            kind="read",
+            description="Read patient",
+            resource_type="Patient",
+        ),
+        FHIRReadOnlyAction(
+            id="need-more",
+            kind="need-more-information",
+            description="Need more information",
+        ),
+    ]
+    cases = [
+        FHIRDecisionCase(
+            id="fhir-sufficient",
+            source_id="source-1",
+            split="validation",
+            task_family="routing",
+            source_fhir_version="R5",
+            resources=[{"resourceType": "Patient", "id": "synthetic-1"}],
+            actions=actions,
+            gold_action="read-patient",
+            sufficient=True,
+            provenance=provenance(),
+        ),
+        FHIRDecisionCase(
+            id="fhir-insufficient",
+            source_id="source-2",
+            split="validation",
+            task_family="routing",
+            source_fhir_version="R5",
+            resources=[{"resourceType": "Patient", "id": "synthetic-2"}],
+            actions=actions,
+            gold_action="need-more",
+            sufficient=False,
+            provenance=provenance(),
+        ),
+    ]
+    items = [fhir_case_to_benchmark_item(case) for case in cases]
+    predictions = [
+        Prediction(
+            item_id="fhir-sufficient",
+            probabilities={"read-patient": 0.9, "need-more": 0.1},
+            information_sufficiency=0.9,
+            abstain=False,
+        ),
+        Prediction(
+            item_id="fhir-insufficient",
+            probabilities={"read-patient": 0.2, "need-more": 0.8},
+            information_sufficiency=0.1,
+            abstain=True,
+        ),
+    ]
+    action_metrics, records = evaluate_action_predictions(items, predictions)
+    abstention_metrics = evaluate_abstention(records)
+    assert action_metrics.accuracy == 1.0
+    assert abstention_metrics.unsafe_commit_rate == 0.0
+    assert abstention_metrics.over_abstain_rate == 0.0
