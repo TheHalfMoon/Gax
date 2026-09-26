@@ -121,6 +121,8 @@ The hard-negative experiment is stricter: the control uses a random-negative mar
 
 The repository produces a deterministic P04 manifest that binds:
 
+- exact git commit SHA;
+- declared compute provenance;
 - train data hash;
 - development data hash;
 - replay data hash when used;
@@ -129,6 +131,8 @@ The repository produces a deterministic P04 manifest that binds:
 - control and treatment ECAL configuration hashes;
 - the declared development gate;
 - the prohibition on final-test tuning.
+
+`--git-sha` and `--compute-provenance` are required CLI inputs. They are not inferred silently. A paper-eligible run must use the exact code revision being executed and a truthful compute description.
 
 ## Paper decision policy
 
@@ -163,7 +167,7 @@ The tokens `alpha`, `beta`, `gamma`, `support`, and similar strings have no clin
 
 ## Reproducibility commands
 
-The `gax` CLI exposes P04 manifest and matched-ablation commands. A typical synthetic qualification run is:
+The `gax` CLI exposes P04 manifest and matched-ablation commands. Every command requires explicit experiment context. A typical synthetic qualification run is:
 
 ```bash
 gax ecal-manifest \
@@ -171,7 +175,9 @@ gax ecal-manifest \
   --validation-items tests/fixtures/ecal_validation.jsonl \
   --replay-items tests/fixtures/ecal_replay.jsonl \
   --retention-items tests/fixtures/ecal_retention.jsonl \
-  --feature-dim 8 --epochs 3 --learning-rate 0.05 --seed 13
+  --feature-dim 8 --epochs 3 --learning-rate 0.05 --seed 13 \
+  --git-sha <EXACT_40_CHAR_COMMIT_SHA> \
+  --compute-provenance "<hardware/runtime provenance>"
 ```
 
 and:
@@ -182,7 +188,9 @@ gax ecal-ablate replay \
   --validation-items tests/fixtures/ecal_validation.jsonl \
   --replay-items tests/fixtures/ecal_replay.jsonl \
   --retention-items tests/fixtures/ecal_retention.jsonl \
-  --feature-dim 8 --epochs 3 --learning-rate 0.05 --seed 13
+  --feature-dim 8 --epochs 3 --learning-rate 0.05 --seed 13 \
+  --git-sha <EXACT_40_CHAR_COMMIT_SHA> \
+  --compute-provenance "<hardware/runtime provenance>"
 ```
 
 Numeric output from these fixtures is infrastructure qualification only and must not enter the paper as a clinical performance result.
