@@ -38,7 +38,9 @@ def test_fixture_metrics_are_deterministic() -> None:
     assert abstention.recall == pytest.approx(1.0)
     assert abstention.unsafe_commit_rate == pytest.approx(0.0)
     assert abstention.over_abstain_rate == pytest.approx(0.0)
+    assert abstention.sufficiency_nll is not None
     assert abstention.sufficiency_brier is not None
+    assert abstention.sufficiency_ece is not None
 
 
 def test_perfect_predictions_have_zero_nll_and_brier_at_probability_one() -> None:
