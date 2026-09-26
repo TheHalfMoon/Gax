@@ -7,6 +7,7 @@ import pytest
 
 from gaxbench.ecal import (
     EcalConfig,
+    ExperimentContext,
     _brier_factors,
     _build_replay_schedule,
     _multi_positive_loss_and_factors,
@@ -18,6 +19,11 @@ from gaxbench.ecal import (
 )
 from gaxbench.gax_v0 import GaxV0Config, GaxV0Model, _softmax
 from gaxbench.schema import Action, BenchmarkItem, Evidence, Gold, Provenance
+
+_TEST_CONTEXT = ExperimentContext(
+    git_sha="0" * 40,
+    compute_provenance="synthetic-test-suite",
+)
 
 
 def make_item(
@@ -180,6 +186,7 @@ def test_ablation_manifest_is_deterministic_and_defers_paper_decisions() -> None
     first = build_p04_ablation_manifest(
         train,
         validation,
+        context=_TEST_CONTEXT,
         replay_items=replay,
         retention_items=retention,
         base=base,
@@ -187,6 +194,7 @@ def test_ablation_manifest_is_deterministic_and_defers_paper_decisions() -> None
     second = build_p04_ablation_manifest(
         train,
         validation,
+        context=_TEST_CONTEXT,
         replay_items=replay,
         retention_items=retention,
         base=base,
@@ -194,6 +202,10 @@ def test_ablation_manifest_is_deterministic_and_defers_paper_decisions() -> None
     assert first == second
     payload = first["payload"]
     assert isinstance(payload, dict)
+    assert payload["experiment_context"] == {
+        "git_sha": "0" * 40,
+        "compute_provenance": "synthetic-test-suite",
+    }
     assert payload["retention_manifest_sha256"] is not None
     arms = payload["ablation_arms"]
     assert isinstance(arms, list)
@@ -241,12 +253,14 @@ def test_matched_replay_ablation_reports_development_and_retention() -> None:
         "replay",
         target_items(),
         validation_items(),
+        context=_TEST_CONTEXT,
         replay_items=replay_items(),
         retention_items=retention_items(),
         base=GaxV0Config(feature_dim=8, epochs=3, learning_rate=0.05, seed=13),
         ece_bins=5,
     )
     assert result.component == "replay"
+    assert result.experiment_context == _TEST_CONTEXT
     assert result.optimizer_steps_equal
     assert result.control_development.n == 2
     assert result.treatment_development.n == 2
