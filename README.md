@@ -80,7 +80,11 @@ Founder-paid cloud compute is out of scope. Smoke tests and tutorials should run
 
 ## Status
 
-**P04 — ECAL research.** P00-P03 are canonical. GAX now has a trainable non-generative reference model and a corrected model-visible input boundary. The active work is preregistered controlled ablation of the proposed Evidence-Calibrated Action Learning mechanisms: bidirectional state/action contrastive structure, hard negatives, evidence supervision, proper-scoring/calibration objectives, and replay/retention. Every component remains a hypothesis until matched evidence supports it; no clinical performance claim is authorized yet.
+**P05 — Native information sufficiency and selective abstention.** P00-P04 are canonical. P04 established a qualified, component-wise ECAL experiment framework, but every ECAL paper decision remains `defer-real-data` until licensed leakage-audited development evidence supports a keep/reject decision.
+
+The active P05 research separates **action confidence** from **information sufficiency** and compares max-probability, entropy, and action-margin controls against a dedicated learned sufficiency signal and a calibration/selective-risk control at matched coverage. Abstention means *do not commit to a clinical action from the current information*; it does not imply that refusal itself is clinically safe, nor does it replace later evidence retrieval or FHIR workflows.
+
+No clinical performance, safety, or deployment claim is authorized yet.
 
 ## License
 
