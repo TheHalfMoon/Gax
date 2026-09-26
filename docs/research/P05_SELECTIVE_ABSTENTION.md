@@ -1,6 +1,6 @@
 # P05 Native Information Sufficiency and Selective Abstention
 
-Status: **implementation grain SG-000008**
+Status: **CLOSED_CANONICAL / SG-000008 PROVEN / learned-sufficiency paper benefit remains defer-real-data**
 
 P05 separates **action preference** from **permission to act**.
 
@@ -183,7 +183,7 @@ The CLI additionally emits the checkpoint artifact SHA-256.
 
 ## Paper gate
 
-The synthetic implementation suite must leave the learned-sufficiency paper decision at:
+The learned-sufficiency paper decision remains:
 
 ```text
 defer-real-data
@@ -193,17 +193,16 @@ On licensed, leakage-audited development evidence, learned sufficiency may becom
 
 Null or negative results remain publishable research evidence and must stay in the ledger.
 
-## Exit gate
+## Canonical qualification
 
-P05 is complete only after:
+P05 implementation evidence is bound to:
 
-1. all four selector mechanisms are deterministic and unit-tested;
-2. hidden-label/provenance/evidence-relation invariance tests pass;
-3. calibration and validation splits remain separate;
-4. final-test selector evaluation is blocked in P05;
-5. unsafe-commit and over-abstention metrics are both present;
-6. manifest and CLI reproduction tests pass;
-7. exact-head Ruff, mypy strict, pytest, and compileall pass on Python 3.11/3.12 across Linux and Windows;
-8. implementation merges with an expected-head guard;
-9. post-main CI succeeds;
-10. a separate canonical closeout marks SG-000008 `PROVEN` and advances to P06.
+- implementation PR: `#22`;
+- exact implementation head: `309e7c108f4dab87f80d2ab24849d9c3032102db`;
+- exact-head CI: run `36251925614` — SUCCESS on Linux/Windows × Python 3.11/3.12;
+- implementation merge: `ced14e8e8f599f8022a273c762fda56452c335c6`;
+- post-main CI: run `36252259764` — SUCCESS on Linux/Windows × Python 3.11/3.12.
+
+The Windows/Python 3.11 exact-head job recorded Ruff success, mypy strict success with no issues in 17 source files, **84 passing tests**, and compileall success. The other three exact-head matrix jobs also completed successfully, followed by a fully green post-main matrix.
+
+P05 is therefore closed as an **implementation and selective-evaluation framework result**. Learned information sufficiency is not promoted to a positive paper result from synthetic fixtures. The next frontier is P06 evidence interventions and counterfactual clinical robustness.
