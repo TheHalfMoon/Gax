@@ -10,12 +10,13 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from gaxbench.baselines import AdapterIdentity
+from gaxbench.external_adapters import render_model_state
 from gaxbench.provenance import canonical_json_sha256, sha256_file
 from gaxbench.schema import Action, BenchmarkItem, Prediction
 
 _ARCHITECTURE_ID = "gax-bilinear-v0"
 _CHECKPOINT_SCHEMA = "0.1"
-_FEATURE_REVISION = "sha256-word-v0.1"
+_FEATURE_REVISION = "sha256-word-v0.2"
 _TOKEN_RE = re.compile(r"\w+", flags=re.UNICODE)
 
 
@@ -324,20 +325,14 @@ def _validate_training_items(items: Sequence[BenchmarkItem], *, required_split: 
 
 
 def _state_vector(item: BenchmarkItem, feature_dim: int) -> list[float]:
-    state = json.dumps(item.state, sort_keys=True, separators=(",", ":"), allow_nan=False)
-    parts = [f"state:{state}"]
-    for evidence in sorted(item.evidence, key=lambda candidate: candidate.id):
-        if evidence.text is not None:
-            parts.append(f"evidence:{evidence.relation}:{evidence.text}")
-        if evidence.structured is not None:
-            structured = json.dumps(
-                evidence.structured,
-                sort_keys=True,
-                separators=(",", ":"),
-                allow_nan=False,
-            )
-            parts.append(f"evidence:{evidence.relation}:{structured}")
-    return _hashed_vector(parts, feature_dim, channel="state")
+    visible = render_model_state(item)
+    serialized = json.dumps(
+        visible,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    )
+    return _hashed_vector([serialized], feature_dim, channel="state")
 
 
 def _action_vector(action: Action, feature_dim: int) -> list[float]:
