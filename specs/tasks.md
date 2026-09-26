@@ -42,12 +42,13 @@
 
 ## P03 — GAX v0
 
-- [ ] Model interface
-- [ ] Training pipeline
-- [ ] Checkpoint format
-- [ ] Deterministic inference
-- [ ] GAX-base smoke model
-- [ ] Model card draft
+- [x] Model interface
+- [x] Training pipeline
+- [x] Checkpoint format
+- [x] Deterministic inference
+- [x] GAX-base smoke model
+- [x] Model card draft
+- [x] Canonical P03 phase closeout
 
 ## P04 — ECAL research
 
