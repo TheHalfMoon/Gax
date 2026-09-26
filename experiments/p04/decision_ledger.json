@@ -1,0 +1,62 @@
+{
+  "schema_version": "0.1",
+  "phase": "P04",
+  "policy": {
+    "selection_split": "development/calibration only",
+    "final_test_labels_allowed": false,
+    "synthetic_mechanistic_results_are_paper_evidence": false,
+    "negative_results_retained": true
+  },
+  "components": [
+    {
+      "id": "bidirectional",
+      "hypothesis": "Multi-positive bidirectional state/action alignment improves ranking or generalization beyond the state-to-action NLL reference without a material calibration or selective-risk regression.",
+      "control": "action NLL reference",
+      "treatment": "action NLL plus bidirectional multi-positive objective",
+      "development_gate": "Improve the preregistered ranking/generalization metric without a material calibration/selective-risk regression.",
+      "mechanistic_status": "pending-exact-head-ci",
+      "paper_decision": "defer-real-data",
+      "rationale": "Abstract synthetic fixtures can validate multi-positive semantics and gradients but cannot establish a paper-level benefit."
+    },
+    {
+      "id": "hard-negative",
+      "hypothesis": "Highest-scoring incorrect-candidate ranking improves hard-candidate discrimination beyond an equal-budget random-negative control without destabilizing calibration.",
+      "control": "action NLL plus random-negative margin objective",
+      "treatment": "action NLL plus deterministic hard-negative margin objective",
+      "development_gate": "Improve hard-candidate discrimination beyond the random-negative control without a material calibration regression.",
+      "mechanistic_status": "pending-exact-head-ci",
+      "paper_decision": "defer-real-data",
+      "rationale": "Synthetic fixtures validate deterministic negative selection and matched budget only; paper acceptance requires licensed development evidence."
+    },
+    {
+      "id": "evidence",
+      "hypothesis": "Evidence-intervention supervision improves evidence-sensitive action behavior without exposing benchmark-only evidence relation annotations to the model input.",
+      "control": "action NLL reference",
+      "treatment": "action NLL plus evidence intervention objective",
+      "development_gate": "Any benefit must survive evidence removal/swap controls and evidence-relation input-invariance tests.",
+      "mechanistic_status": "pending-exact-head-ci",
+      "paper_decision": "defer-real-data",
+      "rationale": "P04 proves the supervision/input boundary mechanically; evidence faithfulness on health data remains a later evidence gate."
+    },
+    {
+      "id": "proper-scoring",
+      "hypothesis": "Adding differentiable multiclass Brier training improves proper-scoring/calibration metrics without an unacceptable action-quality regression.",
+      "control": "action NLL reference",
+      "treatment": "action NLL plus multiclass Brier objective",
+      "development_gate": "Improve the declared NLL/Brier calibration criterion while preserving action quality within the preregistered tolerance.",
+      "mechanistic_status": "pending-exact-head-ci",
+      "paper_decision": "defer-real-data",
+      "rationale": "Finite-difference gradient verification proves implementation correctness, not clinical calibration benefit."
+    },
+    {
+      "id": "replay",
+      "hypothesis": "Equal-step replay improves frozen prior-capability retention without an unacceptable target-task regression.",
+      "control": "target-only schedule at the same optimizer-step budget",
+      "treatment": "target schedule with a preregistered fraction of target steps replaced by replay steps",
+      "development_gate": "Improve the frozen retention slice while preserving current-task development performance within the declared tolerance.",
+      "mechanistic_status": "pending-exact-head-ci",
+      "paper_decision": "defer-real-data",
+      "rationale": "Synthetic retention validates accounting and evaluator wiring; paper acceptance requires licensed development evidence."
+    }
+  ]
+}

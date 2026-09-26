@@ -354,8 +354,16 @@ def _hashed_vector(parts: Sequence[str], feature_dim: int, *, channel: str) -> l
         vector[index] += sign
 
     norm = math.sqrt(math.fsum(value * value for value in vector))
-    if norm == 0.0 or not math.isfinite(norm):
-        raise ValueError("feature vector has invalid norm")
+    if not math.isfinite(norm):
+        raise ValueError("feature vector has non-finite norm")
+    if norm == 0.0:
+        canonical_tokens = "\x1f".join(sorted(tokens))
+        fallback_digest = hashlib.sha256(
+            f"{_FEATURE_REVISION}|{channel}|fallback|{canonical_tokens}".encode()
+        ).digest()
+        fallback_index = int.from_bytes(fallback_digest[:4], "big") % feature_dim
+        vector[fallback_index] = 1.0
+        norm = 1.0
     return [value / norm for value in vector]
 
 

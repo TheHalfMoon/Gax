@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 from pathlib import Path
 
 import pytest
@@ -8,6 +9,7 @@ import pytest
 from gaxbench.gax_v0 import (
     GaxV0Adapter,
     GaxV0Config,
+    _hashed_vector,
     load_gax_v0_checkpoint,
     save_gax_v0_checkpoint,
     train_gax_v0,
@@ -89,6 +91,15 @@ def test_evidence_relation_annotation_is_not_model_visible() -> None:
     assert result.model.probabilities(support_item) == result.model.probabilities(
         contradict_item
     )
+
+
+def test_zero_norm_signed_hash_collision_has_deterministic_fallback() -> None:
+    parts = ['{"synthetic_signal":"prior gamma two"}']
+    first = _hashed_vector(parts, 8, channel="state")
+    second = _hashed_vector(parts, 8, channel="state")
+    assert first == second
+    assert math.sqrt(math.fsum(value * value for value in first)) == pytest.approx(1.0)
+    assert sum(value != 0.0 for value in first) == 1
 
 
 def test_training_rejects_non_training_split() -> None:
