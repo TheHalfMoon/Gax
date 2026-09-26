@@ -4,6 +4,8 @@ import pytest
 from pydantic import ValidationError
 
 from gaxbench.p08_freeze import (
+    P07_CLOSEOUT_MERGE_SHA,
+    P07_CLOSEOUT_POST_MAIN_RUN_ID,
     BenchmarkFreeze,
     CalibrationFreeze,
     ClaimEntry,
@@ -28,8 +30,8 @@ def make_manifest(*, dirty_tree: bool = False, frozen: bool = True) -> P08Freeze
         repo_revision=GIT_SHA,
         dirty_tree=dirty_tree,
         p07_closeout=P07CloseoutGate(
-            merge_sha="2" * 40,
-            post_main_run_id=123,
+            merge_sha=P07_CLOSEOUT_MERGE_SHA,
+            post_main_run_id=P07_CLOSEOUT_POST_MAIN_RUN_ID,
             conclusion="success",
         ),
         benchmarks=[
@@ -83,6 +85,24 @@ def make_manifest(*, dirty_tree: bool = False, frozen: bool = True) -> P08Freeze
             fhir_representation_revision="gax-fhir-v0.1",
         ),
     )
+
+
+def test_p07_closeout_gate_requires_canonical_merge() -> None:
+    with pytest.raises(ValidationError, match="canonical P07 closeout merge"):
+        P07CloseoutGate(
+            merge_sha="2" * 40,
+            post_main_run_id=P07_CLOSEOUT_POST_MAIN_RUN_ID,
+            conclusion="success",
+        )
+
+
+def test_p07_closeout_gate_requires_canonical_post_main_run() -> None:
+    with pytest.raises(ValidationError, match="canonical P07 CI run"):
+        P07CloseoutGate(
+            merge_sha=P07_CLOSEOUT_MERGE_SHA,
+            post_main_run_id=123,
+            conclusion="success",
+        )
 
 
 def test_authorization_is_digest_bound() -> None:
