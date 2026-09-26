@@ -13,6 +13,7 @@ Completed grains:
 - **SG-000007 — GAX-P04 ECAL controlled ablation framework** — PROVEN
 - **SG-000008 — GAX-P05 Native information sufficiency and selective abstention** — PROVEN
 - **SG-000009 — GAX-P06 Evidence interventions and counterfactual robustness** — PROVEN
+- **SG-000010 — GAX-P07 FHIR interoperable read-only decision layer** — PROVEN
 
 Canonical P03 evidence chain:
 
@@ -77,23 +78,45 @@ Canonical P06 evidence chain:
 
 P06 is **CLOSED_CANONICAL** as a paired intervention/evaluation framework result. It does not establish clinical safety, causal identification, or medical counterfactual superiority. The proven surface is a governed pair manifest/evaluator and synthetic mechanics suite; real medical intervention construction and paper-level keep decisions require licensed, reviewed, leakage-audited development evidence.
 
+Canonical P07 evidence chain:
+
+- research contract: Issue #27 / SG-000010
+- implementation PR: #28
+- implementation exact head: `01e818a5139dea3d0ea3258b49f60f24593ade41`
+- implementation exact-head CI: run `36258059106` — SUCCESS
+- implementation merge: `a9128a7f8de49dfa614ded1bd472cf1230f0041a`
+- implementation post-merge CI: run `36258143003` — SUCCESS
+- exact-head and post-main matrices: Linux/Windows × Python 3.11/3.12 — SUCCESS
+- exact-head and post-main gates include Ruff, mypy strict, pytest, and compileall
+- canonical published FHIR reference is R5 5.0.0 while R4 benchmark inputs preserve explicit source-native identity
+- P07 makes no R4-to-R5 semantic conversion claim and does not treat deterministic rendering as HL7 profile/conformance certification
+- FHIR actions are read-only; POST/PUT/PATCH/DELETE templates are rejected and no model-selected EHR write operation is exposed
+- MedAgentBench and FHIR-AgentBench repository identities/revisions are frozen while restricted external data/runtime artifacts remain separately governed
+- public P07 fixtures are abstract CC0 synthetic content and final-test conversion remains blocked during P07
+
+P07 is **CLOSED_CANONICAL** as an interoperability and evaluation-contract result. It proves deterministic FHIR rendering, explicit version identity, read-only action boundaries, representation controls, and frozen local-export adapter protocols. It does not prove FHIR benchmark superiority, clinical correctness, FHIR conformance certification, or semantic R4-to-R5 equivalence.
+
 Active frontier:
 
-**P07 — FHIR Interoperable Decision Layer**
+**P08 — Full Paper Evaluation**
 
-P07 builds the interoperable state/action boundary required to test GAX as a decision layer in EHR-agent workflows. The phase must not turn FHIR serialization into a hidden label or claim that syntactic FHIR support establishes clinical correctness.
+P08 is the evidence freeze and final evaluation phase. It is the first phase allowed to support paper-level comparative claims, and only after all selection surfaces are frozen before final-test access.
 
-Core P07 goals:
+Core P08 rules:
 
 ```text
-FHIR-native input != FHIR-format memorization
-resource retrieval != clinical correctness
-tool routing != permission to execute a clinical action
-representation gain != serialization artifact
+final-test access != model selection
+confidence != information sufficiency
+FHIR formatting != clinical correctness
+faster on different hardware != speed superiority
+missing/failed inference != silent exclusion
+negative result != disposable result
 ```
 
-P07 must first freeze a stable FHIR version/compatibility contract, then implement deterministic canonicalization, typed FHIR resource/tool actions, information-sufficiency decisions, representation controls, and source/license-qualified MedAgentBench/FHIR-AgentBench adapters where their terms permit. Synthetic or explicitly permitted FHIR fixtures are required for public tests; PHI and restricted clinical source text remain out of scope.
+Before final-test access, P08 must freeze benchmark/split manifests, GAX checkpoints and training seeds, baseline model/tokenizer/source revisions, calibration and selective policies, ECAL candidate mechanisms, FHIR representation choices, hardware/timing protocols, data/license status, and leakage audits. A signed final-test opening manifest must bind this frozen state.
 
-Final-test labels remain sealed until P08. Any benchmark requiring credentialed or restricted data must be supported through local user-supplied adapters rather than redistributed through GAX.
+P08 must then run matched primary evaluations, calibration/selective-risk analyses, ECAL ablations, evidence/counterfactual tests, FHIR evaluations, shift slices, failure analysis, and efficiency measurement with exact requested/completed/failed counts and confidence intervals. Every paper table and figure must regenerate from raw versioned evidence packets. Null and negative results remain in the ledger.
 
-Research claims remain subject to `docs/research/REPRODUCIBILITY.md`.
+No paper-level claim for ECAL, learned information sufficiency, evidence grounding, counterfactual robustness, FHIR gains, efficiency, or baseline superiority is authorized until its preregistered P08 gate passes. Jev must remain explicitly blocked if reproducible access or terms do not permit a fair zero-founder-cost evaluation; it must not be silently omitted or replaced by an invented result.
+
+Final-test labels remain sealed until the P08 freeze contract is canonical. Research claims remain subject to `docs/research/REPRODUCIBILITY.md`.
