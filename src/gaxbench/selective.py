@@ -502,7 +502,8 @@ def build_p05_manifest(
         ],
         "target_coverage": target_coverage,
         "threshold_protocol": (
-            "calibration-score quantile only; no final-test labels and no formal conformal guarantee"
+            "calibration-score quantile only; no final-test labels and no formal "
+            "conformal guarantee"
         ),
         "paper_decision_default": "defer-real-data",
     }
