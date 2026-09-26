@@ -92,28 +92,31 @@
       "contains_clinical_text": false,
       "contains_phi": false,
       "patient_or_entity_key": "source_id",
-      "intended_uses": [
-        "paired intervention schema tests",
-        "counterfactual metric regression tests",
-        "evidence/sufficiency direction tests",
-        "determinability regression tests",
-        "P06 CLI smoke qualification"
-      ],
-      "forbidden_uses": [
-        "clinical validation claims",
-        "medical performance claims",
-        "patient care",
-        "paper benchmark claims",
-        "counterfactual robustness superiority claims",
-        "evidence-grounding superiority claims"
-      ],
+      "intended_uses": ["paired intervention schema tests", "counterfactual metric regression tests", "evidence/sufficiency direction tests", "determinability regression tests", "P06 CLI smoke qualification"],
+      "forbidden_uses": ["clinical validation claims", "medical performance claims", "patient care", "paper benchmark claims", "counterfactual robustness superiority claims", "evidence-grounding superiority claims"],
       "split_strategy": "Hand-authored abstract validation-only pair families; every pair preserves source_id and counterfactual_group and contains no medical concept, threshold, patient, or external source",
       "transforms": [],
-      "derived_artifacts": [
-        "tests/fixtures/p06_items.jsonl",
-        "tests/fixtures/p06_predictions.jsonl",
-        "tests/fixtures/p06_interventions.json"
-      ],
+      "derived_artifacts": ["tests/fixtures/p06_items.jsonl", "tests/fixtures/p06_predictions.jsonl", "tests/fixtures/p06_interventions.json"],
+      "review_status": "approved",
+      "reviewer": "TheHalfMoon/Gax maintainers",
+      "review_date": "2026-09-26"
+    },
+    {
+      "id": "p07-fhir-synthetic",
+      "name": "P07 abstract read-only FHIR interoperability fixtures",
+      "source_url": null,
+      "upstream_revision": "gax-p07-v0.1",
+      "license": "CC0-1.0",
+      "redistribution": "permitted",
+      "access_requirements": null,
+      "contains_clinical_text": false,
+      "contains_phi": false,
+      "patient_or_entity_key": "source_id",
+      "intended_uses": ["FHIR canonicalization tests", "read-only action-schema tests", "representation controls", "R4/R5 source-version preservation", "external-export adapter qualification"],
+      "forbidden_uses": ["clinical validation claims", "medical performance claims", "patient care", "paper benchmark claims", "FHIR conformance certification", "write-action execution"],
+      "split_strategy": "Hand-authored abstract validation fixtures only; identifiers and resource content are synthetic and encode no real patient, medical threshold, diagnosis rule, or treatment guidance",
+      "transforms": ["gax-fhir-v0.1", "gax-p07-external-export-v0.1"],
+      "derived_artifacts": ["tests/test_fhir.py", "tests/test_fhir_adapters.py"],
       "review_status": "approved",
       "reviewer": "TheHalfMoon/Gax maintainers",
       "review_date": "2026-09-26"
