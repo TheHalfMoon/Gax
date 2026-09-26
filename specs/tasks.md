@@ -42,20 +42,23 @@
 
 ## P03 — GAX v0
 
-- [ ] Model interface
-- [ ] Training pipeline
-- [ ] Checkpoint format
-- [ ] Deterministic inference
-- [ ] GAX-base smoke model
-- [ ] Model card draft
+- [x] Model interface
+- [x] Training pipeline
+- [x] Checkpoint format
+- [x] Deterministic inference
+- [x] GAX-base smoke model
+- [x] Model card draft
+- [x] Model-visible evidence boundary correction
+- [x] Canonical P03 phase closeout
 
 ## P04 — ECAL research
 
-- [ ] State/action contrastive ablation
+- [ ] Bidirectional/multi-positive state-action contrastive ablation
 - [ ] Hard-negative ablation
 - [ ] Evidence objective ablation
 - [ ] Proper-scoring/calibration ablation
 - [ ] Replay/retention ablation
+- [ ] Matched-ablation manifest and keep/reject ledger
 
 ## P05 — Abstention
 
