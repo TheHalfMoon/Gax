@@ -38,7 +38,9 @@ logit_i = s^T W a_i
 p(a_i | state, evidence) = softmax(logits)_i
 ```
 
-`W` is trainable. The feature map is fixed and versioned as `sha256-word-v0.1`.
+`W` is trainable. The corrected feature map is fixed and versioned as `sha256-word-v0.2`.
+
+Revision `v0.2` exists because the initial P03 implementation accidentally included the benchmark-only `evidence.relation` annotation in the hashed state. That violated the already-canonical P02 model-visible boundary. The correction reuses the same `render_model_state` contract as external baselines and deliberately invalidates `v0.1` checkpoints rather than silently changing their semantics.
 
 The action ID is not used as semantic training text. It is preserved only as the stable schema key for the output probability. This prevents the reference model from treating arbitrary action labels as clinical meaning.
 
@@ -56,20 +58,26 @@ The P03 reference must never be described as the final GAX-base paper model unle
 
 ## Input boundary
 
-The model sees only benchmark-visible fields:
+The model uses the same model-visible state renderer frozen for P02 baselines. It can see only:
 
 - `state`;
-- evidence text/structured values and evidence relation;
+- evidence text;
+- evidence structured values;
+- evidence IDs/source references when supplied as caller-visible context;
 - action descriptions.
 
-It does not consume:
+It explicitly does **not** consume:
 
+- `evidence.relation` benchmark annotations;
 - gold action labels at inference;
 - source/provenance identity as a predictive feature;
 - benchmark split name as a predictive feature;
+- sufficiency labels;
 - hidden rationale;
 - patient identifiers;
 - action ID text as semantic content.
+
+A regression test changes only `evidence.relation` from `support` to `contradict` while holding visible evidence fixed and requires identical GAX probabilities.
 
 Actions are sorted by ID internally before scoring so a caller's action-list permutation cannot change ID/probability alignment through ordering alone.
 
@@ -173,6 +181,7 @@ P03 implementation qualification requires:
 - checkpoint round trip preserves predictions;
 - payload tampering is detected;
 - action permutation preserves action-ID/probability alignment;
+- evidence-relation annotation changes do not alter model predictions;
 - a non-training split is rejected by the trainer;
 - the loaded model runs through the existing GAXBench runner;
 - train/evaluate CLI passes end to end;
