@@ -6,6 +6,8 @@ from collections.abc import Sequence
 from dataclasses import asdict, dataclass, field
 from typing import Literal
 
+from pydantic import JsonValue
+
 from gaxbench.baselines import AdapterIdentity
 from gaxbench.gax_v0 import (
     GaxV0Config,
@@ -25,6 +27,21 @@ PaperDecision = Literal["keep", "reject", "defer-real-data"]
 
 _ECAL_SCHEMA_VERSION = "0.1"
 _ECAL_SOURCE_REVISION = "gax-p04"
+_NEGATIVE_RNG_XOR = 0xEC4A1
+
+
+@dataclass(frozen=True)
+class ExperimentContext:
+    git_sha: str
+    compute_provenance: str
+
+    def __post_init__(self) -> None:
+        if len(self.git_sha) != 40 or any(
+            character not in "0123456789abcdef" for character in self.git_sha
+        ):
+            raise ValueError("git_sha must be a 40-character lowercase hexadecimal SHA")
+        if not self.compute_provenance.strip():
+            raise ValueError("compute_provenance must be non-empty")
 
 
 @dataclass(frozen=True)
@@ -95,16 +112,37 @@ class AblationDecision:
 
 
 @dataclass(frozen=True)
+class EcalPredictionRecord:
+    item_id: str
+    probabilities: dict[str, float]
+    evidence_support: float | None
+    information_sufficiency: float | None
+    abstain: bool
+    metadata: dict[str, JsonValue]
+
+
+@dataclass(frozen=True)
 class MatchedAblationResult:
     component: str
+    experiment_context: ExperimentContext
     control_config_sha256: str
     treatment_config_sha256: str
     control_model_revision: str
     treatment_model_revision: str
+    control_optimizer_steps: int
+    treatment_optimizer_steps: int
+    control_target_steps: int
+    treatment_target_steps: int
+    control_replay_steps: int
+    treatment_replay_steps: int
     control_development: ActionMetrics
     treatment_development: ActionMetrics
+    control_development_predictions: tuple[EcalPredictionRecord, ...]
+    treatment_development_predictions: tuple[EcalPredictionRecord, ...]
     control_retention: ActionMetrics | None
     treatment_retention: ActionMetrics | None
+    control_retention_predictions: tuple[EcalPredictionRecord, ...]
+    treatment_retention_predictions: tuple[EcalPredictionRecord, ...]
     optimizer_steps_equal: bool
 
 
@@ -149,7 +187,8 @@ def train_ecal(
         raise ValueError("replay_ratio > 0 requires replay_items")
 
     model = GaxV0Model(config.base)
-    rng = random.Random(config.base.seed)
+    schedule_rng = random.Random(config.base.seed)
+    negative_rng = random.Random(config.base.seed ^ _NEGATIVE_RNG_XOR)
     target_pool = tuple(train_items)
     history: list[EcalEpochRecord] = []
     total_target_steps = 0
@@ -157,12 +196,12 @@ def train_ecal(
 
     for epoch in range(1, config.base.epochs + 1):
         ordered_targets = list(train_items)
-        rng.shuffle(ordered_targets)
+        schedule_rng.shuffle(ordered_targets)
         schedule = _build_replay_schedule(
             ordered_targets,
             replay_items,
             ratio=config.replay_ratio,
-            rng=rng,
+            rng=schedule_rng,
         )
         action_losses: list[float] = []
         bidirectional_losses: list[float] = []
@@ -198,7 +237,7 @@ def train_ecal(
                         item,
                         margin=config.hard_negative_margin,
                         policy=config.negative_policy,
-                        rng=rng,
+                        rng=negative_rng,
                     )
                     _add_matrix(gradient, component_gradient, config.hard_negative_weight)
                     hard_losses.append(loss)
@@ -260,6 +299,7 @@ def build_p04_ablation_manifest(
     train_items: Sequence[BenchmarkItem],
     validation_items: Sequence[BenchmarkItem],
     *,
+    context: ExperimentContext,
     replay_items: Sequence[BenchmarkItem] = (),
     retention_items: Sequence[BenchmarkItem] = (),
     base: GaxV0Config | None = None,
@@ -320,6 +360,11 @@ def build_p04_ablation_manifest(
     payload: dict[str, object] = {
         "schema_version": _ECAL_SCHEMA_VERSION,
         "source_revision": _ECAL_SOURCE_REVISION,
+        "experiment_context": asdict(context),
+        "rng_protocol": {
+            "schedule_stream": "base seed",
+            "negative_stream": f"base seed xor 0x{_NEGATIVE_RNG_XOR:x}",
+        },
         "train_manifest_sha256": items_manifest_sha256(train_items),
         "validation_manifest_sha256": items_manifest_sha256(validation_items),
         "replay_manifest_sha256": (
@@ -340,6 +385,7 @@ def run_matched_ablation(
     train_items: Sequence[BenchmarkItem],
     validation_items: Sequence[BenchmarkItem],
     *,
+    context: ExperimentContext,
     replay_items: Sequence[BenchmarkItem] = (),
     retention_items: Sequence[BenchmarkItem] = (),
     base: GaxV0Config | None = None,
@@ -366,33 +412,60 @@ def run_matched_ablation(
         validation_items=validation_items,
         replay_items=replay_items,
     )
-    control_development = _require_action_metrics(
-        run_baseline(validation_items, EcalAdapter(control), ece_bins=ece_bins)
+    control_development_run = run_baseline(
+        validation_items,
+        EcalAdapter(control),
+        ece_bins=ece_bins,
     )
-    treatment_development = _require_action_metrics(
-        run_baseline(validation_items, EcalAdapter(treatment), ece_bins=ece_bins)
+    treatment_development_run = run_baseline(
+        validation_items,
+        EcalAdapter(treatment),
+        ece_bins=ece_bins,
     )
+    control_development = _require_action_metrics(control_development_run)
+    treatment_development = _require_action_metrics(treatment_development_run)
 
     control_retention = None
     treatment_retention = None
+    control_retention_predictions: tuple[EcalPredictionRecord, ...] = ()
+    treatment_retention_predictions: tuple[EcalPredictionRecord, ...] = ()
     if retention_items:
-        control_retention = _require_action_metrics(
-            run_baseline(retention_items, EcalAdapter(control), ece_bins=ece_bins)
+        control_retention_run = run_baseline(
+            retention_items,
+            EcalAdapter(control),
+            ece_bins=ece_bins,
         )
-        treatment_retention = _require_action_metrics(
-            run_baseline(retention_items, EcalAdapter(treatment), ece_bins=ece_bins)
+        treatment_retention_run = run_baseline(
+            retention_items,
+            EcalAdapter(treatment),
+            ece_bins=ece_bins,
         )
+        control_retention = _require_action_metrics(control_retention_run)
+        treatment_retention = _require_action_metrics(treatment_retention_run)
+        control_retention_predictions = _prediction_records(control_retention_run)
+        treatment_retention_predictions = _prediction_records(treatment_retention_run)
 
     return MatchedAblationResult(
         component=component,
+        experiment_context=context,
         control_config_sha256=control_config.sha256,
         treatment_config_sha256=treatment_config.sha256,
         control_model_revision=control.model.model_revision,
         treatment_model_revision=treatment.model.model_revision,
+        control_optimizer_steps=control.optimizer_steps,
+        treatment_optimizer_steps=treatment.optimizer_steps,
+        control_target_steps=control.target_steps,
+        treatment_target_steps=treatment.target_steps,
+        control_replay_steps=control.replay_steps,
+        treatment_replay_steps=treatment.replay_steps,
         control_development=control_development,
         treatment_development=treatment_development,
+        control_development_predictions=_prediction_records(control_development_run),
+        treatment_development_predictions=_prediction_records(treatment_development_run),
         control_retention=control_retention,
         treatment_retention=treatment_retention,
+        control_retention_predictions=control_retention_predictions,
+        treatment_retention_predictions=treatment_retention_predictions,
         optimizer_steps_equal=control.optimizer_steps == treatment.optimizer_steps,
     )
 
@@ -755,6 +828,22 @@ def _require_action_metrics(run_result: BaselineRunResult) -> ActionMetrics:
     ):
         raise ValueError("matched ablation evaluation did not produce complete action metrics")
     return action_metrics
+
+
+def _prediction_records(run_result: BaselineRunResult) -> tuple[EcalPredictionRecord, ...]:
+    if run_result.failed or run_result.evaluation_error is not None:
+        raise ValueError("cannot serialize predictions from an incomplete ablation run")
+    return tuple(
+        EcalPredictionRecord(
+            item_id=prediction.item_id,
+            probabilities=dict(prediction.probabilities),
+            evidence_support=prediction.evidence_support,
+            information_sufficiency=prediction.information_sufficiency,
+            abstain=prediction.abstain,
+            metadata=dict(prediction.metadata),
+        )
+        for prediction in run_result.predictions
+    )
 
 
 def _ablation_arm(
