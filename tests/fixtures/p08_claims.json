@@ -1,0 +1,30 @@
+{
+  "entries": [
+    {
+      "evidence_packet_ids": [],
+      "id": "candidate-selective-risk",
+      "primary_candidate": true,
+      "reason": null,
+      "status": "candidate",
+      "text": "GAX improves selective risk at matched coverage over frozen controls."
+    },
+    {
+      "evidence_packet_ids": ["synthetic-packet"],
+      "id": "supported-mechanics",
+      "primary_candidate": false,
+      "reason": null,
+      "status": "supported",
+      "text": "The synthetic P08 governance fixture validates the claim-ledger contract."
+    },
+    {
+      "evidence_packet_ids": [],
+      "id": "blocked-jev",
+      "primary_candidate": false,
+      "reason": "Synthetic fixture intentionally represents unavailable reproducible access.",
+      "status": "blocked",
+      "text": "A direct Jev comparison is available."
+    }
+  ],
+  "experiment_revision": "synthetic-p08-freeze",
+  "schema_version": "0.1"
+}
