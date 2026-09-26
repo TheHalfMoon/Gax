@@ -5,6 +5,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 
 def run_cli(*args: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
@@ -61,8 +63,8 @@ def test_evidence_rank_and_reliability_cli(tmp_path: Path) -> None:
         run_cli("evidence-rank", "--input", str(evidence_path)).stdout
     )
     assert evidence["auroc"]["defined"] is True
-    assert evidence["auroc"]["value"] == 0.875
-    assert evidence["auprc"]["value"] == 5 / 6
+    assert evidence["auroc"]["value"] == pytest.approx(0.875)
+    assert evidence["auprc"]["value"] == pytest.approx(5 / 6)
 
     reliability_path = tmp_path / "reliability.json"
     reliability_path.write_text(
